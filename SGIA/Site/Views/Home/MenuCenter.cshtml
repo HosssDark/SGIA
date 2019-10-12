@@ -1,0 +1,276 @@
+﻿<link href="~/css/material.css" rel="stylesheet" />
+
+<link href="~/css/view/MenuCenter.css" rel="stylesheet" />
+<script src="~/js/view/MenuCenter.js"></script>
+
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h3 class="card-title">Categorias</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h4 style="margin-top:30px"></h4>
+
+                <button style="background-color:#777" class="tablink" onclick="openPage('Financeiro', this, '#777')">Financeiro</button>
+                <button class="tablink" onclick="openPage('Comercial', this, '#777')">Comercial</button>
+                <button class="tablink" onclick="openPage('Consultoria', this, '#777')">Consultoria</button>
+                <button class="tablink" onclick="openPage('Contabil', this, '#777')">Contabil</button>
+                <button class="tablink" onclick="openPage('Financiamento', this, '#777')">Financiamento</button>
+
+                <div id="Financeiro" style="background-color:#777" class="tabcontent">
+           
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialRevenues">
+                        <i class="material-icons">attach_money</i>
+                        <span>Faturamento</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCosts">
+                        <i class="material-icons">money_off</i>
+                        <span>Custos</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialExpenses">
+                        <i class="material-icons"></i>
+                        <span>Despesas</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialInputOutput">
+                        <i class="material-icons">sync_alt</i>
+                        <span>Entrada/Saida</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Calculos</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Contas Pagar</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Contas Receber</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Tesouraria</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Fornecedores</span>
+                    </a>
+
+                    <a class="btn btn-danger waves-effect margin-right-5px" href="/FinancialCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <span>Logistica</span>
+                    </a>
+                </div>
+
+                <div id="Comercial" class="tabcontent" style="display: none !important;">
+                    <a class="button nav-link" href="/CommercialPrice">
+                        <i class="material-icons">monetization_on</i>
+                        <p>Preço</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialDiscount">
+                        <i class="material-icons">money_off</i>
+                        <p>Desconto</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialMarketplace">
+                        <i class="material-icons">storefront</i>
+                        <p>Mercado</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialMarketplace">
+                        <i class="material-icons">storefront</i>
+                        <p>Fornecedores</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialMarketplace">
+                        <i class="material-icons">storefront</i>
+                        <p>Clientes</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialMarketplace">
+                        <i class="material-icons">storefront</i>
+                        <p>Logistica</p>
+                    </a>
+
+                    <a class="button nav-link" href="/CommercialMarketplace">
+                        <i class="material-icons">storefront</i>
+                        <p>Nivel Prod.</p>
+                    </a>
+                </div>
+
+                <div id="Consultoria" class="tabcontent" style="display: none !important;">
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Banco Dados</p>
+                    </a>
+
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Projetos</p>
+                    </a>
+
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Riscos</p>
+                    </a>
+
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Planejamento Fin.</p>
+                    </a>
+
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Plano Negocio</p>
+                    </a>
+
+                    <a class="button nav-link" href="/">
+                        <i class="material-icons">storage</i>
+                        <p>Orcamentos</p>
+                    </a>
+                </div>
+
+                <div id="Contabil" class="tabcontent" style="display: none !important;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Contabil</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <a class="button nav-link" href="/AccountTaxes">
+                                <i class="material-icons">museum</i>
+                                <p>Imposto</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountDeductions">
+                                <i class="material-icons">attach_money</i>
+                                <p>Deduções</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountGuides">
+                                <i class="material-icons">attach_money</i>
+                                <p>Guias</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountComparativeAnalysis">
+                                <i class="material-icons">find_in_page</i>
+                                <p>Análise Comparativo</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountCalculations">
+                                <i class="material-icons">keyboard</i>
+                                <p>Calculos</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Relatorio</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Calculo Trabalhista</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Balanco</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Lançamento Contabeis</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Livro Diario</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Livro Razao</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>ARE</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>DRE</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Balancete</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountReport">
+                                <i class="material-icons">insert_drive_file</i>
+                                <p>Balanco Temporario</p>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Balanco Definitivo</h4>
+                        </div>
+                        <div class="col-md-12">
+                            <a class="button nav-link" href="/AccountTaxes">
+                                <i class="material-icons">museum</i>
+                                <p>Orcado x Realizado</p>
+                            </a>
+
+                            <a class="button nav-link" href="/AccountDeductions">
+                                <i class="material-icons">attach_money</i>
+                                <p>Consultas e Relatorios</p>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Financiamento" class="tabcontent" style="display: none !important;">
+                    <a class="button nav-link" href="/FinancingMerchandiseRate">
+                        <i class="material-icons">attach_money</i>
+                        <p>Taxa Mercado</p>
+                    </a>
+
+                    <a class="button nav-link" href="/FinancingCalculations">
+                        <i class="material-icons">keyboard</i>
+                        <p>Calculos</p>
+                    </a>
+
+                    <a class="button nav-link" href="/FinancingBankTable">
+                        <i class="material-icons">table_chart</i>
+                        <p>Tabela Bancos</p>
+                    </a>
+
+                    <a class="button nav-link" href="/FinancingSimulator">
+                        <i class="material-icons">desktop_windows</i>
+                        <p>Simulador</p>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
