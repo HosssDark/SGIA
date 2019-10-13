@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Site.Models;
 
@@ -12,26 +10,37 @@ namespace Site.Controllers
     {
         public IActionResult Index()
         {
+            return RedirectToAction("DashBoard");
+        }
+
+        public IActionResult DashBoard()
+        {
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult MenuLeft()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            using(Contexto bd = new Contexto())
+            {
+                return View(bd.Menus.Where(a => a.Ativo == true).ToList());
+            }
         }
 
-        public IActionResult Contact()
+        public IActionResult VersionHistory()
         {
-            ViewData["Message"] = "Your contact page.";
+            List<Historico> ListaVersao = new List<Historico>();
 
-            return View();
-        }
+            var Versao = new Historico();
 
-        public IActionResult Privacy()
-        {
-            return View();
+            Versao.Versao = "1.0.0";
+            Versao.Data = "13/10/2019";
+
+            Versao.Descricao.Add("1 - Foi criado projeto.");
+            Versao.Descricao.Add("1 - Foi criado Cruds.");
+
+            ListaVersao.Add(Versao);
+
+            return View(ListaVersao);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -10,7 +10,7 @@ namespace Site.Models
         public DateTime DataCadastro { get; set; }
         public int DiciplinaId { get; set; }
         public int ProjetoId { get; set; }
-        public int DocenteID { get; set; }
+        public int DocenteId { get; set; }
         public int StatusId { get; set; }
     }
 }

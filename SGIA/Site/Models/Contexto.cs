@@ -24,6 +24,8 @@ namespace Site.Models
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<TipoDocente> TiposDocente { get; set; }
         public DbSet<Turma> Turmas { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Status> Status { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

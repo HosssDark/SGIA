@@ -1,0 +1,93 @@
+﻿@model List<Site.ViewModels.PlanoTrabalhoViewModel>
+
+@{
+    ViewData["Title"] = "Planos de Trabalho";
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.js-table').DataTable({
+                responsive: true,
+            });
+        });
+    </script>
+}
+
+<div class="card">
+    <div class="header" style="background-color: #57a15f;">
+        <h2 style="color: white;">@ViewData["Title"]</h2>
+    </div>
+
+    <div class="body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <a class="btn btn-primary fa-pull-right"
+                   href="/PlanosTrabalho/Adicionar">
+                    Adicionar
+                </a>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table">
+                    <table class="table table-bordered table-striped table-hover js-table dataTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Docente</th>
+                                <th>Dia da Semana</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Encerramento</th>
+                                <th>Status</th>
+                                <th>Data Cadastro</th>
+                                <th style="text-align: center;">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderBy(a => a.PlanoTrabalhoId))
+                            {
+                                <tr>
+                                    <td style="vertical-align: middle !important;">@item.PlanoTrabalhoId</td>
+                                    <td style="vertical-align: middle !important;">@item.Docente</td>
+                                    <td style="vertical-align: middle !important;">@item.DiaSemana</td>
+                                    <td style="vertical-align: middle !important;">@item.HoraInicio</td>
+                                    <td style="vertical-align: middle !important;">@item.HoraEncerramento</td>
+                                    <td style="vertical-align: middle !important;">@item.Status</td>
+                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                                    <td style="text-align: center;">
+                                        <a href="/PlanosTrabalho/Detalhes?Id=@item.PlanoTrabalhoId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
+                                        <a href="/PlanosTrabalho/Alterar?Id=@item.PlanoTrabalhoId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>
+                                        <a href="#" class="btn btn-sm btn-danger Excluir" data-id="@item.PlanoTrabalhoId" data-url="/PlanosTrabalho/Excluir?Id=@item.PlanoTrabalhoId"><i class="material-icons">clear</i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="footer">
+        <div class="col-md-12">
+            <a href="/Home" class="btn btn-default fa-pull-right">Fechar</a>
+        </div>
+    </div>
+
+    <br />
+</div>

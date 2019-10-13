@@ -1,7 +1,75 @@
-﻿
+﻿@model Livro
+
 @{
-    ViewData["Title"] = "Alterar";
+    ViewData["Title"] = "Livros - Alterar";
 }
 
-<h2>Alterar</h2>
+@using (Html.BeginForm("Alterar", "Livros", FormMethod.Post))
+{
+    <div class="card">
+        <div class="header" style="background-color: #57a15f;">
+            <h2 style="color: white;">@ViewData["Title"]</h2>
+        </div>
 
+        <div class="body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(a => a.LivroId)
+            @Html.HiddenFor(a => a.DataCadastro)
+
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Titulo)
+                    @Html.TextBoxFor(a => a.Titulo, "", new { @class = "form-control", @autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(a => a.Titulo)
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Autor)
+                    @Html.TextBoxFor(a => a.Autor, "", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.Autor)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.EditoraId)
+                    @Html.DropDownListFor(a => a.EditoraId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.EditoraId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataPublicacao)
+                    @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.DataPublicacao)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(a => a.DataCadastro)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.StatusId)
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(a => a.AreaConhecimento)
+                    @Html.TextAreaFor(a => a.AreaConhecimento, 6, 30, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.AreaConhecimento)
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="footer">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                <a href="/Livros/Index" class="btn btn-default fa-pull-right">Fechar</a>
+            </div>
+        </div>
+
+        <br />
+    </div>
+}

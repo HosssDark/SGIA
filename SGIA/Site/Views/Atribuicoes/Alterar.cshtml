@@ -1,0 +1,62 @@
+﻿@model Atribuicao
+
+@{
+    ViewData["Title"] = "Atribuições - Alterar";
+}
+
+@using (Html.BeginForm("Alterar", "Atribuicoes", FormMethod.Post))
+{
+    <div class="card">
+        <div class="header" style="background-color: #57a15f;">
+            <h2 style="color: white;">@ViewData["Title"]</h2>
+        </div>
+
+        <div class="body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(a => a.AtribuicaoId)
+
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DiciplinaId)
+                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.DiciplinaId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.ProjetoId)
+                    @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.ProjetoId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DocenteId)
+                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.DocenteId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.StatusId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="footer">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                <a href="/Atribuicoes/Index" class="btn btn-default fa-pull-right">Fechar</a>
+            </div>
+        </div>
+
+        <br />
+    </div>
+}

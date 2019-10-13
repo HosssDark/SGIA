@@ -1,0 +1,51 @@
+﻿
+@model Editora
+
+@{
+    ViewData["Title"] = "Editoras - Alterar";
+}
+
+@using (Html.BeginForm("Alterar", "Editoras", FormMethod.Post))
+{
+    <div class="card">
+        <div class="header" style="background-color: #57a15f;">
+            <h2 style="color: white;">@ViewData["Title"]</h2>
+        </div>
+
+        <div class="body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(a => a.EditoraId)
+
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Nome)
+                    @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(a => a.Nome)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.StatusId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(a => a.DataCadastro)
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="footer">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                <a href="/Editoras/Index" class="btn btn-default fa-pull-right">Fechar</a>
+            </div>
+        </div>
+
+        <br />
+    </div>
+}
