@@ -5,6 +5,7 @@ namespace Site.Models
     public class Endereco
     {
         [Key]
+        [Display(Name = "ID")]
         public int EnderecoId { get; set; }
 
         [Required]

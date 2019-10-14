@@ -1,0 +1,46 @@
+﻿@model List<Site.ViewModels.DashProjetosViewModel>
+
+@{
+    Layout = null;
+}
+
+<div class="card">
+    <div class="header" style="background-color: #020d61 !important;">
+        <h2>PROJETOS</h2>
+    </div>
+    <div class="body">
+        <div class="table-responsive">
+            <table class="table table-hover dashboard-task-infos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Docente Responsável</th>
+                        <th>Status</th>
+                        <th>Data Cadastro</th>
+                        <th>Progresso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderBy(a => a.ProjetoId))
+                    {
+                        <tr>
+                            <td>@item.ProjetoId</td>
+                            <td>@item.Descricao</td>
+                            <td>@item.Docente</td>
+                            <td>@item.Status</td>
+                            <td>@string.Format("{0} Hrs", item.CargaHoraria.ToString())</td>
+                            <td>@item.DataInicio.ToString("dd/MM/yyyy 00:00")</td>
+                            <td>@item.DataTermino.ToString("dd/MM/yyyy 00:00")</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: @item.Progresso%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

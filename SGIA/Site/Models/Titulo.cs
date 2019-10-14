@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Site.Models
 {
-    public class Status
+    public class Titulo
     {
         [Key]
         [Display(Name = "ID")]
-        public int StatusId { get; set; }
+        public int TituloId { get; set; }
 
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }

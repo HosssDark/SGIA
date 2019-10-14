@@ -5,8 +5,8 @@
 }
 
 <div class="card">
-    <div class="header" style="background-color: #57a15f;">
-        <h2 style="color: white;">@ViewData["Title"]</h2>
+    <div class="header">
+        <h2>@ViewData["Title"]</h2>
     </div>
     <div class="body">
 
@@ -17,7 +17,7 @@
                         @foreach (var item in Model)
                         {
                             <div class="card">
-                                <div class="header">
+                                <div class="header" style="background-color: #020d61 !important;">
                                     <h2>@item.Versao</h2>
                                     @item.Data
                                 </div>
@@ -32,9 +32,11 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <hr />
+        <hr />
 
+        <div class="footer-view">
             <div class="col-md-12">
                 <a href="/Home" class="btn btn-default pull-right">Fechar</a>
             </div>

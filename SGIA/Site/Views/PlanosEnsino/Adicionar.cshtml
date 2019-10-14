@@ -7,8 +7,8 @@
 @using (Html.BeginForm("Adicionar", "PlanosEnsino", FormMethod.Post))
 {
     <div class="card">
-        <div class="header" style="background-color: #57a15f;">
-            <h2 style="color: white;">@ViewData["Title"]</h2>
+        <div class="header">
+            <h2>@ViewData["Title"]</h2>
         </div>
 
         <div class="body">
@@ -18,19 +18,19 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DiciplinaId)
-                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Editoras(), null, new { @class = "form-control", @autofocus = "autofocus"  })
+                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus"  })
                     @Html.ValidationMessageFor(a => a.DiciplinaId)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DocenteId)
-                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.TurmaId)
-                    @Html.DropDownListFor(a => a.TurmaId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.TurmaId)
                 </div>
 
@@ -48,7 +48,7 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.EmentaId)
-                    @Html.DropDownListFor(a => a.EmentaId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.EmentaId)
                 </div>
 
@@ -93,13 +93,11 @@
 
         <hr />
 
-        <div class="footer">
+        <div class="footer-view">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
                 <a href="/PlanosEnsino/Index" class="btn btn-default fa-pull-right">Fechar</a>
             </div>
         </div>
-
-        <br />
     </div>
 }

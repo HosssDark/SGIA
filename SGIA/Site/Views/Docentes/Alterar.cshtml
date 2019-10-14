@@ -7,8 +7,8 @@
 @using (Html.BeginForm("Alterar", "Docentes", FormMethod.Post))
 {
     <div class="card">
-        <div class="header" style="background-color: #57a15f;">
-            <h2 style="color: white;">@ViewData["Title"]</h2>
+        <div class="header">
+            <h2>@ViewData["Title"]</h2>
         </div>
 
         <div class="body">
@@ -25,13 +25,13 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.AreaAtuacaoId)
-                    @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.AreaAtuacaoId)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.TituloId)
-                    @Html.DropDownListFor(a => a.TituloId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.TituloId)
                 </div>
 
@@ -79,7 +79,7 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.TipoId)
-                    @Html.DropDownListFor(a => a.TipoId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.TipoId, HelperLista.TipoDocentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.TipoId)
                 </div>
 
@@ -90,7 +90,7 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.StatusId)
-                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.StatusId)
                 </div>
 
@@ -99,13 +99,11 @@
 
         <hr />
 
-        <div class="footer">
+        <div class="footer-view">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
                 <a href="/Livros/Index" class="btn btn-default fa-pull-right">Fechar</a>
             </div>
         </div>
-
-        <br />
     </div>
 }

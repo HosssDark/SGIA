@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>@ViewData["Title"] Ferramenta Financeiro</title>
+    <title>SGIA UNEMAT</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <environment include="Development">
@@ -45,39 +45,22 @@
 
     <section>
         <aside id="leftsidebar" class="sidebar">
-            <div class="user-info">
+            <div class="user-info" style="">
                 <div class="image">
                     <img src="~/images/user.png" width="48" height="48" alt="User" />
-                </div>
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                    <div class="email">john.doe@example.com</div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="/Profile"><i class="material-icons">person</i>Profile</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
             <div class="menu">
-                <div class="RenderAction" data-url="/Home/MenuLeft">
-                </div>
+                <div id="MenuLeft"></div>
             </div>
 
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2016 - 2017 <a href="javascript:void(0);">WaitForMe</a>.
+                    &copy; 2019 <a href="javascript:void(0);">Elias Batista</a>.
                 </div>
                 <div class="version">
-                    <b>Version: </b> 1.0.5
+                    <b>Versão: </b> 1.0.0
                 </div>
             </div>
         </aside>
@@ -85,7 +68,7 @@
     </section>
 
     <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid"  style="margin-top: -30px !important;">
             @RenderBody()
         </div>
     </section>

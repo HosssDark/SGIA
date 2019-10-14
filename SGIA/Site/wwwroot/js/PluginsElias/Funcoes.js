@@ -7,6 +7,8 @@
     });
 
     RenderAction();
+    UserLogado();
+    TipoAcesso();
 });
 
 function Excluir(Url, Id) {
@@ -50,20 +52,93 @@ function Excluir(Url, Id) {
 
 function RenderAction() {
 
-   var element = document.getElementsByClassName('RenderAction');
+    var element = document.getElementsByClassName('RenderAction');
 
     for (var i = 0; i < element.length; i++) {
 
         var Url = element[i].dataset.url;
-        var Class = "." + element[i].className;
+        var Id = "#" + element[i].id;
 
         $.ajax({
             method: 'GET',
             url: Url,
             dataType: 'html',
             success: function (content) {
-                $(Class).html(content);
+                $(Id).html(content);
             }
         });
     }
+}
+
+function CriarCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function ObterCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function VerificaCookie() {
+    var user = getCookie("username");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user, 365);
+        }
+    }
+}
+
+function LimparCookie() {
+    CriarCookie("Nome", -1);
+    CriarCookie("Email", -1);
+    CriarCookie("Tipo", -1);
+}
+
+function UserLogado() {
+
+    var nome = document.getElementById('user_name');
+    var email = document.getElementById('user_email');
+
+    nome.innerText = ObterCookie("Nome");
+    nome.style.color = "white";
+
+    email.innerText = ObterCookie("Email");
+    email.style.color = "white"
+}
+
+function TipoAcesso() {
+
+    var Tipo = ObterCookie("Tipo");
+    var url = "/Home/MenuLeft";
+    var id = 2;
+
+    if (Tipo === "Administrador") {
+        id = 1;
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: url,
+        data: { TipoAcesso: id },
+        dataType: 'html',
+        success: function (content) {
+            $('#MenuLeft').html(content);
+        }
+    });
 }

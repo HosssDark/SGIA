@@ -1,0 +1,88 @@
+﻿@model Site.ViewModels.LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewData["Title"] = "Login";
+}
+
+@section scripts{
+    <script type="text/javascript">
+        function Validacao() {
+            $.ajax({
+                method: 'POST',
+                url: '@Url.Action("Validacao", "Login")',
+                data: $("form").serialize(),
+                success: function (retorno) {
+
+                    var element = document.getElementById('Error');
+
+                    if (retorno.result == "OK") {
+                        CriarCookie("Nome", retorno.nome, 365);
+                        CriarCookie("Email", retorno.email, 365);
+                        CriarCookie("Tipo", retorno.tipo, 365);
+                        
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    } else {
+                        element.style.color = "red";
+                        element.innerText = retorno.message;
+                    }
+                }
+            });
+      }
+    </script>
+}
+
+<div class="logo">
+    <a href="javascript:void(0);">SGIA UNEMAT</a>
+</div>
+
+<div class="card">
+    <div class="body">
+
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="msg">@ViewData["Title"]</div>
+
+            @Html.ValidationMessage("Erro", new { @id = "Error" })
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">person</i>
+                </span>
+                <div class="form-line">
+                    @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control", @placeholder = "Email", @required = "required", @autofocus = "autofocus" })
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">lock</i>
+                </span>
+                <div class="form-line">
+                    @Html.TextBoxFor(a => a.Password, "", new { @class = "form-control", @type = "password", @placeholder = "Senha", @required = "required" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-8 p-t-5">
+                    <input type="checkbox" name="rememberme" id="LembreMim" class="filled-in chk-col-pink">
+                    <label for="rememberme">Lembre de Mim</label>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-block bg-pink waves-effect" type="button" onclick="Validacao()">Entrar</button>
+                </div>
+            </div>
+
+            <div class="row m-t-15 m-b--20">
+                <div class="col-xs-6">
+                    <a href="/Login/Cadastro">Cadastrar Agora!</a>
+                </div>
+                <div class="col-xs-6 align-right">
+                    <a href="/Login/RecuperarSenha">Esqueceu a Senha?</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

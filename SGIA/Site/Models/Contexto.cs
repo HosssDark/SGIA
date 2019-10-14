@@ -26,6 +26,8 @@ namespace Site.Models
         public DbSet<Turma> Turmas { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<Titulo> Titulos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
