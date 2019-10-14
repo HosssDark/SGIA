@@ -22,13 +22,13 @@
                     @Html.ValidationMessageFor(a => a.Nome)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DocenteId)
-                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.CargaHoraria)
                     @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.CargaHoraria)
@@ -36,13 +36,13 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataInicio)
-                    @Html.TextBoxFor(a => a.DataInicio, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataInicio, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataInicio)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataTermino)
-                    @Html.TextBoxFor(a => a.DataTermino, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataTermino, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataTermino)
                 </div>
 

@@ -14,7 +14,6 @@ namespace Site.ViewModels
         public int CreditoAtividadeCampo { get; set; }
         public string Ementa { get; set; }
         public int TurmaId { get; set; }
-        public string Turma { get; set; }
         public int StatusId { get; set; }
         public string Status { get; set; }
     }

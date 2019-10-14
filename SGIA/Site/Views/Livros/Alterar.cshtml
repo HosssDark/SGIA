@@ -7,8 +7,8 @@
 @using (Html.BeginForm("Alterar", "Livros", FormMethod.Post))
 {
     <div class="card">
-        <div class="header" style="background-color: #57a15f;">
-            <h2 style="color: white;">@ViewData["Title"]</h2>
+        <div class="header">
+            <h2>@ViewData["Title"]</h2>
         </div>
 
         <div class="body">
@@ -37,13 +37,13 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataPublicacao)
-                    @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataPublicacao)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
                     @Html.ValidationMessageFor(a => a.DataCadastro)
                 </div>
 
@@ -52,7 +52,9 @@
                     @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.StatusId)
                 </div>
+            </div>
 
+            <div class="row">
                 <div class="col-md-6">
                     @Html.LabelFor(a => a.AreaConhecimento)
                     @Html.TextAreaFor(a => a.AreaConhecimento, 6, 30, new { @class = "form-control" })

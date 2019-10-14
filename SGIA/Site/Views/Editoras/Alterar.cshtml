@@ -25,13 +25,13 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.StatusId)
-                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.StatusId)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
                     @Html.ValidationMessageFor(a => a.DataCadastro)
                 </div>
             </div>

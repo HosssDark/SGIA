@@ -21,18 +21,6 @@
                     @Html.ValidationMessageFor(a => a.Nome)
                 </div>
 
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.AreaAtuacaoId)
-                    @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.AreaAtuacaoId)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.TituloId)
-                    @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.TituloId)
-                </div>
-
                 <div class="col-md-4">
                     @Html.LabelFor(a => a.Email)
                     @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
@@ -45,33 +33,45 @@
                     @Html.ValidationMessageFor(a => a.EmailLattes)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.AreaAtuacaoId)
+                    @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.AreaAtuacaoId)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.TituloId)
+                    @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.TituloId)
+                </div>
+
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.DataNascimento)
-                    @Html.TextBoxFor(a => a.DataNascimento, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataNascimento, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataNascimento)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.Telefone)
-                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular" })
                     @Html.ValidationMessageFor(a => a.Telefone)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.Celular)
-                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control", })
+                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular" })
                     @Html.ValidationMessageFor(a => a.Celular)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.CargaHoraria)
                     @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.CargaHoraria)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.DataPosse)
-                    @Html.TextBoxFor(a => a.DataPosse, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataPosse, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataPosse)
                 </div>
 

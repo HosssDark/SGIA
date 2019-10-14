@@ -14,7 +14,7 @@
             @Html.AntiForgeryToken()
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.Matricula)
                     @Html.TextBoxFor(a => a.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
                     @Html.ValidationMessageFor(a => a.Matricula)
@@ -25,25 +25,26 @@
                     @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.Nome)
                 </div>
+            </div>
 
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.Telefone)
-                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.Telefone)
-                </div>
-
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.Celular)
-                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.Celular)
-                </div>
-
+            <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(a => a.Email)
                     @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.Email)
                 </div>
 
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Telefone)
+                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular" })
+                    @Html.ValidationMessageFor(a => a.Telefone)
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Celular)
+                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular" })
+                    @Html.ValidationMessageFor(a => a.Celular)
+                </div>
             </div>
         </div>
 

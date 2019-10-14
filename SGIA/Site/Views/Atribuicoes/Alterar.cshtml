@@ -17,19 +17,19 @@
             @Html.HiddenFor(a => a.DataCadastro)
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DiciplinaId)
                     @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DiciplinaId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.ProjetoId)
                     @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.ProjetoId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DocenteId)
                     @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
@@ -43,7 +43,7 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
                 </div>
 
             </div>

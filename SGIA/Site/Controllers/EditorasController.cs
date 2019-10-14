@@ -21,6 +21,7 @@ namespace Site.Controllers
                                  Nome = ed.Nome,
                                  StatusId = ed.StatusId,
                                  Status = sta.Descricao,
+                                 DataCadastro = ed.DataCadastro
                              }).ToList();
 
                 return View(Model);
@@ -64,7 +65,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Editoras.Where(a => a.EditoraId == Id).FirstOrDefault());
             }
         }
 

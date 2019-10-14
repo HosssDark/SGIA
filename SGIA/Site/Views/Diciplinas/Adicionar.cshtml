@@ -21,7 +21,7 @@
                     @Html.ValidationMessageFor(a => a.Nome)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.CargaHoraria)
                     @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.CargaHoraria)
@@ -51,6 +51,9 @@
                     @Html.ValidationMessageFor(a => a.CreditoAtividadeCampo)
                 </div>
 
+            </div>
+
+            <div class="row">
                 <div class="col-md-6">
                     @Html.LabelFor(a => a.Ementa)
                     @Html.TextAreaFor(a => a.Ementa, 6, 30, new { @class = "form-control" })

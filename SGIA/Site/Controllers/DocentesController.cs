@@ -14,13 +14,19 @@ namespace Site.Controllers
             using (Contexto bd = new Contexto())
             {
                 var Model = (from dc in bd.Docentes
+                             join at in bd.AreasAtuacao on dc.AreaAtuacaoId equals at.AreaAtuacaoId
+                             join tl in bd.Titulos on dc.TituloId equals tl.TituloId
+                             join tp in bd.TiposDocente on dc.TipoId equals tp.TipoDocenteId
                              join sta in bd.Status on dc.StatusId equals sta.StatusId
                              select new DocenteViewModel
                              {
                                  DocenteId = dc.DocenteId,
                                  AreaAtuacaoId = dc.AreaAtuacaoId,
+                                 AreaAtuacao = at.Descricao,
                                  TipoId = dc.TipoId,
+                                 Tipo = tp.Descricao,
                                  TituloId = dc.TituloId,
+                                 Titulo = tl.Descricao,
                                  CargaHoraria = dc.CargaHoraria,
                                  Celular = dc.Celular,
                                  DataNascimento = dc.DataNascimento,
@@ -96,7 +102,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Docentes.Where(a => a.DocenteId == Id).FirstOrDefault());
             }
         }
 
@@ -151,7 +157,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Docentes.Where(a => a.DocenteId == Id).FirstOrDefault());
             }
         }
 

@@ -34,10 +34,13 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataPublicacao)
-                    @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataPublicacao)
                 </div>
 
+            </div>
+
+            <div class="row">
                 <div class="col-md-6">
                     @Html.LabelFor(a => a.AreaConhecimento)
                     @Html.TextAreaFor(a => a.AreaConhecimento, 6, 30, new { @class = "form-control" })

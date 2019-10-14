@@ -51,9 +51,6 @@ namespace Site.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (!string.IsNullOrEmpty(Model.Email))
-                    ModelState.AddModelError("Nome", "Obrigatório");
-
                 #endregion
 
                 if (ModelState.IsValid)
@@ -75,7 +72,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Dicentes.Where(a => a.DicenteId == Id).FirstOrDefault());
             }
         }
 
@@ -91,9 +88,6 @@ namespace Site.Controllers
                     ModelState.AddModelError("Matricula", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
-
-                if (!string.IsNullOrEmpty(Model.Email))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
                 #endregion

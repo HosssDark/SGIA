@@ -16,19 +16,19 @@
 
             <div class="row">
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DiciplinaId)
                     @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus"  })
                     @Html.ValidationMessageFor(a => a.DiciplinaId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DocenteId)
                     @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.TurmaId)
                     @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.TurmaId)
@@ -46,7 +46,7 @@
                     @Html.ValidationMessageFor(a => a.ObjetivoGeral)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.EmentaId)
                     @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.EmentaId)
@@ -76,7 +76,7 @@
                     @Html.ValidationMessageFor(a => a.RecursoUtilizado)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.AtividadeTrabalhada)
                     @Html.DropDownListFor(a => a.AtividadeTrabalhada, HelperLista.Editoras(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.AtividadeTrabalhada)
@@ -84,7 +84,7 @@
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.DataEmissao)
-                    @Html.TextBoxFor(a => a.DataEmissao, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.DataEmissao, "", new { @class = "form-control date" })
                     @Html.ValidationMessageFor(a => a.DataEmissao)
                 </div>
 

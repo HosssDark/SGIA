@@ -18,27 +18,27 @@
 
             <div class="row">
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DiciplinaId)
-                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Editoras(), null, new { @class = "form-control", @autofocus = "autofocus"  })
+                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus" })
                     @Html.ValidationMessageFor(a => a.DiciplinaId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DocenteId)
-                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.TurmaId)
-                    @Html.DropDownListFor(a => a.TurmaId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.TurmaId)
                 </div>
 
                 <div class="col-md-4">
                     @Html.LabelFor(a => a.ObjetivoArea)
-                    @Html.TextBoxFor(a => a.ObjetivoArea, "", new { @class = "form-control"})
+                    @Html.TextBoxFor(a => a.ObjetivoArea, "", new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.ObjetivoArea)
                 </div>
 
@@ -48,9 +48,9 @@
                     @Html.ValidationMessageFor(a => a.ObjetivoGeral)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.EmentaId)
-                    @Html.DropDownListFor(a => a.EmentaId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.EmentaId)
                 </div>
 
@@ -78,7 +78,7 @@
                     @Html.ValidationMessageFor(a => a.RecursoUtilizado)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.AtividadeTrabalhada)
                     @Html.DropDownListFor(a => a.AtividadeTrabalhada, HelperLista.Editoras(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.AtividadeTrabalhada)
@@ -102,14 +102,14 @@
                 </div>
 
             </div>
-        </div>
 
-        <hr />
+            <hr />
 
-        <div class="footer-view">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
-                <a href="/PlanosEnsino/Index" class="btn btn-default fa-pull-right">Fechar</a>
+            <div class="footer-view">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                    <a href="/PlanosEnsino/Index" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
             </div>
         </div>
     </div>

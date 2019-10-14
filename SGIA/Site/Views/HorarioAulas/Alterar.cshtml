@@ -1,7 +1,7 @@
 ﻿@model HorarioAula
 
 @{
-    ViewData["Title"] = "HorarioAulas - Alterar";
+    ViewData["Title"] = "Horários de Aula - Alterar";
 }
 
 @using (Html.BeginForm("Alterar", "HorarioAulas", FormMethod.Post))
@@ -65,9 +65,9 @@
                     @Html.ValidationMessageFor(a => a.StatusId)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
                 </div>
             </div>
         </div>

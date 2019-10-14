@@ -23,7 +23,8 @@ namespace Site.Controllers
                              from dp3 in r3.DefaultIfEmpty()
                              join dp4 in bd.Diciplinas on hr.DiciplinaQuartoId equals dp4.DiciplinaId into r4
                              from dp4 in r4.DefaultIfEmpty()
-                             join tm in bd.Turmas on hr.HorarioAulaId equals tm.TurmaId
+                             join tm in bd.Turmas on hr.HorarioAulaId equals tm.TurmaId into r5
+                             from tm in r5.DefaultIfEmpty()
                              join sta in bd.Status on hr.StatusId equals sta.StatusId
                              select new HorarioAulaViewModel
                              {
@@ -42,7 +43,7 @@ namespace Site.Controllers
                                  StatusId = hr.StatusId,
                                  Status = sta.Descricao,
                                  TurmaId = hr.TurmaId,
-                                 Turma = tm.Nome
+                                 Turma = tm != null ? tm.Nome : ""
                              }).ToList();
 
                 return View(Model);
@@ -104,7 +105,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.HorarioAulas.Where(a => a.HorarioAulaId == Id).FirstOrDefault());
             }
         }
 
@@ -156,7 +157,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.HorarioAulas.Where(a => a.HorarioAulaId == Id).FirstOrDefault());
             }
         }
 

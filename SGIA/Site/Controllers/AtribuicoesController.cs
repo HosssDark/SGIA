@@ -80,7 +80,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Atribuicoes.Where(a => a.AtribuicaoId == Id).FirstOrDefault());
             }
         }
 

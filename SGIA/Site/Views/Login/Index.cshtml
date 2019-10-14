@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Você possui conta uma conta?";
 }
 
 @section scripts{
@@ -32,10 +32,6 @@
     </script>
 }
 
-<div class="logo">
-    <a href="javascript:void(0);">SGIA UNEMAT</a>
-</div>
-
 <div class="card">
     <div class="body">
 
@@ -43,7 +39,7 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="msg">@ViewData["Title"]</div>
+            <div class="msg"><label>@ViewData["Title"]</label></div>
 
             @Html.ValidationMessage("Erro", new { @id = "Error" })
 
@@ -71,16 +67,16 @@
                     <label for="rememberme">Lembre de Mim</label>
                 </div>
                 <div class="col-xs-4">
-                    <button class="btn btn-block bg-pink waves-effect" type="button" onclick="Validacao()">Entrar</button>
+                    <button class="btn btn-primary" type="button" onclick="Validacao()">Entrar</button>
                 </div>
             </div>
 
             <div class="row m-t-15 m-b--20">
                 <div class="col-xs-6">
-                    <a href="/Login/Cadastro">Cadastrar Agora!</a>
+                    <a href="/Login/Cadastro" style="color:#57a15f;">Cadastrar Agora!</a>
                 </div>
                 <div class="col-xs-6 align-right">
-                    <a href="/Login/RecuperarSenha">Esqueceu a Senha?</a>
+                    <a href="/Login/RecuperarSenha" style="color:#57a15f;">Esqueceu a Senha?</a>
                 </div>
             </div>
         }

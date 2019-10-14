@@ -48,12 +48,6 @@
                 @Html.ValidationMessageFor(a => a.CreditoAtividadeCampo)
             </div>
 
-            <div class="col-md-6">
-                @Html.LabelFor(a => a.Ementa)
-                @Html.TextAreaFor(a => a.Ementa, 6, 30, new { @class = "form-control", @readolny = "readolny" })
-                @Html.ValidationMessageFor(a => a.Ementa)
-            </div>
-
             <div class="col-md-2">
                 @Html.LabelFor(a => a.StatusId)
                 @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readolny = "readolny" })
@@ -62,8 +56,16 @@
 
             <div class="col-md-2">
                 @Html.LabelFor(a => a.DataCadastro)
-                @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readolny = "readolny" })
+                @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readolny = "readolny" })
                 @Html.ValidationMessageFor(a => a.DataCadastro)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                @Html.LabelFor(a => a.Ementa)
+                @Html.TextAreaFor(a => a.Ementa, 6, 30, new { @class = "form-control" })
+                @Html.ValidationMessageFor(a => a.Ementa)
             </div>
         </div>
     </div>

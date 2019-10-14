@@ -3807,7 +3807,7 @@ section.content {
 
     .card .header {
         color: white !important;
-        background-color: #57a15f;
+        background-color: #020d61;
         padding: 20px;
         position: relative;
         border-bottom: 1px solid rgba(204, 204, 204, 0.35);
@@ -6773,7 +6773,7 @@ section.content {
             -o-transition: 0.25s ease-in;
             -webkit-transition: 0.25s ease-in;
             transition: 0.25s ease-in;
-            border-bottom: 2px solid #1f91f3;
+            border-bottom: 2px solid #57a15f;
         }
 
         .input-group .form-line + .input-group-addon {
@@ -8060,7 +8060,7 @@ fieldset[disabled] .form-control {
 }
 
 .pagination li.active a {
-    background-color: #2196F3;
+    background-color: #57a15f;
 }
 
 .pagination li {
@@ -10455,7 +10455,7 @@ fieldset[disabled] .form-control {
 
 /* Login Page ================================== */
 .login-page {
-    background-color: #00BCD4;
+    background-color: #ecedee;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;

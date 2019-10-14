@@ -39,7 +39,7 @@ namespace Site
         {
             using (Contexto bd = new Contexto())
             {
-                string[] Periodos = new string[5];
+                string[] Periodos = new string[2];
 
                 Periodos[0] = "Matutino";
                 Periodos[1] = "Noturno";
@@ -271,7 +271,7 @@ namespace Site
                     Lista.Add(new SelectListItem
                     {
                         Text = item.Nome,
-                        Value = item.StatusId.ToString(),
+                        Value = item.DiciplinaId.ToString(),
                         Selected = (DiciplinaId != null && item.DiciplinaId == DiciplinaId)
                     });
                 }

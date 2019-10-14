@@ -14,7 +14,6 @@ namespace Site.Controllers
             using (Contexto bd = new Contexto())
             {
                 var Model = (from dp in bd.Diciplinas
-                             join tm in bd.Turmas on dp.TurmaId equals tm.TurmaId
                              join sta in bd.Status on dp.StatusId equals sta.StatusId
                              select new DiciplinaViewModel
                              {
@@ -28,7 +27,6 @@ namespace Site.Controllers
                                  Ementa = dp.Ementa,
                                  HoraSemanal = dp.HoraSemanal,
                                  Nome = dp.Nome,
-                                 Turma = tm.Nome,
                                  DataCadastro = dp.DataCadastro,
                                  Status = sta.Descricao,
                              }).ToList();
@@ -92,7 +90,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Diciplinas.Where(a => a.DiciplinaId == Id).FirstOrDefault());
             }
         }
 
@@ -144,7 +142,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.Diciplinas.Where(a => a.DiciplinaId == Id).FirstOrDefault());
             }
         }
 

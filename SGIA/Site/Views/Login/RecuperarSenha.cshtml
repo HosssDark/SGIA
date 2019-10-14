@@ -4,13 +4,10 @@
     ViewData["Title"] = "Recuperar Senha";
 }
 
-<div class="logo">
-    <a href="javascript:void(0);">SGIA</a>
-</div>
 <div class="card">
     <div class="body">
         <form id="forgot_password" method="POST">
-            <div class="msg">@ViewData["Title"]</div>
+            <div class="msg"><label>@ViewData["Title"]</label></div>
             <div class="msg">
                 Digite seu endereço de e-mail que você usou para se registrar. Enviaremos um e-mail com seu nome de usuário e um link para redefinir sua senha.
             </div>
@@ -23,10 +20,10 @@
                 </div>
             </div>
 
-            <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">Enviar Email</button>
+            <button class="btn btn-primary btn-block btn-lg waves-effect" type="submit">Enviar Email</button>
 
             <div class="row m-t-20 m-b--5 align-center">
-                <a href="/Login/Index">Login</a>
+                <a href="/Login/Index" style="color:#57a15f;">Você possui uma conta?</a>
             </div>
         </form>
     </div>

@@ -83,7 +83,7 @@ namespace Site.Controllers
         {
             using (Contexto bd = new Contexto())
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(bd.PlanosTrabalho.Where(a => a.PlanoTrabalhoId == Id).FirstOrDefault());
             }
         }
 
@@ -122,6 +122,14 @@ namespace Site.Controllers
                 }
 
                 return View(Model);
+            }
+        }
+
+        public IActionResult Detalhes(int Id)
+        {
+            using (Contexto bd = new Contexto())
+            {
+                return View(bd.PlanosTrabalho.Where(a => a.PlanoTrabalhoId == Id).FirstOrDefault());
             }
         }
 

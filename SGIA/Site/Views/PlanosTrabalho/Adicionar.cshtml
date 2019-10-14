@@ -15,7 +15,7 @@
             @Html.AntiForgeryToken()
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.DocenteId)
                     @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
                     @Html.ValidationMessageFor(a => a.DocenteId)
@@ -27,16 +27,22 @@
                     @Html.ValidationMessageFor(a => a.DiaSemana)
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.LabelFor(a => a.HoraInicio)
-                    @Html.TextBoxFor(a => a.HoraInicio, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.HoraInicio, "", new { @class = "form-control time" })
                     @Html.ValidationMessageFor(a => a.HoraInicio)
                 </div>
 
                 <div class="col-md-2">
                     @Html.LabelFor(a => a.HoraEncerramento)
-                    @Html.TextBoxFor(a => a.HoraEncerramento, "", new { @class = "form-control" })
+                    @Html.TextBoxFor(a => a.HoraEncerramento, "", new { @class = "form-control time" })
                     @Html.ValidationMessageFor(a => a.HoraEncerramento)
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(a => a.DescricaoAtividade)
+                    @Html.TextAreaFor(a => a.DescricaoAtividade, 6, 30, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.DescricaoAtividade)
                 </div>
 
             </div>

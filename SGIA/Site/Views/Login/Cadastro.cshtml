@@ -4,13 +4,10 @@
     ViewData["Title"] = "Novo Cadastro";
 }
 
-<div class="logo">
-    <a href="javascript:void(0);">SGIA</a>
-</div>
 <div class="card">
     <div class="body">
         <form id="sign_up" method="POST">
-            <div class="msg">@ViewData["Title"]</div>
+            <div class="msg"><label>@ViewData["Title"]</label></div>
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">person</i>
@@ -43,17 +40,12 @@
                     <input type="password" class="form-control" name="confirm" minlength="6" placeholder="Confirmar Senha" required>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="checkbox" name="terms" id="terms" class="filled-in chk-col-pink">
-                <label for="terms">Li e concordo com os <a href="javascript:void(0);">termos de uso</a>.</label>
-            </div>
 
-            <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">Inscrever-se</button>
+            <button class="btn btn-primary btn-block btn-lg waves-effect" type="submit" >Inscrever-se</button>
 
             <div class="m-t-25 m-b--5 align-center">
-                <a href="/Login">Você já possui cadastro?</a>
+                <a href="/Login" style="color:#57a15f;">Você já possui cadastro?</a>
             </div>
         </form>
     </div>
 </div>
-

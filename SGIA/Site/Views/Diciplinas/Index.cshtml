@@ -15,8 +15,8 @@
 }
 
 <div class="card">
-    <div class="header" style="background-color: #57a15f;">
-        <h2 style="color: white;">@ViewData["Title"]</h2>
+    <div class="header">
+        <h2>@ViewData["Title"]</h2>
     </div>
 
     <div class="body">
@@ -50,7 +50,6 @@
                                 <th>Descrição</th>
                                 <th>Carga Horária</th>
                                 <th>Hora Semanal</th>
-                                <th>Turma</th>
                                 <th>Status</th>
                                 <th>Data Cadastro</th>
                                 <th style="text-align: center;">Opções</th>
@@ -64,7 +63,6 @@
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.CargaHoraria</td>
                                     <td style="vertical-align: middle !important;">@item.HoraSemanal</td>
-                                    <td style="vertical-align: middle !important;">@item.Turma</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
                                     <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">

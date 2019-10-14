@@ -52,9 +52,9 @@
                 @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "readonly" })
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 @Html.LabelFor(a => a.DataCadastro)
-                @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
 
     <div class="footer-view">
         <div class="col-md-12">
-            <a href="/Livros/Index" class="btn btn-default fa-pull-right">Fechar</a>
+            <a href="/HorarioAulas/Index" class="btn btn-default fa-pull-right">Fechar</a>
         </div>
     </div>
 </div>
