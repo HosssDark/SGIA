@@ -20,6 +20,7 @@
                         CriarCookie("Nome", retorno.nome, 365);
                         CriarCookie("Email", retorno.email, 365);
                         CriarCookie("Tipo", retorno.tipo, 365);
+                        CriarCookie("UsuarioId", retorno.usuarioid, 365);
                         
                         window.location.href = '@Url.Action("Index", "Home")';
                     } else {

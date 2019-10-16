@@ -14,7 +14,12 @@
     $('.celular').mask('(99) 99999-9999', { 'placeholder': '(00)00000-0000' })
     $('.date').mask('99/99/9999', { 'placeholder': '__/__/____' })
     $('.datetime').mask('99/99/9999 99:99', { 'placeholder': '__/__/____ 00:00' })
-    $('.time').mask('99:99', { 'placeholder': '00:00' })
+    $('.time').mask('99:99', { 'placeholder': '00:00' });
+
+
+    var elemento = document.getElementById('usuario');
+
+    elemento.href = "/Usuario/Index?UsuarioId=" + ObterCookie('UsuarioId');
 });
 
 function Excluir(Url, Id) {
@@ -114,6 +119,7 @@ function LimparCookie() {
     CriarCookie("Nome", -1);
     CriarCookie("Email", -1);
     CriarCookie("Tipo", -1);
+    CriarCookie("UsuarioId", -1);
 }
 
 function UserLogado() {

@@ -26,7 +26,7 @@ namespace Site.Controllers
                     {
                         var Usuario = bd.Usuarios.Where(s => s.Email == Model.Email).FirstOrDefault();
 
-                        return Json(new { Result = "OK", nome = Usuario.Nome, email = Usuario.Email, tipo = Usuario.Tipo });
+                        return Json(new { Result = "OK", nome = Usuario.Nome, email = Usuario.Email, tipo = Usuario.Tipo, usuarioid = Usuario.UsuarioId });
                     }
                     else
                         return Json(new { Result = "Error", Message = "Senha Inválida!" });

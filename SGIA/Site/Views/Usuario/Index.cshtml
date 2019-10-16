@@ -1,4 +1,5 @@
-﻿
+﻿@model Usuario
+
 @{
     ViewData["Title"] = "Usuário";
 }
@@ -12,35 +13,12 @@
                     <img src="../../images/user-lg.jpg" alt="AdminBSB - Profile Image" />
                 </div>
                 <div class="content-area">
-                    <h3>Elias Batista</h3>
-                    <p>Desenvolvedor</p>
-                    <p>Administrador</p>
+                    <h3>@Model.Nome</h3>
+                    <p>@Model.Profissao</p>
+                    <p>@Model.Tipo</p>
                 </div>
             </div>
             <div class="profile-footer">
-                <ul>
-                    <li>
-                        <span>Seguidores</span>
-                        <span>1.234</span>
-                    </li>
-                    <li>
-                        <span>Seguindo</span>
-                        <span>1.201</span>
-                    </li>
-                    <li>
-                        <span>Amigos</span>
-                        <span>14.252</span>
-                    </li>
-                </ul>
-                <button class="btn btn-primary btn-lg waves-effect btn-block">Segue</button>
-            </div>
-        </div>
-
-        <div class="card card-about-me">
-            <div class="header" style="background-color:#020d61 !important;">
-                <h2>Sobre Mim</h2>
-            </div>
-            <div class="body">
                 <ul>
                     <li>
                         <div class="title">
@@ -48,14 +26,10 @@
                             Educação
                         </div>
                         <div class="content">
-                            Bacharel Ciência da Computação
+                            @Model.Educacao
                         </div>
                     </li>
                     <li>
-                        <div class="title">
-                            <i class="material-icons">location_on</i>
-                            Localização
-                        </div>
                         <div class="content">
                             Rondonopolis, Mato Grosso
                         </div>
@@ -77,12 +51,13 @@
                             Descrição
                         </div>
                         <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.
+                            @Model.Descricao
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
+
     </div>
 
     <div class="col-xs-12 col-sm-9">
@@ -90,130 +65,15 @@
             <div class="body">
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
                         <li role="presentation"><a href="#profile_settings" aria-controls="settings" role="tab" data-toggle="tab">Configuração de Perfil</a></li>
                         <li role="presentation"><a href="#change_password_settings" aria-controls="settings" role="tab" data-toggle="tab">Alterar Senha</a></li>
                     </ul>
 
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active" id="home">
-                            <div class="panel panel-default panel-post">
-                                <div class="panel-heading">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#">
-                                                <img src="../../images/user-lg.jpg" />
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">
-                                                <a href="#">Marc K. Hammond</a>
-                                            </h4>
-                                            Shared publicly - 26 Oct 2018
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="post">
-                                        <div class="post-heading">
-                                            <p>I am a very simple wall post. I am good at containing <a href="#">#small</a> bits of <a href="#">#information</a>. I require little more information to use effectively.</p>
-                                        </div>
-                                        <div class="post-content">
-                                            <img src="../../images/profile-post-image.jpg" class="img-responsive" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">thumb_up</i>
-                                                <span>12 Likes</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">comment</i>
-                                                <span>5 Comments</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">share</i>
-                                                <span>Share</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" placeholder="Type a comment" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default panel-post">
-                                <div class="panel-heading">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#">
-                                                <img src="../../images/user-lg.jpg" />
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">
-                                                <a href="#">Marc K. Hammond</a>
-                                            </h4>
-                                            Shared publicly - 01 Oct 2018
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="post">
-                                        <div class="post-heading">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                        </div>
-                                        <div class="post-content">
-                                            <iframe width="100%" height="360" src="https://www.youtube.com/embed/10r9ozshGVE" frameborder="0" allowfullscreen=""></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">thumb_up</i>
-                                                <span>125 Likes</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">comment</i>
-                                                <span>8 Comments</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="material-icons">share</i>
-                                                <span>Share</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" placeholder="Type a comment" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane fade in" id="profile_settings">
+                        <div role="tabpanel" class="tab-pane fade in active" id="profile_settings">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label for="NameSurname" class="col-sm-2 control-label">Name Surname</label>
+                                    <label for="NameSurname" class="col-sm-2 control-label">Nome Completo</label>
                                     <div class="col-sm-10">
                                         <div class="form-line">
                                             <input type="text" class="form-control" id="NameSurname" name="NameSurname" placeholder="Nome Completo" value="Elias Batista de Jesus Junior" required>

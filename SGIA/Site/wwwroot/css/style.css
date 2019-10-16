@@ -10238,7 +10238,7 @@ fieldset[disabled] .form-control {
     .sidebar .menu {
         position: relative;
         overflow-y: auto;
-        height: 90vh;
+        height: 72vh;
     }
 
         .sidebar .menu .list {

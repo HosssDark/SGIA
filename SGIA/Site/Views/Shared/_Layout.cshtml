@@ -9,8 +9,8 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+        <link href="~/css/Roboto.css" rel="stylesheet" />
+        <link href="~/css/font.css" rel="stylesheet" />
         <link href="~/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="~/plugins/node-waves/waves.css" rel="stylesheet" />
         <link href="~/plugins/animate-css/animate.css" rel="stylesheet" />
@@ -22,12 +22,6 @@
 
         <link href="~/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" />
         <link href="~/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 
@@ -53,15 +47,6 @@
 
             <div class="menu">
                 <div id="MenuLeft"></div>
-            </div>
-
-            <div class="legal">
-                <div class="copyright">
-                    &copy; 2019 <a href="" style="color: #020d61 !important;">Elias Batista</a>.
-                </div>
-                <div class="version">
-                    <b>Versão: </b> 1.0.0
-                </div>
             </div>
         </aside>
 

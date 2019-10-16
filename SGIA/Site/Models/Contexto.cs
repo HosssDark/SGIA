@@ -28,6 +28,7 @@ namespace Site.Models
         public DbSet<Status> Status { get; set; }
         public DbSet<Titulo> Titulos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<UsuarioImagem> UsuarioImagens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
