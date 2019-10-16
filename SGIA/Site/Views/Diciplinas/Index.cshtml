@@ -46,12 +46,10 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Descrição</th>
+                                <th>Diciplina</th>
                                 <th>Carga Horária</th>
                                 <th>Hora Semanal</th>
                                 <th>Status</th>
-                                <th>Data Cadastro</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -59,12 +57,10 @@
                             @foreach (var item in Model.OrderBy(a => a.DiciplinaId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.DiciplinaId</td>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.CargaHoraria</td>
                                     <td style="vertical-align: middle !important;">@item.HoraSemanal</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/Diciplinas/Detalhes?Id=@item.DiciplinaId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
                                         <a href="/Diciplinas/Alterar?Id=@item.DiciplinaId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>

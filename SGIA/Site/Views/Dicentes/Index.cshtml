@@ -46,7 +46,6 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Matricula</th>
                                 <th>Nome</th>
                                 <th>Telefone</th>
@@ -59,7 +58,6 @@
                             @foreach (var item in Model.OrderBy(a => a.DicenteId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.DicenteId</td>
                                     <td style="vertical-align: middle !important;">@item.Matricula</td>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.Telefone</td>

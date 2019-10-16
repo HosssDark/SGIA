@@ -46,10 +46,8 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Nome</th>
                                 <th>Status</th>
-                                <th>Data Cadastro</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -57,10 +55,8 @@
                             @foreach (var item in Model.OrderBy(a => a.EditoraId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.EditoraId</td>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/Editoras/Alterar?Id=@item.EditoraId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>
                                         <a href="#" class="btn btn-sm btn-danger Excluir" data-id="@item.EditoraId" data-url="/Editoras/Excluir?Id=@item.EditoraId"><i class="material-icons">clear</i></a>

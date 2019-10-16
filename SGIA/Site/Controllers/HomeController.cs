@@ -27,8 +27,8 @@ namespace Site.Controllers
                 {
                     ProjetoTotal = bd.Projetos.Where(a => a.StatusId == 1).ToList().Count,
                     TurmasTotal = bd.Turmas.ToList().Count,
-                    DocentesTotal = bd.Projetos.Where(a => a.StatusId == 1).ToList().Count,
-                    DicentesTotal = bd.Projetos.Where(a => a.StatusId == 1).ToList().Count
+                    DocentesTotal = bd.Docentes.Where(a => a.StatusId == 1).ToList().Count,
+                    DicentesTotal = bd.Dicentes.Where(a => a.StatusId == 1).ToList().Count
                 };
 
                 return View(Model);

@@ -46,14 +46,12 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Dia da Semana</th>
-                                <th>Diciplina Primeiro Hor.</th>
-                                <th>DiciplinaSegundo Hor.</th>
-                                <th>DiciplinaTerceiro Hor.</th>
-                                <th>DiciplinaQuarto Hor.</th>
+                                <th>Dic. Primeiro Hor.</th>
+                                <th>Dic. Segundo Hor.</th>
+                                <th>Dic. Terceiro Hor.</th>
+                                <th>Dic. Quarto Hor.</th>
                                 <th>Status</th>
-                                <th>Data Cadastro</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -61,14 +59,12 @@
                             @foreach (var item in Model.OrderBy(a => a.HorarioAulaId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.HorarioAulaId</td>
                                     <td style="vertical-align: middle !important;">@item.DiaSemana</td>
                                     <td style="vertical-align: middle !important;">@item.DiciplinaPrimeiro</td>
                                     <td style="vertical-align: middle !important;">@item.DiciplinaSegundo</td>
                                     <td style="vertical-align: middle !important;">@item.DiciplinaTerceiro</td>
                                     <td style="vertical-align: middle !important;">@item.DiciplinaQuarto</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/HorarioAulas/Detalhes?Id=@item.HorarioAulaId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
                                         <a href="/HorarioAulas/Alterar?Id=@item.HorarioAulaId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>

@@ -46,14 +46,12 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Tipo</th>
                                 <th>Nome</th>
                                 <th>Área de Atuação</th>
+                                <th>Tipo</th>
                                 <th>Título</th>
                                 <th>Status</th>
-                                <th>DataPosse</th>
-                                <th>Data Cadastro</th>
+                                <th>Posse</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -61,14 +59,12 @@
                             @foreach (var item in Model.OrderBy(a => a.DocenteId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.DocenteId</td>
-                                    <td style="vertical-align: middle !important;">@item.Tipo</td>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.AreaAtuacao</td>
+                                    <td style="vertical-align: middle !important;">@item.Tipo</td>
                                     <td style="vertical-align: middle !important;">@item.Titulo</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
                                     <td style="vertical-align: middle !important;">@item.DataPosse.ToString("dd/MM/yyyy")</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/Docentes/Detalhes?Id=@item.DocenteId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
                                         <a href="/Docentes/Alterar?Id=@item.DocenteId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>

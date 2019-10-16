@@ -46,13 +46,11 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Docente</th>
                                 <th>Dia da Semana</th>
                                 <th>Hora Inicio</th>
                                 <th>Hora Encerramento</th>
                                 <th>Status</th>
-                                <th>Data Cadastro</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -60,13 +58,11 @@
                             @foreach (var item in Model.OrderBy(a => a.PlanoTrabalhoId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.PlanoTrabalhoId</td>
                                     <td style="vertical-align: middle !important;">@item.Docente</td>
                                     <td style="vertical-align: middle !important;">@item.DiaSemana</td>
                                     <td style="vertical-align: middle !important;">@item.HoraInicio</td>
                                     <td style="vertical-align: middle !important;">@item.HoraEncerramento</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/PlanosTrabalho/Detalhes?Id=@item.PlanoTrabalhoId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
                                         <a href="/PlanosTrabalho/Alterar?Id=@item.PlanoTrabalhoId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>

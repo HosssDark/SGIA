@@ -15,11 +15,11 @@
                     <tr>
                         <th>ID</th>
                         <th>Descrição</th>
-                        <th>Docente Responsável</th>
+                        <th>Docente Resp.</th>
                         <th>Status</th>
-                        <th>Carga Horária</th>
-                        <th>Data Inicio</th>
-                        <th>Data Término</th>
+                        <th>Carga Hor.</th>
+                        <th>Inicio</th>
+                        <th>Término</th>
                         <th>Progresso</th>
                     </tr>
                 </thead>
@@ -32,8 +32,8 @@
                             <td>@item.Docente</td>
                             <td>@item.Status</td>
                             <td>@string.Format("{0} Hrs", item.CargaHoraria.ToString())</td>
-                            <td>@item.DataInicio.ToString("dd/MM/yyyy 00:00")</td>
-                            <td>@item.DataTermino.ToString("dd/MM/yyyy 00:00")</td>
+                            <td>@item.DataInicio.ToString("dd/MM/yyyy")</td>
+                            <td>@item.DataTermino.ToString("dd/MM/yyyy")</td>
                             <td>
                                 <div class="progress">
                                     <div class="progress-bar bg-green" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: @item.Progresso%"></div>

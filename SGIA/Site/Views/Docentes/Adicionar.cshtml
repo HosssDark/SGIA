@@ -33,7 +33,7 @@
                     @Html.ValidationMessageFor(a => a.EmailLattes)
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     @Html.LabelFor(a => a.AreaAtuacaoId)
                     @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(a => a.AreaAtuacaoId)

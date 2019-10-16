@@ -46,13 +46,11 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Diciplina</th>
                                 <th>Docente</th>
                                 <th>Turma</th>
                                 <th>Status</th>
-                                <th>Data Emissão</th>
-                                <th>Data Cadastro</th>
+                                <th>Emissão</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -60,13 +58,11 @@
                             @foreach (var item in Model.OrderBy(a => a.PlanoEnsinoId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.PlanoEnsinoId</td>
                                     <td style="vertical-align: middle !important;">@item.Diciplina</td>
                                     <td style="vertical-align: middle !important;">@item.Docente</td>
                                     <td style="vertical-align: middle !important;">@item.Turma</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
                                     <td style="vertical-align: middle !important;">@item.DataEmissao.ToString("dd/MM/yyyy")</td>
-                                    <td style="vertical-align: middle !important;">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
                                     <td style="text-align: center;">
                                         <a href="/PlanosEnsino/Detalhes?Id=@item.PlanoEnsinoId" class="btn btn-sm btn-primary"><i class="material-icons">search</i></a>
                                         <a href="/PlanosEnsino/Alterar?Id=@item.PlanoEnsinoId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>

@@ -46,13 +46,12 @@
                     <table class="table table-bordered table-striped table-hover js-table dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Nome</th>
                                 <th>Docente</th>
-                                <th>Carga Horária</th>
+                                <th>Carga Hor.</th>
                                 <th>Status</th>
-                                <th>Data Inicio</th>
-                                <th>Data Término</th>
+                                <th>Inicio</th>
+                                <th>Término</th>
                                 <th style="text-align: center;">Opções</th>
                             </tr>
                         </thead>
@@ -60,7 +59,6 @@
                             @foreach (var item in Model.OrderBy(a => a.ProjetoId))
                             {
                                 <tr>
-                                    <td style="vertical-align: middle !important;">@item.ProjetoId</td>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.Docente</td>
                                     <td style="vertical-align: middle !important;">@item.CargaHoraria</td>
