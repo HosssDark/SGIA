@@ -1,74 +1,77 @@
-﻿@model Dicente
+﻿@model Domain.Dicente
 
 @{
     ViewData["Title"] = "Dicentes - Alterar";
 }
 
-@using (Html.BeginForm("Alterar", "Dicentes", FormMethod.Post))
-{
+<div class="tab-pane active">
     <div class="card">
-        <div class="header">
-            <h2>@ViewData["Title"]</h2>
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
 
-        <div class="body">
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(a => a.DicenteId)
-            @Html.HiddenFor(a => a.DataCadastro)
+        @using (Html.BeginForm("Alterar", "Dicentes", FormMethod.Post))
+        {
 
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.Matricula)
-                    @Html.TextBoxFor(a => a.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
-                    @Html.ValidationMessageFor(a => a.Matricula)
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(a => a.DicenteId)
+                @Html.HiddenFor(a => a.DataCadastro)
+
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.Matricula)
+                        @Html.TextBoxFor(a => a.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Matricula)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Nome)
+                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Nome)
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.Nome)
-                    @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.Nome)
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Email)
+                        @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Email)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.Telefone)
+                        @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular" })
+                        @Html.ValidationMessageFor(a => a.Telefone)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.Celular)
+                        @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular" })
+                        @Html.ValidationMessageFor(a => a.Celular)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.StatusId)
+                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.StatusId)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.DataCadastro)
+                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="footer-view">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "Dicentes")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.Email)
-                    @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.Email)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.Telefone)
-                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular" })
-                    @Html.ValidationMessageFor(a => a.Telefone)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.Celular)
-                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular" })
-                    @Html.ValidationMessageFor(a => a.Celular)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.StatusId)
-                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.StatusId)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
-                </div>
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="footer-view">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
-                <a href="/Dicentes/Index" class="btn btn-default fa-pull-right">Fechar</a>
-            </div>
-        </div>
+        }
     </div>
-}
+</div>

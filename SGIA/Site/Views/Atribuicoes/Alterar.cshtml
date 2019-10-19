@@ -1,61 +1,63 @@
-﻿@model Atribuicao
+﻿@model Domain.Atribuicao
 
 @{
     ViewData["Title"] = "Atribuições - Alterar";
 }
 
-@using (Html.BeginForm("Alterar", "Atribuicoes", FormMethod.Post))
-{
+<div class="tab-pane active">
     <div class="card">
-        <div class="header">
-            <h2>@ViewData["Title"]</h2>
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
 
-        <div class="body">
+        @using (Html.BeginForm("Alterar", "Atribuicoes", FormMethod.Post))
+        {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(a => a.AtribuicaoId)
             @Html.HiddenFor(a => a.DataCadastro)
 
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.DiciplinaId)
-                    @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.DiciplinaId)
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.DiciplinaId)
+                        @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.DiciplinaId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.ProjetoId)
+                        @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.ProjetoId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.DocenteId)
+                        @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.DocenteId)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.StatusId)
+                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.StatusId)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.DataCadastro)
+                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    </div>
+
                 </div>
 
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.ProjetoId)
-                    @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.ProjetoId)
-                </div>
+                <br />
 
-                <div class="col-md-4">
-                    @Html.LabelFor(a => a.DocenteId)
-                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.DocenteId)
+                <div class="footer-view">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "Atribuicoes")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
                 </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.StatusId)
-                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.StatusId)
-                </div>
-
-                <div class="col-md-2">
-                    @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
-                </div>
-
             </div>
-        </div>
-
-        <hr />
-
-        <div class="footer-view">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
-                <a href="/Atribuicoes/Index" class="btn btn-default fa-pull-right">Fechar</a>
-            </div>
-        </div>
+        }
     </div>
-}
+</div>

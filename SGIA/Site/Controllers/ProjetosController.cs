@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+using Repository;
 
 namespace Site.Controllers
 {
     public class ProjetosController : Controller
     {
+        private IProjetoRepository _proRep = new ProjetoRepository();
+        private IDocenteRepository _docRep = new DocenteRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from pj in bd.Projetos
-                             join dc in bd.Docentes on pj.DocenteId equals dc.DocenteId
-                             join sta in bd.Status on pj.StatusId equals sta.StatusId
+                var Model = (from pj in _proRep.GetAll()
+                             join dc in _docRep.GetAll() on pj.DocenteId equals dc.DocenteId
+                             join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
                              select new ProjetoViewModel
                              {
                                  ProjetoId = pj.ProjetoId,
@@ -33,6 +36,11 @@ namespace Site.Controllers
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
+            }
         }
 
         public IActionResult Adicionar()
@@ -44,7 +52,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(Projeto Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -67,24 +75,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
-
-                    bd.Projetos.Add(Model);
-                    bd.SaveChanges();
+                    _proRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Projetos.Where(a => a.ProjetoId == Id).FirstOrDefault());
+                return View(_proRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -92,7 +106,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(Projeto Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -115,14 +129,17 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.Projetos.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
+                    _proRep.Attach(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
+            }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -130,19 +147,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.Projetos.Where(a => a.ProjetoId == Id).FirstOrDefault();
+                var Model = _proRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.Projetos.Remove(Model);
-                    bd.SaveChanges();
+                    _proRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

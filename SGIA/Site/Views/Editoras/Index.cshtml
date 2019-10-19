@@ -1,49 +1,56 @@
-﻿@model List<Site.ViewModels.EditoraViewModel>
+﻿@model List<Site.EditoraViewModel>
 
 @{
     ViewData["Title"] = "Editoras";
 }
 
-@section scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.js-table').DataTable({
-                responsive: true,
-            });
-        });
-    </script>
-}
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
 
-<div class="card">
-    <div class="header">
-        <h2>@ViewData["Title"]</h2>
-    </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Roll No.">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Department">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6">
+                            <div class="input-group">
+                                <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Admission Date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="body">
-
-        @Html.AntiForgeryToken()
-
-        <div class="row">
-            <div class="col-md-10">
-                <div class="row">
-
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-6">
+                            <a href="@Url.Action("Adicionar", "Atribuicoes")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <a class="btn btn-primary fa-pull-right"
-                   href="/Editoras/Adicionar">
-                    Adicionar
-                </a>
-            </div>
-        </div>
+            <br />
 
-        <br />
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table">
-                    <table class="table table-bordered table-striped table-hover js-table dataTable">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover js-basic-example dataTable table-striped table_custom border-style spacing5">
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -57,9 +64,21 @@
                                 <tr>
                                     <td style="vertical-align: middle !important;">@item.Nome</td>
                                     <td style="vertical-align: middle !important;">@item.Status</td>
+
                                     <td style="text-align: center;">
-                                        <a href="/Editoras/Alterar?Id=@item.EditoraId" class="btn btn-sm btn-primary"><i class="material-icons">mode_edit</i></a>
-                                        <a href="#" class="btn btn-sm btn-danger Excluir" data-id="@item.EditoraId" data-url="/Editoras/Excluir?Id=@item.EditoraId"><i class="material-icons">clear</i></a>
+
+                                        <a href="/Editoras/Alterar?Id=@item.EditoraId"
+                                           class="btn btn-icon btn-sm js-sweetalert"
+                                           title="Alterar">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </a>
+                                        <a href="#"
+                                           class="btn btn-icon btn-sm js-sweetalert Excluir"
+                                           title="Excluir"
+                                           data-id="@item.EditoraId"
+                                           data-url="/Editoras/Excluir?Id=">
+                                            <i class="fas fa-trash-alt text-danger"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -67,16 +86,14 @@
                     </table>
                 </div>
             </div>
+
+            <br />
+
+            <div class="footer-view">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    <hr />
-
-    <div class="footer">
-        <div class="col-md-12">
-            <a href="/Home" class="btn btn-default fa-pull-right">Fechar</a>
-        </div>
-    </div>
-
-    <br />
 </div>

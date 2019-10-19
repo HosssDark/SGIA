@@ -1,12 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Site.Models;
-using Site.ViewModels;
-using System.Linq;
+using Repository;
+using Site.libraries.Login;
+using Functions;
+using System;
 
 namespace Site.Controllers
 {
     public class LoginController : Controller
     {
+        private IUserRepository _RepositoryUser;
+        private IUserPasswordRepository _RepositoryUserPass;
+        private LoginUser _LoginUser;
+
+        public LoginController(IUserRepository IUserRepository, IUserPasswordRepository userPasswordRepository, LoginUser loginUser)
+        {
+            _RepositoryUser = IUserRepository;
+            _RepositoryUserPass = userPasswordRepository;
+            _LoginUser = loginUser;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -14,36 +26,155 @@ namespace Site.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Validacao(LoginViewModel Model)
+        public IActionResult Login(LoginViewModel Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var User = bd.Usuarios.Where(s => s.Email == Model.Email);
+                #region + Validacao
 
-                if (User.Any())
+                if (string.IsNullOrEmpty(Model.Email))
                 {
-                    if (User.Where(s => s.Senha == Model.Password).Any())
-                    {
-                        var Usuario = bd.Usuarios.Where(s => s.Email == Model.Email).FirstOrDefault();
-
-                        return Json(new { Result = "OK", nome = Usuario.Nome, email = Usuario.Email, tipo = Usuario.Tipo, usuarioid = Usuario.UsuarioId });
-                    }
-                    else
-                        return Json(new { Result = "Error", Message = "Senha Inválida!" });
+                    if (FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
                 else
-                    return Json(new { Result = "Error", Message = "Email Inválido!" });
+                    ModelState.AddModelError("Email", "Obrigatório");
+
+                if (string.IsNullOrEmpty(Model.Password))
+                    ModelState.AddModelError("Password", "Obrigatório");
+
+                #endregion
+
+                if (ModelState.IsValid)
+                {
+                    var model = _RepositoryUser.VerificationEmail(Model.Email);
+
+                    if (model != null)
+                    {
+                        var password = _RepositoryUserPass.VerificationPassword(Model.Password);
+
+                        if (password != null)
+                        {
+                            _LoginUser.SetUser(model);
+
+                            return new RedirectResult(Url.Action("DashBoard", "Home"));
+                        }
+                        else
+                        {
+                            ViewData["Error"] = "Senha Inválido!";
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ViewData["Error"] = "Email Inválido!";
+                        return View();
+                    }
+                }
+
+                return View("Index", Model);
+            }
+            catch (Exception erro)
+            {
+                ViewData["Error"] = "Erro Inesperado!";
+                return View("Index");
             }
         }
 
-        public IActionResult Cadastro()
+        public IActionResult Register()
         {
             return View();
         }
 
-        public IActionResult RecuperarSenha()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel Model)
+        {
+            try
+            {
+                #region + Validacao
+
+                if (string.IsNullOrEmpty(Model.Email))
+                {
+                    if (FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+                else
+                    ModelState.AddModelError("Email", "Obrigatório");
+
+                if (string.IsNullOrEmpty(Model.Password))
+                    ModelState.AddModelError("Password", "Obrigatório");
+
+                if (string.IsNullOrEmpty(Model.ConfirmPassword))
+                    ModelState.AddModelError("ConfirmPassword", "Obrigatório");
+
+                if (Model.Password == Model.ConfirmPassword)
+                    ModelState.AddModelError("ConfirmPassword", "Senha não ");
+
+                #endregion
+
+                if (ModelState.IsValid)
+                {
+
+
+                    return RedirectToAction("Index");
+                }
+
+                return View();
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Erro Inesperado!";
+                return View();
+            }
+        }
+
+        public IActionResult ToRecover()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToRecover(ToRecoverViewModel Model)
+        {
+            try
+            {
+                #region + Validacao
+
+                if (string.IsNullOrEmpty(Model.Email))
+                {
+                    if (FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+                else
+                    ModelState.AddModelError("Email", "Obrigatório");
+
+                #endregion
+
+                if (ModelState.IsValid)
+                {
+                    var model = _RepositoryUser.VerificationEmail(Model.Email);
+
+                    if (model != null)
+                    {
+
+                        return View();
+                    }
+                    else
+                    {
+                        ViewData["Error"] = "Email Inválido!";
+                        return View();
+                    }
+                }
+
+                return View(Model);
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Erro Inesperado!";
+                return View();
+            }
         }
     }
 }

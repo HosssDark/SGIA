@@ -7,8 +7,6 @@
     });
 
     RenderAction();
-    UserLogado();
-    TipoAcesso();
 
     $('.telefone').mask('(99) 99999-9999', { 'placeholder': '(  )' })
     $('.celular').mask('(99) 99999-9999', { 'placeholder': '(  )' })
@@ -16,10 +14,6 @@
     $('.datetime').mask('99/99/9999 99:99', { 'placeholder': '__/__/____ 00:00' })
     $('.time').mask('99:99', { 'placeholder': '00:00' });
 
-
-    var elemento = document.getElementById('usuario');
-
-    elemento.href = "/Usuario/Index?UsuarioId=" + ObterCookie('UsuarioId');
 });
 
 function Excluir(Url, Id) {
@@ -114,44 +108,3 @@ function VerificaCookie() {
         }
     }
 }
-
-function LimparCookie() {
-    CriarCookie("Nome", -1);
-    CriarCookie("Email", -1);
-    CriarCookie("Tipo", -1);
-    CriarCookie("UsuarioId", -1);
-}
-
-function UserLogado() {
-
-    var nome = document.getElementById('user_name');
-    var email = document.getElementById('user_email');
-
-    nome.innerText = ObterCookie("Nome");
-    nome.style.color = "white";
-
-    email.innerText = ObterCookie("Email");
-    email.style.color = "white"
-}
-
-function TipoAcesso() {
-
-    var Tipo = ObterCookie("Tipo");
-    var url = "/Home/MenuLeft";
-    var id = 2;
-
-    if (Tipo === "Administrador") {
-        id = 1;
-    }
-
-    $.ajax({
-        method: 'GET',
-        url: url,
-        data: { TipoAcesso: id },
-        dataType: 'html',
-        success: function (content) {
-            $('#MenuLeft').html(content);
-        }
-    });
-}
-

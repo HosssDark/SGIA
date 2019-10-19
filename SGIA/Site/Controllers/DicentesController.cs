@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
+using Repository;
 using System;
 using System.Linq;
 
@@ -9,12 +8,15 @@ namespace Site.Controllers
 {
     public class DicentesController : Controller
     {
+        private IDicenteRepository _dicRep = new DicenteRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from dc in bd.Dicentes
-                             join sta in bd.Status on dc.StatusId equals sta.StatusId
+                var Model = (from dc in _dicRep.GetAll()
+                             join sta in _staRep.GetAll() on dc.StatusId equals sta.StatusId
                              select new DicenteViewModel
                              {
                                  DicenteId = dc.DicenteId,
@@ -30,6 +32,11 @@ namespace Site.Controllers
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
+            }
         }
 
         public IActionResult Adicionar()
@@ -41,7 +48,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(Dicente Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -55,24 +62,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
-
-                    bd.Dicentes.Add(Model);
-                    bd.SaveChanges();
+                    _dicRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View(Model);
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Dicentes.Where(a => a.DicenteId == Id).FirstOrDefault());
+                return View(_dicRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -80,7 +93,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(Dicente Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -94,13 +107,17 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.Dicentes.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
+                    //Model.UsuarioAlterouId = 
+                    _dicRep.Attach(Model);
 
                     return RedirectToAction("Index");
                 }
 
+                return View(Model);
+            }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
                 return View(Model);
             }
         }
@@ -109,19 +126,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.Dicentes.Where(a => a.DicenteId == Id).FirstOrDefault();
+                var Model = _dicRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.Dicentes.Remove(Model);
-                    bd.SaveChanges();
+                    _dicRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

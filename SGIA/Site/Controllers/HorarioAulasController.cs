@@ -1,31 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+using Repository;
 
 namespace Site.Controllers
 {
     public class HorarioAulasController : Controller
     {
+        private IHorarioAulaRepository _horRep = new HorarioAulaRepository();
+        private IDiciplinaRepository _dicRep = new DiciplinaRepository();
+        private ITurmaRepository _turRep = new TurmaRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from hr in bd.HorarioAulas
-                             join dp1 in bd.Diciplinas on hr.DiciplinaPrimeiroId equals dp1.DiciplinaId into r1
+                var Diciplinas = _dicRep.GetAll();
+
+                var Model = (from hr in _horRep.GetAll()
+                             join dp1 in Diciplinas on hr.DiciplinaPrimeiroId equals dp1.DiciplinaId into r1
                              from dp1 in r1.DefaultIfEmpty()
-                             join dp2 in bd.Diciplinas on hr.DiciplinaSegundoId equals dp2.DiciplinaId into r2
+                             join dp2 in Diciplinas on hr.DiciplinaSegundoId equals dp2.DiciplinaId into r2
                              from dp2 in r2.DefaultIfEmpty()
-                             join dp3 in bd.Diciplinas on hr.DiciplinaTerceiroId equals dp3.DiciplinaId into r3
+                             join dp3 in Diciplinas on hr.DiciplinaTerceiroId equals dp3.DiciplinaId into r3
                              from dp3 in r3.DefaultIfEmpty()
-                             join dp4 in bd.Diciplinas on hr.DiciplinaQuartoId equals dp4.DiciplinaId into r4
+                             join dp4 in Diciplinas on hr.DiciplinaQuartoId equals dp4.DiciplinaId into r4
                              from dp4 in r4.DefaultIfEmpty()
-                             join tm in bd.Turmas on hr.HorarioAulaId equals tm.TurmaId into r5
+                             join tm in _turRep.GetAll() on hr.HorarioAulaId equals tm.TurmaId into r5
                              from tm in r5.DefaultIfEmpty()
-                             join sta in bd.Status on hr.StatusId equals sta.StatusId
+                             join sta in _staRep.GetAll() on hr.StatusId equals sta.StatusId
                              select new HorarioAulaViewModel
                              {
                                  HorarioAulaId = hr.HorarioAulaId,
@@ -48,6 +54,11 @@ namespace Site.Controllers
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
+            }
         }
 
         public IActionResult Adicionar()
@@ -59,7 +70,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(HorarioAula Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -88,24 +99,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
-
-                    bd.HorarioAulas.Add(Model);
-                    bd.SaveChanges();
+                    _horRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.HorarioAulas.Where(a => a.HorarioAulaId == Id).FirstOrDefault());
+                return View(_horRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -113,7 +130,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(HorarioAula Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -142,22 +159,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.HorarioAulas.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
-
+                    _horRep.Attach(Model);
+                    
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Detalhes(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.HorarioAulas.Where(a => a.HorarioAulaId == Id).FirstOrDefault());
+                return View(_horRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -165,19 +190,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.HorarioAulas.Where(a => a.HorarioAulaId == Id).FirstOrDefault();
+                var Model = _horRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.HorarioAulas.Remove(Model);
-                    bd.SaveChanges();
+                    _horRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

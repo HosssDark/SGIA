@@ -1,92 +1,93 @@
-﻿@model Docente
+﻿@model Domain.Docente
 
 @{
     ViewData["Title"] = "Docentes - Detalhes";
 }
 
-<div class="card">
-    <div class="header">
-        <h2>@ViewData["Title"]</h2>
-    </div>
-
-    <div class="body">
-
-        <div class="row">
-            <div class="col-md-4">
-                @Html.LabelFor(a => a.Nome)
-                @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-4">
-                @Html.LabelFor(a => a.Email)
-                @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-4">
-                @Html.LabelFor(a => a.EmailLattes)
-                @Html.TextBoxFor(a => a.EmailLattes, "", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-4">
-                @Html.LabelFor(a => a.AreaAtuacaoId)
-                @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.TituloId)
-                @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.DataNascimento)
-                @Html.TextBoxFor(a => a.DataNascimento, "", new { @class = "form-control date", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.Telefone)
-                @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.Celular)
-                @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.CargaHoraria)
-                @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.DataPosse)
-                @Html.TextBoxFor(a => a.DataPosse, "", new { @class = "form-control date", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.TipoId)
-                @Html.DropDownListFor(a => a.TipoId, HelperLista.TipoDocentes(), null, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.DataCadastro)
-                @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
-            </div>
-
-            <div class="col-md-2">
-                @Html.LabelFor(a => a.StatusId)
-                @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
 
-    </div>
+        <div class="card-body">
 
-    <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Nome)
+                    @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
 
-    <div class="footer-view">
-        <div class="col-md-12">
-            <a href="/Docentes/Index" class="btn btn-default fa-pull-right">Fechar</a>
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Email)
+                    @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.EmailLattes)
+                    @Html.TextBoxFor(a => a.EmailLattes, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.AreaAtuacaoId)
+                    @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.TituloId)
+                    @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataNascimento)
+                    @Html.TextBoxFor(a => a.DataNascimento, "", new { @class = "form-control date", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Telefone)
+                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Celular)
+                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.CargaHoraria)
+                    @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataPosse)
+                    @Html.TextBoxFor(a => a.DataPosse, "", new { @class = "form-control date", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.TipoId)
+                    @Html.DropDownListFor(a => a.TipoId, HelperLista.TipoDocentes(), null, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+            </div>
+            <br />
+
+            <div class="footer-view">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                    <a href="@Url.Action("Index", "Docentes")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

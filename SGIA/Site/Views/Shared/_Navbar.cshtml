@@ -1,268 +1,183 @@
-﻿<script>
-    $(function () {
-
-        
-
-
-
-    })
-
-</script>
-
-<div class="navbar-header">
-    <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-    <a href="javascript:void(0);" class="bars"></a>
-    <div id="user_name" class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
-    <div id="user_email" class="email"></div>
-</div>
-
-<div class="collapse navbar-collapse" id="navbar-collapse">
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="javascript:void(0);" class="js-search" data-close="true" title="Pesquisar"><i class="material-icons">search</i></a></li>
-
-        <!-- Notificacoes -->
-        <li class="dropdown" title="Notificações">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                <i class="material-icons">notifications</i>
-                <span class="label-count">7</span>
-            </a>
-            <ul class="dropdown-menu">
-                <li class="header">Notificações</li>
-                <li class="body">
-                    <ul class="menu">
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-light-green">
-                                    <i class="material-icons">person_add</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4>12 new members joined</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 14 mins ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-cyan">
-                                    <i class="material-icons">add_shopping_cart</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4>4 sales made</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 22 mins ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-red">
-                                    <i class="material-icons">delete_forever</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4><b>Nancy Doe</b> deleted account</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 3 hours ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-orange">
-                                    <i class="material-icons">mode_edit</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4><b>Nancy</b> changed name</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 2 hours ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-blue-grey">
-                                    <i class="material-icons">comment</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4><b>John</b> commented your post</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 4 hours ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-light-green">
-                                    <i class="material-icons">cached</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4><b>John</b> updated status</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> 3 hours ago
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="icon-circle bg-purple">
-                                    <i class="material-icons">settings</i>
-                                </div>
-                                <div class="menu-info">
-                                    <h4>Settings updated</h4>
-                                    <p>
-                                        <i class="material-icons">access_time</i> Yesterday
-                                    </p>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="footer">
-                    <a href="/Notificacoes">Ver todas as Notificações</a>
-                </li>
-            </ul>
-        </li>
-
-        <li><a id="usuario" href="" ><i class="material-icons" title="Usuário">person</i></a></li>
-        <li><a href="/Login" class="js-right-sidebar" onclick="LimparCookie()" data-close="true"><i class="material-icons" title="Sair">input</i></a></li>
-        <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true" title="Configuração"><i class="material-icons">more_vert</i></a></li>
-    </ul>
-</div>
-
-<aside id="rightsidebar" class="right-sidebar">
-    <ul class="nav nav-tabs tab-nav-right" role="tablist">
-        <li role="presentation" class=""><a href="#skins" data-toggle="tab" aria-expanded="true">Cores</a></li>
-        <li role="presentation" class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">Configuração</a></li>
-    </ul>
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade" id="skins">
-            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 268px;">
-                <ul class="demo-choose-skin" style="overflow: hidden; width: auto; height: 268px;">
-                    <li data-theme="red" class="active">
-                        <div class="red"></div>
-                        <span>Red</span>
-                    </li>
-                    <li data-theme="pink">
-                        <div class="pink"></div>
-                        <span>Pink</span>
-                    </li>
-                    <li data-theme="purple">
-                        <div class="purple"></div>
-                        <span>Purple</span>
-                    </li>
-                    <li data-theme="deep-purple">
-                        <div class="deep-purple"></div>
-                        <span>Deep Purple</span>
-                    </li>
-                    <li data-theme="indigo">
-                        <div class="indigo"></div>
-                        <span>Indigo</span>
-                    </li>
-                    <li data-theme="blue">
-                        <div class="blue"></div>
-                        <span>Blue</span>
-                    </li>
-                    <li data-theme="light-blue">
-                        <div class="light-blue"></div>
-                        <span>Light Blue</span>
-                    </li>
-                    <li data-theme="cyan">
-                        <div class="cyan"></div>
-                        <span>Cyan</span>
-                    </li>
-                    <li data-theme="teal">
-                        <div class="teal"></div>
-                        <span>Teal</span>
-                    </li>
-                    <li data-theme="green">
-                        <div class="green"></div>
-                        <span>Green</span>
-                    </li>
-                    <li data-theme="light-green">
-                        <div class="light-green"></div>
-                        <span>Light Green</span>
-                    </li>
-                    <li data-theme="lime">
-                        <div class="lime"></div>
-                        <span>Lime</span>
-                    </li>
-                    <li data-theme="yellow">
-                        <div class="yellow"></div>
-                        <span>Yellow</span>
-                    </li>
-                    <li data-theme="amber">
-                        <div class="amber"></div>
-                        <span>Amber</span>
-                    </li>
-                    <li data-theme="orange">
-                        <div class="orange"></div>
-                        <span>Orange</span>
-                    </li>
-                    <li data-theme="deep-orange">
-                        <div class="deep-orange"></div>
-                        <span>Deep Orange</span>
-                    </li>
-                    <li data-theme="brown">
-                        <div class="brown"></div>
-                        <span>Brown</span>
-                    </li>
-                    <li data-theme="grey">
-                        <div class="grey"></div>
-                        <span>Grey</span>
-                    </li>
-                    <li data-theme="blue-grey">
-                        <div class="blue-grey"></div>
-                        <span>Blue Grey</span>
-                    </li>
-                    <li data-theme="black">
-                        <div class="black"></div>
-                        <span>Black</span>
-                    </li>
-                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 6px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 0px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-            </div>
-        </div>
-
-        <div role="tabpanel" class="tab-pane fade active in" id="settings">
-            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 268px;">
-                <div class="demo-settings" style="overflow: hidden; width: auto; height: 268px;">
-                    <p>SYSTEM SETTINGS</p>
-                    <ul class="setting-list">
-                        <li>
-                            <span>Notifications</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Auto Updates</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                            </div>
-                        </li>
-                    </ul>
-                    <p>ACCOUNT SETTINGS</p>
-                    <ul class="setting-list">
-                        <li>
-                            <span>Offline</span>
-                            <div class="switch">
-                                <label><input type="checkbox"><span class="lever"></span></label>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Location Permission</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                            </div>
-                        </li>
-                    </ul>
-                </div><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 6px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 146.281px;"></div><div class="slimScrollRail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-            </div>
-        </div>
+﻿ <!-- Main navbar -->
+<div class="navbar navbar-expand-md navbar-dark bg-indigo navbar-static">
+    <div class="navbar-brand">
+        <a href="index.html" class="d-inline-block">
+            <img src="~/css/Layout/images/logo_light.png" alt="" />
+        </a>
     </div>
-</aside>
+
+    <div class="d-md-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+            <i class="icon-tree5"></i>
+        </button>
+        <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+            <i class="icon-paragraph-justify3"></i>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-mobile">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+                    <i class="icon-paragraph-justify3"></i>
+                </a>
+            </li>
+        </ul>
+
+        <span class="navbar-text ml-md-3">
+            <span class="badge badge-mark border-orange-300 mr-2"></span>
+            Morning, Victoria!
+        </span>
+
+        <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item dropdown">
+                <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-make-group mr-2"></i>
+                    Connect
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+                    <div class="dropdown-content-body p-2">
+                        <div class="row no-gutters">
+                            <div class="col-12 col-sm-4">
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-github4 icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Github</div>
+                                </a>
+
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-dropbox text-blue-400 icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Dropbox</div>
+                                </a>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-dribbble3 text-pink-400 icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Dribbble</div>
+                                </a>
+
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-google-drive text-success-400 icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Drive</div>
+                                </a>
+                            </div>
+
+                            <div class="col-12 col-sm-4">
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-twitter text-info-400 icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Twitter</div>
+                                </a>
+
+                                <a href="#" class="d-block text-default text-center ripple-dark rounded p-3">
+                                    <i class="icon-youtube text-danger icon-2x"></i>
+                                    <div class="font-size-sm font-weight-semibold text-uppercase mt-2">Youtube</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-pulse2 mr-2"></i>
+                    Activity
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+                    <div class="dropdown-content-header">
+                        <span class="font-size-sm line-height-sm text-uppercase font-weight-semibold">Latest activity</span>
+                        <a href="#" class="text-default"><i class="icon-search4 font-size-base"></i></a>
+                    </div>
+
+                    <div class="dropdown-content-body dropdown-scrollable">
+                        <ul class="media-list">
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-success-400 rounded-round btn-icon"><i class="icon-mention"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    <a href="#">Taylor Swift</a> mentioned you in a post "Angular JS. Tips and tricks"
+                                    <div class="font-size-sm text-muted mt-1">4 minutes ago</div>
+                                </div>
+                            </li>
+
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-pink-400 rounded-round btn-icon"><i class="icon-paperplane"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    Special offers have been sent to subscribed users by <a href="#">Donna Gordon</a>
+                                    <div class="font-size-sm text-muted mt-1">36 minutes ago</div>
+                                </div>
+                            </li>
+
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-blue rounded-round btn-icon"><i class="icon-plus3"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    <a href="#">Chris Arney</a> created a new <span class="font-weight-semibold">Design</span> branch in <span class="font-weight-semibold">Limitless</span> repository
+                                    <div class="font-size-sm text-muted mt-1">2 hours ago</div>
+                                </div>
+                            </li>
+
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-purple-300 rounded-round btn-icon"><i class="icon-truck"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    Shipping cost to the Netherlands has been reduced, database updated
+                                    <div class="font-size-sm text-muted mt-1">Feb 8, 11:30</div>
+                                </div>
+                            </li>
+
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-warning-400 rounded-round btn-icon"><i class="icon-comment"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    New review received on <a href="#">Server side integration</a> services
+                                    <div class="font-size-sm text-muted mt-1">Feb 2, 10:20</div>
+                                </div>
+                            </li>
+
+                            <li class="media">
+                                <div class="mr-3">
+                                    <a href="#" class="btn bg-teal-400 rounded-round btn-icon"><i class="icon-spinner11"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    <strong>January, 2018</strong> - 1320 new users, 3284 orders, $49,390 revenue
+                                    <div class="font-size-sm text-muted mt-1">Feb 1, 05:46</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown-content-footer bg-light">
+                        <a href="#" class="font-size-sm line-height-sm text-uppercase font-weight-semibold text-grey mr-auto">All activity</a>
+                        <div>
+                            <a href="#" class="text-grey" data-popup="tooltip" title="Clear list"><i class="icon-checkmark3"></i></a>
+                            <a href="#" class="text-grey ml-2" data-popup="tooltip" title="Settings"><i class="icon-gear"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="navbar-nav-link">
+                    <i class="icon-switch2"></i>
+                    <span class="d-md-none ml-2">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- /main navbar -->

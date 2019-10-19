@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
+using Repository;
 using System;
 using System.Linq;
 
@@ -9,15 +8,21 @@ namespace Site.Controllers
 {
     public class DocentesController : Controller
     {
+        private IDocenteRepository _docRep = new DocenteRepository();
+        private IAreaAtuacaoRepository _areRep = new AreaAtuacaoRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+        private ITituloRepository _titRep = new TituloRepository();
+        private ITipoDocenteRepository _tipRep = new TipoDocenteRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from dc in bd.Docentes
-                             join at in bd.AreasAtuacao on dc.AreaAtuacaoId equals at.AreaAtuacaoId
-                             join tl in bd.Titulos on dc.TituloId equals tl.TituloId
-                             join tp in bd.TiposDocente on dc.TipoId equals tp.TipoDocenteId
-                             join sta in bd.Status on dc.StatusId equals sta.StatusId
+                var Model = (from dc in _docRep.GetAll()
+                             join at in _areRep.GetAll() on dc.AreaAtuacaoId equals at.AreaAtuacaoId
+                             join tl in _titRep.GetAll() on dc.TituloId equals tl.TituloId
+                             join tp in _tipRep.GetAll() on dc.TipoId equals tp.TipoDocenteId
+                             join sta in _staRep.GetAll() on dc.StatusId equals sta.StatusId
                              select new DocenteViewModel
                              {
                                  DocenteId = dc.DocenteId,
@@ -42,6 +47,11 @@ namespace Site.Controllers
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
+            }
         }
 
         public IActionResult Adicionar()
@@ -53,7 +63,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(Docente Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -85,24 +95,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
-
-                    bd.Docentes.Add(Model);
-                    bd.SaveChanges();
+                    _docRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Docentes.Where(a => a.DocenteId == Id).FirstOrDefault());
+                return View(_docRep.GetById(Id));
+            }
+            catch (Exception erro)
+            {
+                ViewData["Error"] = erro.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -110,7 +126,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(Docente Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -142,22 +158,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.Docentes.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
+                    _docRep.Attach(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Detalhes(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Docentes.Where(a => a.DocenteId == Id).FirstOrDefault());
+                return View(_docRep.GetById(Id));
+            }
+            catch (Exception erro)
+            {
+                ViewData["Error"] = erro.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -165,19 +189,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.Docentes.Where(a => a.DocenteId == Id).FirstOrDefault();
+                var Model = _docRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.Docentes.Remove(Model);
-                    bd.SaveChanges();
+                    _docRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

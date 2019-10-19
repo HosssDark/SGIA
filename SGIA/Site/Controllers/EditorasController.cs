@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
+using Repository;
 using System;
 using System.Linq;
 
@@ -9,12 +8,15 @@ namespace Site.Controllers
 {
     public class EditorasController : Controller
     {
+        private IEditoraRepository _ediRep = new EditoraRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from ed in bd.Editoras
-                             join sta in bd.Status on ed.StatusId equals sta.StatusId
+                var Model = (from ed in _ediRep.GetAll()
+                             join sta in _staRep.GetAll() on ed.StatusId equals sta.StatusId
                              select new EditoraViewModel
                              {
                                  EditoraId = ed.EditoraId,
@@ -25,6 +27,11 @@ namespace Site.Controllers
                              }).ToList();
 
                 return View(Model);
+            }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
             }
         }
 
@@ -37,7 +44,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(Editora Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -51,21 +58,30 @@ namespace Site.Controllers
                     Model.DataCadastro = DateTime.Now;
                     Model.StatusId = 1;
 
-                    bd.Editoras.Add(Model);
-                    bd.SaveChanges();
+                    _ediRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Editoras.Where(a => a.EditoraId == Id).FirstOrDefault());
+                return View(_ediRep.GetById(Id));
+            }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -73,7 +89,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(Editora Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -84,14 +100,17 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.Editoras.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
+                    _ediRep.Attach(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
+            }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -99,19 +118,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.Editoras.Where(a => a.EditoraId == Id).FirstOrDefault();
+                var Model = _ediRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.Editoras.Remove(Model);
-                    bd.SaveChanges();
+                    _ediRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

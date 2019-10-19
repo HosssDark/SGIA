@@ -1,0 +1,50 @@
+﻿@model Domain.User
+
+@{
+    ViewData["Title"] = "Usuários - Adicionar";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        @using (Html.BeginForm("Adicionar", "Usuarios", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Nome)
+                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Nome)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Email)
+                        @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Email)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.TipoAcesso)
+                        @Html.DropDownListFor(a => a.TipoAcesso, HelperLista.Projetos(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.TipoAcesso)
+                    </div>
+
+                </div>
+
+                <br />
+
+                <div class="footer-view">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "Atribuicoes")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

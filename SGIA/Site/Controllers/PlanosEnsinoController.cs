@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.Models;
-using Site.ViewModels;
+using Repository;
 
 namespace Site.Controllers
 {
     public class PlanosEnsinoController : Controller
     {
+        private IPlanoEnsinoRepository _ensRep = new PlanoEnsinoRepository();
+        private IDiciplinaRepository _dicRep = new DiciplinaRepository();
+        private IDocenteRepository _docRep = new DocenteRepository();
+        private ITurmaRepository _turRep = new TurmaRepository();
+        private IStatusRepository _staRep = new StatusRepository();
+
         public IActionResult Index()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from pl in bd.PlanosEnsino
-                             join dp in bd.Diciplinas on pl.DiciplinaId equals dp.DiciplinaId
-                             join dc in bd.Docentes on pl.DocenteId equals dc.DocenteId
-                             join tm in bd.Turmas on pl.TurmaId equals tm.TurmaId
-                             join sta in bd.Status on pl.StatusId equals sta.StatusId
+                var Model = (from pl in _ensRep.GetAll()
+                             join dp in _dicRep.GetAll() on pl.DiciplinaId equals dp.DiciplinaId
+                             join dc in _docRep.GetAll() on pl.DocenteId equals dc.DocenteId
+                             join tm in _turRep.GetAll() on pl.TurmaId equals tm.TurmaId
+                             join sta in _staRep.GetAll() on pl.StatusId equals sta.StatusId
                              select new PlanoEnsinoViewModel
                              {
                                  PlanoEnsinoId = pl.PlanoEnsinoId,
@@ -46,6 +51,11 @@ namespace Site.Controllers
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return View();
+            }
         }
 
         public IActionResult Adicionar()
@@ -57,7 +67,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Adicionar(PlanoEnsino Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -101,24 +111,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
-
-                    bd.PlanosEnsino.Add(Model);
-                    bd.SaveChanges();
+                    _ensRep.Add(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Alterar(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(_ensRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -126,7 +142,7 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Alterar(PlanoEnsino Model)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
                 #region + Validacao
 
@@ -170,22 +186,30 @@ namespace Site.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    bd.PlanosEnsino.Attach(Model);
-                    bd.Entry(Model).State = EntityState.Modified;
-                    bd.SaveChanges();
+                    _ensRep.Attach(Model);
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
+            catch (Exception error)
+            {
+                ViewData["Error"] = error.Message;
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Detalhes(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                return View(bd.Livros.Where(a => a.LivroId == Id).FirstOrDefault());
+                return View(_ensRep.GetById(Id));
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -193,19 +217,22 @@ namespace Site.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Excluir(int Id)
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = bd.PlanosEnsino.Where(a => a.PlanoEnsinoId == Id).FirstOrDefault();
+                var Model = _ensRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    bd.PlanosEnsino.Remove(Model);
-                    bd.SaveChanges();
+                    _ensRep.Remove(Model);
 
                     return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+            }
+            catch (Exception error)
+            {
+                return Json(new { Result = "Erro", Message = error.Message });
             }
         }
     }

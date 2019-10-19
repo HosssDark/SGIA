@@ -1,14 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Site.Models;
-using Site.ViewModels;
+using Repository;
+using Site.libraries.Login;
 
 namespace Site.Controllers
 {
     public class HomeController : Controller
     {
+        private IUserRepository _RepositoryUser;
+        private LoginUser _LoginUser;
+
+        public HomeController(IUserRepository IUserRepository, LoginUser loginUser)
+        {
+            _RepositoryUser = IUserRepository;
+            _LoginUser = loginUser;
+        }
+
         public IActionResult Index()
         {
             return RedirectToAction("DashBoard");
@@ -21,27 +32,33 @@ namespace Site.Controllers
 
         public IActionResult DashCards()
         {
-            using (Contexto bd = new Contexto())
-            {
-                DashCardsViewModel Model = new DashCardsViewModel
-                {
-                    ProjetoTotal = bd.Projetos.Where(a => a.StatusId == 1).ToList().Count,
-                    TurmasTotal = bd.Turmas.ToList().Count,
-                    DocentesTotal = bd.Docentes.Where(a => a.StatusId == 1).ToList().Count,
-                    DicentesTotal = bd.Dicentes.Where(a => a.StatusId == 1).ToList().Count
-                };
+            IProjetoRepository _proRep = new ProjetoRepository();
+            ITurmaRepository _turRep = new TurmaRepository();
+            IDocenteRepository _docRep = new DocenteRepository();
+            IDicenteRepository _dicRep = new DicenteRepository();
 
-                return View(Model);
-            }
+            DashCardsViewModel Model = new DashCardsViewModel
+            {
+                ProjetoTotal = _proRep.Get(a => a.StatusId == 1).Count(),
+                TurmasTotal = _turRep.Get().Count(),
+                DocentesTotal = _docRep.Get(a => a.StatusId == 1).Count(),
+                DicentesTotal = _dicRep.Get(a => a.StatusId == 1).Count()
+            };
+
+            return View(Model);
         }
 
         public IActionResult DashProjetos()
         {
-            using (Contexto bd = new Contexto())
+            try
             {
-                var Model = (from pj in bd.Projetos
-                             join dc in bd.Docentes on pj.DocenteId equals dc.DocenteId
-                             join sta in bd.Status on pj.StatusId equals sta.StatusId
+                IProjetoRepository _proRep = new ProjetoRepository();
+                IDocenteRepository _docRep = new DocenteRepository();
+                IStatusRepository _staRep = new StatusRepository();
+                
+                var Model = (from pj in _proRep.GetAll()
+                             join dc in _docRep.GetAll() on pj.DocenteId equals dc.DocenteId
+                             join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
                              select new DashProjetosViewModel
                              {
                                  ProjetoId = pj.ProjetoId,
@@ -58,83 +75,106 @@ namespace Site.Controllers
 
                 return View(Model);
             }
-        }
-
-        public IActionResult DashTurmas()
-        {
-            using (Contexto bd = new Contexto())
+            catch (Exception)
             {
-                var Model = (from tm in bd.Turmas
-                             select new DashTurmaViewModel
-                             {
-                                 TurmaId = tm.TurmaId,
-                                 Descricao = tm.Nome
-                             }).ToList();
-
-                return View(Model);
+                throw;
             }
         }
 
-        public IActionResult DashDicentes()
-        {
-            using (Contexto bd = new Contexto())
-            {
-                var Model = (from dc in bd.Dicentes
-                             join sta in bd.Status on dc.StatusId equals sta.StatusId
-                             select new DicenteViewModel
-                             {
-                                 DicenteId = dc.DicenteId,
-                                 Matricula = dc.Matricula,
-                                 Nome = dc.Nome,
-                                 Email = dc.Email,
-                                 Telefone = dc.Telefone,
-                                 Celular = dc.Celular,
-                                 DataCadastro = dc.DataCadastro,
-                                 StatusId = dc.StatusId,
-                                 Status = sta.Descricao,
-                             }).ToList();
+        //public IActionResult DashTurmas()
+        //{
+        //    try
+        //    {
+        //        var Model = (from tm in bd.Turmas
+        //                     select new DashTurmaViewModel
+        //                     {
+        //                         TurmaId = tm.TurmaId,
+        //                         Descricao = tm.Nome
+        //                     }).ToList();
 
-                return View(Model);
+        //        return View(Model);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        //public IActionResult DashDicentes()
+        //{
+        //    try
+        //    {
+        //        var Model = (from dc in bd.Dicentes
+        //                     join sta in bd.Status on dc.StatusId equals sta.StatusId
+        //                     select new DicenteViewModel
+        //                     {
+        //                         DicenteId = dc.DicenteId,
+        //                         Matricula = dc.Matricula,
+        //                         Nome = dc.Nome,
+        //                         Email = dc.Email,
+        //                         Telefone = dc.Telefone,
+        //                         Celular = dc.Celular,
+        //                         DataCadastro = dc.DataCadastro,
+        //                         StatusId = dc.StatusId,
+        //                         Status = sta.Descricao,
+        //                     }).ToList();
+
+        //        return View(Model);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        //public IActionResult DashDocentes()
+        //{
+        //    try
+        //    {
+        //        var Model = (from dc in bd.Docentes
+        //                     join sta in bd.Status on dc.StatusId equals sta.StatusId
+        //                     select new DocenteViewModel
+        //                     {
+        //                         DocenteId = dc.DocenteId,
+        //                         AreaAtuacaoId = dc.AreaAtuacaoId,
+        //                         TipoId = dc.TipoId,
+        //                         TituloId = dc.TituloId,
+        //                         CargaHoraria = dc.CargaHoraria,
+        //                         Celular = dc.Celular,
+        //                         DataNascimento = dc.DataNascimento,
+        //                         DataPosse = dc.DataPosse,
+        //                         Email = dc.Email,
+        //                         EmailLattes = dc.EmailLattes,
+        //                         Nome = dc.Nome,
+        //                         Telefone = dc.Telefone,
+        //                         DataCadastro = dc.DataCadastro,
+        //                         StatusId = dc.StatusId,
+        //                         Status = sta.Descricao,
+        //                     }).ToList();
+
+        //        return View(Model);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public IActionResult LeftBar()
+        {
+            try
+            {
+                IMenuRepository _menRep = new MenuRepository();
+
+                return View(_menRep.GetAll().ToList());
             }
-        }
-
-        public IActionResult DashDocentes()
-        {
-            using (Contexto bd = new Contexto())
+            catch (Exception)
             {
-                var Model = (from dc in bd.Docentes
-                             join sta in bd.Status on dc.StatusId equals sta.StatusId
-                             select new DocenteViewModel
-                             {
-                                 DocenteId = dc.DocenteId,
-                                 AreaAtuacaoId = dc.AreaAtuacaoId,
-                                 TipoId = dc.TipoId,
-                                 TituloId = dc.TituloId,
-                                 CargaHoraria = dc.CargaHoraria,
-                                 Celular = dc.Celular,
-                                 DataNascimento = dc.DataNascimento,
-                                 DataPosse = dc.DataPosse,
-                                 Email = dc.Email,
-                                 EmailLattes = dc.EmailLattes,
-                                 Nome = dc.Nome,
-                                 Telefone = dc.Telefone,
-                                 DataCadastro = dc.DataCadastro,
-                                 StatusId = dc.StatusId,
-                                 Status = sta.Descricao,
-                             }).ToList();
 
-                return View(Model);
-            }
-        }
-
-        public IActionResult MenuLeft(int TipoAcesso)
-        {
-            using (Contexto bd = new Contexto())
-            {
-                if (TipoAcesso == 2)
-                    return View(bd.Menus.Where(a => a.Ativo == true && a.TipoAcesso == TipoAcesso).ToList());
-                else
-                    return View(bd.Menus.Where(a => a.Ativo == true).ToList());
+                throw;
             }
         }
 

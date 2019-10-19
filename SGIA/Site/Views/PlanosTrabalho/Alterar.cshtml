@@ -1,74 +1,77 @@
-﻿@model PlanoTrabalho
+﻿@model Domain.PlanoTrabalho
 
 @{
     ViewData["Title"] = "Planos de Trabalho - Alterar";
 }
 
-@using (Html.BeginForm("Alterar", "PlanosTrabalho", FormMethod.Post))
-{
+<div class="tab-pane active">
     <div class="card">
-        <div class="header">
-            <h2>@ViewData["Title"]</h2>
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
 
-        <div class="body">
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(a => a.PlanoTrabalhoId)
-            @Html.HiddenFor(a => a.DataCadastro)
+        @using (Html.BeginForm("Alterar", "PlanosTrabalho", FormMethod.Post))
+        {
+            <div class="card-body">
 
-            <div class="row">
-                <div class="col-md-6">
-                    @Html.LabelFor(a => a.DocenteId)
-                    @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                    @Html.ValidationMessageFor(a => a.DocenteId)
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(a => a.PlanoTrabalhoId)
+                @Html.HiddenFor(a => a.DataCadastro)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(a => a.DocenteId)
+                        @Html.DropDownListFor(a => a.DocenteId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.DocenteId)
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(a => a.DiaSemana)
+                        @Html.DropDownListFor(a => a.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.DiaSemana)
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(a => a.HoraInicio)
+                        @Html.TextBoxFor(a => a.HoraInicio, "", new { @class = "form-control time" })
+                        @Html.ValidationMessageFor(a => a.HoraInicio)
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(a => a.HoraEncerramento)
+                        @Html.TextBoxFor(a => a.HoraEncerramento, "", new { @class = "form-control time" })
+                        @Html.ValidationMessageFor(a => a.HoraEncerramento)
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(a => a.StatusId)
+                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.StatusId)
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(a => a.DataCadastro)
+                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                    @Html.LabelFor(a => a.DiaSemana)
-                    @Html.DropDownListFor(a => a.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.DiaSemana)
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(a => a.DescricaoAtividade)
+                        @Html.TextAreaFor(a => a.DescricaoAtividade, 6, 30, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.DescricaoAtividade)
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                    @Html.LabelFor(a => a.HoraInicio)
-                    @Html.TextBoxFor(a => a.HoraInicio, "", new { @class = "form-control time" })
-                    @Html.ValidationMessageFor(a => a.HoraInicio)
-                </div>
+                <br />
 
-                <div class="col-md-3">
-                    @Html.LabelFor(a => a.HoraEncerramento)
-                    @Html.TextBoxFor(a => a.HoraEncerramento, "", new { @class = "form-control time" })
-                    @Html.ValidationMessageFor(a => a.HoraEncerramento)
-                </div>
-
-                <div class="col-md-3">
-                    @Html.LabelFor(a => a.StatusId)
-                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.StatusId)
-                </div>
-
-                <div class="col-md-3">
-                    @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                <div class="footer-view">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "PlanosTrabalho")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    @Html.LabelFor(a => a.DescricaoAtividade)
-                    @Html.TextAreaFor(a => a.DescricaoAtividade, 6, 30, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(a => a.DescricaoAtividade)
-                </div>
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="footer-view">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
-                <a href="/PlanosTrabalho/Index" class="btn btn-default fa-pull-right">Fechar</a>
-            </div>
-        </div>
+        }
     </div>
-}
+</div>
