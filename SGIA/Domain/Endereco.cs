@@ -9,7 +9,7 @@ namespace Domain
         public int EnderecoId { get; set; }
 
         [Required]
-        public int MoradorId { get; set; }
+        public int UserId { get; set; }
 
         [Display(Name = "Bairro")]
         [Required]

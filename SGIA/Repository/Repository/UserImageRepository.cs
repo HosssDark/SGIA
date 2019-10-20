@@ -2,7 +2,7 @@
 
 namespace Repository
 {
-    public class UserImageRepository : RepositoryBase<UserImage>, IUserImageRepository
+    public class UserImageRepository: RepositoryBase<UserImage>, IUserImageRepository
     {
     }
 }

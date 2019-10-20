@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
-using Site.libraries.Login;
-using Site.libraries.Session;
 
 namespace Site
 {
@@ -62,6 +60,14 @@ namespace Site
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Login}/{action=Index}");
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
             });
 
             app.UseMvc(routes =>

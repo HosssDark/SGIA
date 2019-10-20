@@ -13,7 +13,6 @@ namespace Repository
         public DbSet<Dicente> Dicentes { get; set; }
         public DbSet<Diciplina> Diciplinas { get; set; }
         public DbSet<DiciplinaLivro> DiciplinaLivros { get; set; }
-        public DbSet<Docente> Docentes { get; set; }
         public DbSet<DocenteTurma> DocenteTurmas { get; set; }
         public DbSet<Editora> Editoras { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
@@ -30,8 +29,10 @@ namespace Repository
         public DbSet<Status> Status { get; set; }
         public DbSet<Titulo> Titulos { get; set; }
         public DbSet<User> Usuarios { get; set; }
-        public DbSet<UserImage> UsuarioImagens { get; set; }
+        public DbSet<ParamDirectory> ParamDirectory { get; set; }
         public DbSet<UserPassword> UsersPassword { get; set; }
+        public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<TipoAcesso> TiposAcesso { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,7 +53,6 @@ namespace Repository
             modelBuilder.ApplyConfiguration<Dicente>(new DicenteConfig());
             modelBuilder.ApplyConfiguration<Diciplina>(new DiciplinaConfig());
             modelBuilder.ApplyConfiguration<DiciplinaLivro>(new DiciplinaLivroConfig());
-            modelBuilder.ApplyConfiguration<Docente>(new DocenteConfig());
             modelBuilder.ApplyConfiguration<DocenteTurma>(new DocenteTurmaConfig());
             modelBuilder.ApplyConfiguration<Editora>(new EditoraConfig());
             modelBuilder.ApplyConfiguration<Endereco>(new EnderecoConfig());
@@ -67,8 +67,10 @@ namespace Repository
             modelBuilder.ApplyConfiguration<Status>(new StatusConfig());
             modelBuilder.ApplyConfiguration<Titulo>(new TituloConfig());
             modelBuilder.ApplyConfiguration<User>(new UserConfig());
-            modelBuilder.ApplyConfiguration<UserImage>(new UserImageConfig());
+            modelBuilder.ApplyConfiguration<ParamDirectory>(new ParamDirectoryConfig());
             modelBuilder.ApplyConfiguration<UserPassword>(new UserPasswordConfig());
+            modelBuilder.ApplyConfiguration<UserImage>(new UserImageConfig());
+            modelBuilder.ApplyConfiguration<TipoAcesso>(new TipoAcessoConfig());
 
             base.OnModelCreating(modelBuilder);
         }

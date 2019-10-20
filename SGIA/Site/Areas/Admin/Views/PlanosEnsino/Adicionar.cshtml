@@ -1,0 +1,106 @@
+﻿@model Domain.PlanoEnsino
+
+@{
+    ViewData["Title"] = "Planos de Ensino - Adicionar";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        @using (Html.BeginForm("Adicionar", "PlanosEnsino", FormMethod.Post))
+        {
+            <div class="card-body">
+
+                @Html.AntiForgeryToken()
+
+                <div class="row clearfix">
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.DiciplinaId)
+                        @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.DiciplinaId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.UserId)
+                        @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.UserId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.TurmaId)
+                        @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.TurmaId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.ObjetivoArea)
+                        @Html.TextBoxFor(a => a.ObjetivoArea, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.ObjetivoArea)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.ObjetivoGeral)
+                        @Html.TextBoxFor(a => a.ObjetivoGeral, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.ObjetivoGeral)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.EmentaId)
+                        @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.EmentaId)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.EspecificacaoConteudo)
+                        @Html.TextBoxFor(a => a.EspecificacaoConteudo, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.EspecificacaoConteudo)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.MetodologiaAvaliacao)
+                        @Html.TextBoxFor(a => a.MetodologiaAvaliacao, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.MetodologiaAvaliacao)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.TecnicaPedagogica)
+                        @Html.TextBoxFor(a => a.TecnicaPedagogica, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.TecnicaPedagogica)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.RecursoUtilizado)
+                        @Html.TextBoxFor(a => a.RecursoUtilizado, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.RecursoUtilizado)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.AtividadeTrabalhada)
+                        @Html.DropDownListFor(a => a.AtividadeTrabalhada, HelperLista.Editoras(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.AtividadeTrabalhada)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.DataEmissao)
+                        @Html.TextBoxFor(a => a.DataEmissao, "", new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(a => a.DataEmissao)
+                    </div>
+
+                </div>
+
+                <br />
+
+                <div class="row clearfix margin-top-40">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "PlanosEnsino")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -138,11 +138,11 @@ namespace Site
             return Lista;
         }
 
-        public static List<SelectListItem> Docentes(int? DocenteId = null, int StatusId = 1)
+        public static List<SelectListItem> Docentes(int? UserId = null)
         {
-            IDocenteRepository docRep = new DocenteRepository();
+            IUserRepository userRep = new UserRepository();
 
-            var Docentes = docRep.GetAll();
+            var Docentes = userRep.Get(a => a.TipoAcessoId == 2 && a.StatusId == 1);
 
             var Lista = new List<SelectListItem>();
 
@@ -152,7 +152,7 @@ namespace Site
                 {
                     Text = item.Nome,
                     Value = item.StatusId.ToString(),
-                    Selected = (DocenteId != null && item.DocenteId == StatusId)
+                    Selected = (UserId != null && item.UserId == UserId)
                 });
             }
 
@@ -237,6 +237,27 @@ namespace Site
                     Text = item.Descricao,
                     Value = item.TipoDocenteId.ToString(),
                     Selected = (TipoDocenteId != null && item.TipoDocenteId == TipoDocenteId)
+                });
+            }
+
+            return Lista.OrderBy(a => a.Text).ToList();
+        }
+
+        public static List<SelectListItem> TiposAcesso(int? TipoDocenteId = null)
+        {
+            ITipoAcessoRepository tipRep = new TipoAcessoRepository();
+
+            var Tipos = tipRep.GetAll();
+
+            var Lista = new List<SelectListItem>();
+
+            foreach (var item in Tipos)
+            {
+                Lista.Add(new SelectListItem
+                {
+                    Text = item.Descricao,
+                    Value = item.TipoAcessoId.ToString(),
+                    Selected = (TipoDocenteId != null && item.TipoAcessoId == TipoDocenteId)
                 });
             }
 

@@ -1,0 +1,100 @@
+﻿@model List<Site.PlanoTrabalhoViewModel>
+
+@{
+    ViewData["Title"] = "Planos de Trabalho";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row clearfix">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            @Html.Label("lbldocente", "Docente")
+                            @Html.TextBox("docente", "", new { @class = "form-control", @autofocus = "autofocus" })
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            @Html.Label("lblSemana", "Dia da Semana")
+                            @Html.DropDownList("Semana", HelperLista.DiaSemana(), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-6 bottom-margem">
+                            <a href="@Url.Action("Adicionar", "PlanosTrabalho")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row clearfix">
+                <div class="table-responsive">
+                    <table class="table table-hover js-basic-example dataTable table-striped table_custom border-style spacing5">
+                        <thead>
+                            <tr>
+                                <th>Docente</th>
+                                <th>Dia da Semana</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Encerramento</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderBy(a => a.PlanoTrabalhoId))
+                            {
+                                <tr>
+                                    <td style="vertical-align: middle !important;">@item.Docente</td>
+                                    <td style="vertical-align: middle !important;">@item.DiaSemana</td>
+                                    <td style="vertical-align: middle !important;">@item.HoraInicio</td>
+                                    <td style="vertical-align: middle !important;">@item.HoraEncerramento</td>
+                                    <td style="vertical-align: middle !important;">@item.Status</td>
+
+                                    <td style="text-align: center;">
+                                        <a href="@Url.Action("Detalhes", "PlanosTrabalho", new { Id = item.PlanoTrabalhoId})"
+                                           class="btn btn-icon btn-sm js-sweetalert"
+                                           title="Alterar">
+                                            <i class="fas fa-search text-primary"></i>
+                                        </a>
+
+                                        <a href="@Url.Action("Alterar", "PlanosTrabalho", new { Id = item.PlanoTrabalhoId})"
+                                           class="btn btn-icon btn-sm js-sweetalert"
+                                           title="Alterar">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </a>
+
+                                        <a href="#"
+                                           class="btn btn-icon btn-sm js-sweetalert Excluir"
+                                           title="Excluir"
+                                           data-id="@item.PlanoTrabalhoId"
+                                           data-url="/PlanosTrabalho/Excluir?Id=">
+                                            <i class="fas fa-trash-alt text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row clearfix margin-top-40">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

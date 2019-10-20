@@ -10,5 +10,9 @@ namespace Domain
 
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
+
+        public string Classe { get; set; }
+
+        public string Cor { get; set; }
     }
 }

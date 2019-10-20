@@ -1,0 +1,168 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Meu Perfil";
+}
+
+<script type="text/javascript">
+
+    //    m3Fardos: <input type="number" id="m3Fardos" /><br />
+    //m3OP: <input type="number" id="m3OP" /><br />
+    //<input type="button" id="btnVerifica" value="Verificar"  />
+
+    //<div id="div">
+    //    <img id="img" />
+    //</div>
+
+    function carregaImagem() {
+
+        document.getElementById("UserImage").src = "~/images/sem-imagem-avatar.png";
+    }
+
+</script>
+
+<div class="row">
+    <div class="col-xl-4 col-md-4">
+        <div class="card">
+            <div class="card-body w_user">
+                <div class="user_avtar">
+                    @if (Model.Image != null)
+                    {
+                        <img class="rounded-circle" src="@Url.Action("ToSeeImagem","Profile", new { Id = Model.User.UserId })" alt="">
+                    }
+                    else
+                    {
+                        <img class="rounded-circle" src="~/images/sem-imagem-avatar.png" alt="">
+                    }
+                </div>
+                <div class="wid-u-info">
+                    <h5>@Model.User.Nome</h5>
+                    <p class="text-muted m-b-0">119 Peepee Way, Hilo, HI, 96720</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Alterar Senha</h3>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("UploadImagem", "Profile", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(a => a.User.UserId)
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary">Gravar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Informações Básicas</h3>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Alterar", "Profile", FormMethod.Post))
+                {
+                    <div class="row clearfix">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(a => a.User.UserId)
+                        @Html.HiddenFor(a => a.User.DataCadastro)
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(a => a.User.Nome)
+                            @Html.TextBoxFor(a => a.User.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(a => a.User.Nome)
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(a => a.User.Email)
+                            @Html.TextBoxFor(a => a.User.Email, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(a => a.User.Email)
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(a => a.User.EmailLattes)
+                            @Html.TextBoxFor(a => a.User.EmailLattes, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(a => a.User.EmailLattes)
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(a => a.User.AreaAtuacaoId)
+                            @Html.DropDownListFor(a => a.User.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(a => a.User.AreaAtuacaoId)
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(a => a.User.TituloId)
+                            @Html.DropDownListFor(a => a.User.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(a => a.User.TituloId)
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(a => a.User.DataNascimento)
+                            @Html.TextBoxFor(a => a.User.DataNascimento, "", new { @class = "form-control date" })
+                            @Html.ValidationMessageFor(a => a.User.DataNascimento)
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(a => a.User.Telefone)
+                            @Html.TextBoxFor(a => a.User.Telefone, "", new { @class = "form-control celular" })
+                            @Html.ValidationMessageFor(a => a.User.Telefone)
+                        </div>
+
+                        <div class="col-md-3">
+                            @Html.LabelFor(a => a.User.Celular)
+                            @Html.TextBoxFor(a => a.User.Celular, "", new { @class = "form-control celular" })
+                            @Html.ValidationMessageFor(a => a.User.Celular)
+                        </div>
+                    </div>
+
+                    <div class="row clearfix margin-top-40">
+
+                        <div class="col-sm-3">
+                            <img id="UserImage" width="100" height="100"/>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <input type="file" name="Arquivo"  onclick="carregaImagem()" />
+                        </div>
+                    </div>
+
+                    <div class="row clearfix margin-top-40">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>

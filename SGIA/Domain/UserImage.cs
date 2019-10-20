@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Domain
+﻿namespace Domain
 {
     public class UserImage
     {
-        [Key]
-        public int ImagemId { get; set; }
-        public int UsuarioId { get; set; }
-        public string Path { get; set; }
-        public string PathVirtual { get; set; }
+        public int UserImageId { get; set; }
+        public int UserId { get; set; }
+        public string TipoAcesso { get; set; }
+        public string Name { get; set; }
+        public byte[] Dados { get; set; }
+        public string ContentType { get; set; }
     }
 }

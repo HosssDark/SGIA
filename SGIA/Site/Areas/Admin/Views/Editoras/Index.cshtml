@@ -1,0 +1,85 @@
+﻿@model List<Site.EditoraViewModel>
+
+@{
+    ViewData["Title"] = "Editoras";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row clearfix">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            @Html.Label("lblmateria", "Matéria")
+                            @Html.TextBox("materia", "", new { @class = "form-control", @autofocus = "autofocus" })
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            @Html.Label("lbldocente", "Docente")
+                            @Html.TextBox("docente", "", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-6 bottom-margem">
+                            <a href="@Url.Action("Adicionar", "Editoras")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="table-responsive">
+                    <table class="table table-hover js-basic-example dataTable table-striped table_custom border-style spacing5">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderBy(a => a.EditoraId))
+                            {
+                                <tr>
+                                    <td style="vertical-align: middle !important;">@item.Nome</td>
+                                    <td style="vertical-align: middle !important;">@item.Status</td>
+
+                                    <td style="text-align: center;">
+                                        
+                                        <a href="@Url.Action("Alterar", "Editoras", new { Id = item.EditoraId})"
+                                           class="btn btn-icon btn-sm js-sweetalert"
+                                           title="Alterar">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </a>
+
+                                        <a href="#"
+                                           class="btn btn-icon btn-sm js-sweetalert Excluir"
+                                           title="Excluir"
+                                           data-id="@item.EditoraId"
+                                           data-url="/Editoras/Excluir?Id=">
+                                            <i class="fas fa-trash-alt text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row clearfix margin-top-40">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

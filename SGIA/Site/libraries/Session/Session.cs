@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Site.libraries.Session
+namespace Site
 {
     public class Session
     {

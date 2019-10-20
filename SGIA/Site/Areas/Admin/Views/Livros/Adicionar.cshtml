@@ -1,0 +1,62 @@
+﻿@model Domain.Livro
+@{
+    ViewData["Title"] = "Livros - Adicionar";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        @using (Html.BeginForm("Adicionar", "Livros", FormMethod.Post))
+        {
+            <div class="card-body">
+
+                @Html.AntiForgeryToken()
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Titulo)
+                        @Html.TextBoxFor(a => a.Titulo, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Titulo)
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(a => a.Autor)
+                        @Html.TextBoxFor(a => a.Autor, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Autor)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.EditoraId)
+                        @Html.DropDownListFor(a => a.EditoraId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.EditoraId)
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.DataPublicacao)
+                        @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(a => a.DataPublicacao)
+                    </div>
+
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        @Html.LabelFor(a => a.AreaConhecimento)
+                        @Html.TextAreaFor(a => a.AreaConhecimento, 6, 30, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.AreaConhecimento)
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
+                        <a href="@Url.Action("Index", "Livros")" class="btn btn-default fa-pull-right">Fechar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

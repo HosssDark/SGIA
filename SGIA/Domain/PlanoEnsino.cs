@@ -19,7 +19,7 @@ namespace Domain
 
         [Display(Name = "Docente")]
         [Required]
-        public int DocenteId { get; set; }
+        public int UserId { get; set; }
 
         [Display(Name = "Turma")]
         [Required]

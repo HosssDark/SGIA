@@ -1,14 +1,14 @@
 ﻿using Domain;
 using Newtonsoft.Json;
 
-namespace Site.libraries.Login
+namespace Site
 {
     public class LoginUser
     {
         private string Key = "Login.User";
-        private Session.Session _Session;
+        private Session _Session;
 
-        public LoginUser(Session.Session session)
+        public LoginUser(Session session)
         {
             _Session = session;
         }

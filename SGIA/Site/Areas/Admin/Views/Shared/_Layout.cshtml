@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>SGIA UNEMAT</title>
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon">
+
+    <environment include="Development">
+        <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css" rel="stylesheet" />
+
+        <link href="~/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+        <link href="~/css/style.min.css" rel="stylesheet" />
+        <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+        <link href="~/css/style.custom.css" rel="stylesheet" />
+    </environment>
+</head>
+
+<body class="font-muli theme-cyan gradient">
+
+    <div class="page-loader-wrapper">
+        <div class="loader">
+        </div>
+    </div>
+
+    <div id="main_content">
+
+        @Html.Partial("~/Areas/Admin/Views/Shared/MainTop.cshtml")
+
+        @Html.Partial("~/Areas/Admin/Views/Shared/SettingPanel.cshtml")
+
+        @Html.Partial("~/Areas/Admin/Views/Shared/ThemePanel.cshtml")
+
+        @Html.Partial("~/Areas/Admin/Views/Shared/QuickMenu.cshtml")
+
+        <div class="RenderAction" id="LeftBar" data-url="/Admin/Home/LeftBar"></div>
+
+        <div class="page">
+            <div class="section-body" id="page_top">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <div class="left">
+                            @*<div class="input-group">
+                                <input type="text" class="form-control" placeholder="What you want to find">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="right">
+                            <div class="notification d-flex">
+                                <div class="dropdown d-flex">
+                                    <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-primary nav-unread"></span></a>
+                                    <div id="Notification"></div>
+                                </div>
+                                <div id="UserImage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-body mt-4">
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <environment include="Development">
+        <script src="~/bundles/lib.vendor.bundle.js"></script>
+        <script src="~/bundles/counterup.bundle.js"></script>
+        <script src="~/bundles/apexcharts.bundle.js"></script>
+        <script src="~/bundles/summernote.bundle.js"></script>
+
+        <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/bundles/dataTables.bundle.js"></script>
+        <script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+
+        <script src="~/js/core.js"></script>
+        <script src="~/js/page/dialogs.js"></script>
+        <script src="~/js/page/index.js"></script>
+        <script src="~/js/page/summernote.js"></script>
+        <script src="~/js/table/datatable.js"></script>
+        <script src="~/js/jquery-mask/jquery.mask.js"></script>
+        <script src="~/js/PluginsElias/Funcoes.js"></script>
+        <script src="~/js/PartialViews.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>

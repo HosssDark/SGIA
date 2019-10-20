@@ -1,0 +1,79 @@
+﻿@model Domain.Diciplina
+
+@{
+    ViewData["Title"] = "Diciplinas - Detalhes";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    @Html.LabelFor(a => a.Nome)
+                    @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.Nome)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.CargaHoraria)
+                    @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.CargaHoraria)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.HoraSemanal)
+                    @Html.TextBoxFor(a => a.HoraSemanal, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.HoraSemanal)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.CreditoEnsino)
+                    @Html.TextBoxFor(a => a.CreditoEnsino, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.CreditoEnsino)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.CreditoAtividadePratica)
+                    @Html.TextBoxFor(a => a.CreditoAtividadePratica, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.CreditoAtividadePratica)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.CreditoAtividadeCampo)
+                    @Html.TextBoxFor(a => a.CreditoAtividadeCampo, "", new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.CreditoAtividadeCampo)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.StatusId)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.DataCadastro)
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    @Html.LabelFor(a => a.Ementa)
+                    @Html.TextAreaFor(a => a.Ementa, 6, 30, new { @class = "form-control", @readolny = "readolny" })
+                    @Html.ValidationMessageFor(a => a.Ementa)
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "Diciplinas")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
