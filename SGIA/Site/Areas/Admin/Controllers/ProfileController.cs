@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Domain;
+using Functions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
@@ -10,6 +11,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class ProfileController : Controller
     {
         private IUserRepository _userRep = new UserRepository();
@@ -17,7 +19,8 @@ namespace Site.Areas.Admin.Controllers
         private ITituloRepository _titRep = new TituloRepository();
         private ITipoDocenteRepository _tipRep = new TipoDocenteRepository();
         private IStatusRepository _staRep = new StatusRepository();
-        private IUserImageRepository imgRep = new UserImageRepository();
+        private IUserImageRepository _imgRep = new UserImageRepository();
+        private ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
 
         private LoginUser _LoginUser;
 
@@ -31,7 +34,7 @@ namespace Site.Areas.Admin.Controllers
             try
             {
                 var User = _userRep.Get(a => a.UserId == _LoginUser.GetUser().UserId);
-                var Image = imgRep.Get(a => a.UserId == _LoginUser.GetUser().UserId);
+                var Image = _imgRep.Get(a => a.UserId == _LoginUser.GetUser().UserId);
 
                 var Model = (from use in User
                              join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
@@ -41,6 +44,7 @@ namespace Site.Areas.Admin.Controllers
                              join tp in _tipRep.GetAll() on use.TipoId equals tp.TipoDocenteId into r3
                              from tp in r3.DefaultIfEmpty()
                              join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
+                             join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId
                              join img in Image on use.UserId equals img.UserId into r4
                              from img in r4.DefaultIfEmpty()
                              where use.UserId == _LoginUser.GetUser().UserId
@@ -49,6 +53,7 @@ namespace Site.Areas.Admin.Controllers
                                  User = use,
                                  AreaAtuacao = at != null ? at.Descricao : "",
                                  Tipo = tp != null ? tp.Descricao : "",
+                                 TipoAcesso = ace.Descricao,
                                  Titulo = tl != null ? tl.Descricao : "",
                                  Status = sta.Descricao,
                                  Classe = sta.Classe,
@@ -65,89 +70,61 @@ namespace Site.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Alterar(int Id)
-        {
-            try
-            {
-                return View(_userRep.GetById(Id));
-            }
-            catch (Exception erro)
-            {
-                ViewData["Error"] = erro.Message;
-                return RedirectToAction("Index");
-            }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(DocenteViewModel Model, IList<IFormFile> Arquivo)
+        public IActionResult Alterar(UserViewModel Model, IFormFile Arquivo)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.User.AreaAtuacaoId == null && Model.User.AreaAtuacaoId == 0)
-                    ModelState.AddModelError("AreaAtuacao", "Obrigatório");
-
-                if (Model.User.TituloId == null && Model.User.TituloId == 0)
-                    ModelState.AddModelError("Titulo", "Obrigatório");
-
                 if (string.IsNullOrEmpty(Model.User.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.User.Email))
+                if (!string.IsNullOrEmpty(Model.User.Email))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.User.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+                else
                     ModelState.AddModelError("Email", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.User.EmailLattes))
-                    ModelState.AddModelError("EmailLattes", "Obrigatório");
-
-                if (Model.User.DataNascimento == null && Model.User.DataNascimento == DateTime.MinValue)
-                    ModelState.AddModelError("DataNascimento", "Obrigatório");
-
-                if (Model.User.CargaHoraria == null && Model.User.CargaHoraria >= 0)
-                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
-
-                if (Model.User.DataPosse == null && Model.User.DataPosse == DateTime.MinValue)
-                    ModelState.AddModelError("DataPosse", "Obrigatório");
+                if (!string.IsNullOrEmpty(Model.User.EmailLattes))
+                    if (!FunctionsValidate.ValidateEmail(Model.User.EmailLattes))
+                        ModelState.AddModelError("Email", "Email Inválido!");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    if (Arquivo.Count > 0)
-                        if (Arquivo.Count > 1)
+                    if (Arquivo != null)
+                    {
+                        IUserImageRepository imgRep = new UserImageRepository();
+
+                        IFormFile Imagem = Arquivo;
+
+                        if (Imagem != null || Imagem.ContentType.ToLower().StartsWith("image/"))
                         {
-                            IUserImageRepository imgRep = new UserImageRepository();
+                            MemoryStream ms = new MemoryStream();
+                            Imagem.OpenReadStream().CopyTo(ms);
 
-                            IFormFile Imagem = Arquivo.FirstOrDefault();
-
-                            if (Imagem != null || Imagem.ContentType.ToLower().StartsWith("image/"))
+                            UserImage Image = new UserImage()
                             {
-                                MemoryStream ms = new MemoryStream();
-                                Imagem.OpenReadStream().CopyTo(ms);
+                                UserId = 1,
+                                Name = Imagem.Name,
+                                Dados = ms.ToArray(),
+                                ContentType = Imagem.ContentType,
+                                TipoAcesso = ""
+                            };
 
-                                UserImage Image = new UserImage()
-                                {
-                                    UserId = 1,
-                                    Name = Imagem.Name,
-                                    Dados = ms.ToArray(),
-                                    ContentType = Imagem.ContentType,
-                                    TipoAcesso = ""
-                                };
-
-                                imgRep.Add(Image);
-                            }
+                            imgRep.Add(Image);
                         }
-                        else
-                        {
-                            ViewData["Error"] = "Só pode ser adicionado uma imagem!";
-                            return View(Model);
-                        }
+                    }
 
                     _userRep.Attach(Model.User);
 
                     ViewData["Success"] = "Registro gravado com sucesso";
-                    return View();
+                    return RedirectToAction("Index");
                 }
 
                 return View(Model);
@@ -161,7 +138,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AttachPassword(DocenteViewModel Model)
+        public IActionResult AttachPassword(UserViewModel Model)
         {
             try
             {
@@ -201,7 +178,7 @@ namespace Site.Areas.Admin.Controllers
         [HttpGet]
         public FileStreamResult ToSeeImagem(int Id)
         {
-            UserImage imagem = imgRep.GetById(Id);
+            UserImage imagem = _imgRep.GetById(Id);
 
             MemoryStream Ms = new MemoryStream(imagem.Dados);
 

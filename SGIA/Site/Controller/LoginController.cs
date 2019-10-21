@@ -75,6 +75,11 @@ namespace Site.Controllers
                                 return View("Index", Model);
                             }
                         }
+                        else
+                        {
+                            ViewData["Error"] = "Cadastro não foi confirmado";
+                            return View("Index", Model);
+                        }
                     }
                     else
                     {
@@ -85,7 +90,7 @@ namespace Site.Controllers
 
                 return View("Index", Model);
             }
-            catch (Exception erro)
+            catch (Exception)
             {
                 ViewData["Error"] = "Erro Inesperado!";
                 return View("Index");
@@ -119,7 +124,7 @@ namespace Site.Controllers
                 if (string.IsNullOrEmpty(Model.ConfirmPassword))
                     ModelState.AddModelError("ConfirmPassword", "Obrigatório");
 
-                if (Model.Password == Model.ConfirmPassword)
+                if (Model.Password != Model.ConfirmPassword)
                     ModelState.AddModelError("ConfirmPassword", "Senhas não conferem");
 
                 #endregion
@@ -147,21 +152,21 @@ namespace Site.Controllers
                         Guid = Guid.NewGuid().ToString(),
                         UserId = User.UserId
                     };
-                    
+
                     passRep.Add(Password);
 
                     #endregion
 
-                    //Email email = new Email
-                    //{
-                    //    ToEmail = Model.Email,
-                    //    Subject = "Sistema de Gerenciamento de Informação Acadêmica",
-                    //    Body = ""
-                    //};
+                    Email email = new Email
+                    {
+                        ToEmail = Model.Email,
+                        Subject = "Sistema de Gerenciamento de Informação Acadêmica",
+                        Body = ""
+                    };
 
-                    //string retorno = this.SubmitEmai(email);
+                    string retorno = this.SubmitEmai(email);
 
-                    //ViewData["Msg"] = retorno;
+                    ViewData["Success"] = retorno;
                     return RedirectToAction("Index");
                 }
 
@@ -264,30 +269,60 @@ namespace Site.Controllers
             }
         }
 
+        public IActionResult Exit()
+        {
+            try
+            {
+                _LoginUser.Exit();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                ViewData["Error"] = "Erro Inesperado!";
+                return View();
+            }
+        }
+
         public string SubmitEmai(Email Email)
         {
             try
             {
                 EmailSettings EmailSetting = new EmailSettings();
 
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(EmailSetting.UsernameEmail);
-                message.To.Add(Email.ToEmail);
-                message.Subject = Email.Subject;
-                message.Body = Email.Body;
-                message.IsBodyHtml = true;
-                message.Priority = MailPriority.High;
+                //MailMessage message = new MailMessage();
+                //message.From = new MailAddress(EmailSetting.UsernameEmail);
+                //message.To.Add(Email.ToEmail);
+                //message.Subject = Email.Subject;
+                //message.Body = Email.Body;
+                //message.IsBodyHtml = true;
+                //message.Priority = MailPriority.High;
 
-                using (SmtpClient smtp = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort))
-                {
-                    smtp.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
-                    smtp.EnableSsl = true;
-                    smtp.SendMailAsync(message);
-                }
+                //using (SmtpClient smtp = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort))
+                //{
+                //    smtp.UseDefaultCredentials = false;
+                //    smtp.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
+                //    smtp.EnableSsl = false;
+                //    smtp.Send(message);
+                //}
+                SmtpClient client = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort);
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
+
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(EmailSetting.FromEmail);
+
+
+                mailMessage.To.Add(Email.ToEmail);
+                mailMessage.Body = "Teste";
+                mailMessage.Subject = "Teste teste de email";
+                mailMessage.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.Send(mailMessage);
 
                 return "Email enviado com sucesso";
             }
-            catch (Exception)
+            catch (Exception erro)
             {
                 return "Erro Inesperado!";
             }

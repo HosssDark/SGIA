@@ -13,6 +13,11 @@ namespace Site
             _Session = session;
         }
 
+        public bool LoggedUser()
+        {
+            return _Session.Exist(Key);
+        }
+
         public void SetUser(User User)
         {
             string Value = JsonConvert.SerializeObject(User);

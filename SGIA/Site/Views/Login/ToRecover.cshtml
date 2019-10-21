@@ -2,17 +2,20 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
-    ViewData["Title"] = "Recuperar Senha";
+    ViewData["Title"] = "ESQUECEU A SENHA";
 }
 
-<div class="auth option2">
     <div class="auth_left">
         <div class="card">
             <div class="card-body">
                 <div class="text-center">
-                    <a class="header-brand" href="index.html"><i class="fa fa-graduation-cap brand-logo"></i></a>
-                    <div class="card-title">ESQUECEU A SENHA</div>
+                    <a href="http://www.aia.unemat.br" target="_blank"><img src="~/images/logo_unemat.gif" /></a>
                 </div>
+
+                <div class="text-center">
+                    <label style="color:#00214a;">@ViewData["Title"]</label>
+                </div>
+
                 <p class="text-muted">Digite seu endereço de e-mail e será enviado e-mail para você redefinir uma nova senha.</p>
 
                 @using (Html.BeginForm("RecuperarSenha", "Login", FormMethod.Post))
@@ -34,4 +37,3 @@
             </div>
         </div>
     </div>
-</div>

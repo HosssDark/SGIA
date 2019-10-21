@@ -8,6 +8,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class HorarioAulasController : Controller
     {
         private IHorarioAulaRepository _horRep = new HorarioAulaRepository();

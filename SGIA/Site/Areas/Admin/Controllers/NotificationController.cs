@@ -3,6 +3,7 @@
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class NotificationController : Controller
     {
         public IActionResult Index()

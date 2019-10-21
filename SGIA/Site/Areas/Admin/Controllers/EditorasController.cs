@@ -7,6 +7,7 @@ using System.Linq;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class EditorasController : Controller
     {
         private IEditoraRepository _ediRep = new EditoraRepository();

@@ -6,6 +6,7 @@ namespace Site
     {
         public User User { get; set; }
         public UserPassword Password { get; set; }
+        public Endereco Endereco { get; set; }
         public string PasswordConfirm { get; set; }
         public string AreaAtuacao { get; set; }
         public string Titulo { get; set; }

@@ -7,6 +7,7 @@ using System.Linq;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class PlanosTrabalhoController : Controller
     {
         private IPlanoTrabalhoRepository _traRep = new PlanoTrabalhoRepository();

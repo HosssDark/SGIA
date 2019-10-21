@@ -7,6 +7,7 @@ using System.Linq;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class LivrosController : Controller
     {
         private ILivroRepository _livRep = new LivroRepository();

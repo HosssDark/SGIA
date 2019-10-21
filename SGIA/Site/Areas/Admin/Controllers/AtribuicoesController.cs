@@ -8,6 +8,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class AtribuicoesController : Controller
     {
         private IAtribuicaoRepository _atrRep = new AtribuicaoRepository();

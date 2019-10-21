@@ -8,6 +8,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class PlanosEnsinoController : Controller
     {
         private IPlanoEnsinoRepository _ensRep = new PlanoEnsinoRepository();

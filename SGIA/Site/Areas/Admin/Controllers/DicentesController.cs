@@ -7,6 +7,7 @@ using System.Linq;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class DicentesController : Controller
     {
         private IDicenteRepository _dicRep = new DicenteRepository();

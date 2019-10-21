@@ -8,6 +8,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Logged]
     public class ProjetosController : Controller
     {
         private IProjetoRepository _proRep = new ProjetoRepository();
