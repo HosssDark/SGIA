@@ -19,6 +19,19 @@
         <link href="~/fontawesome/css/all.css" rel="stylesheet" />
         <link href="~/css/style.custom.css" rel="stylesheet" />
     </environment>
+
+    <environment names="Staging,Production">
+        <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/plugins/datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css" rel="stylesheet" />
+
+        <link href="~/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+        <link href="~/css/style.min.css" rel="stylesheet" />
+        <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+        <link href="~/css/style.custom.css" rel="stylesheet" />
+    </environment>
 </head>
 
 <body class="font-muli theme-cyan gradient">
@@ -46,11 +59,11 @@
                     <div class="page-header">
                         <div class="left">
                             @*<div class="input-group">
-                                <input type="text" class="form-control" placeholder="What you want to find">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button">Search</button>
-                                </div>
-                            </div>*@
+                                    <input type="text" class="form-control" placeholder="What you want to find">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button">Search</button>
+                                    </div>
+                                </div>*@
                         </div>
                         <div class="right">
                             <div class="notification d-flex">
@@ -75,6 +88,26 @@
     </div>
 
     <environment include="Development">
+        <script src="~/bundles/lib.vendor.bundle.js"></script>
+        <script src="~/bundles/counterup.bundle.js"></script>
+        <script src="~/bundles/apexcharts.bundle.js"></script>
+        <script src="~/bundles/summernote.bundle.js"></script>
+
+        <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/bundles/dataTables.bundle.js"></script>
+        <script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+
+        <script src="~/js/core.js"></script>
+        <script src="~/js/page/dialogs.js"></script>
+        <script src="~/js/page/index.js"></script>
+        <script src="~/js/page/summernote.js"></script>
+        <script src="~/js/table/datatable.js"></script>
+        <script src="~/js/jquery-mask/jquery.mask.js"></script>
+        <script src="~/js/PluginsElias/Funcoes.js"></script>
+        <script src="~/js/PartialViews.js"></script>
+    </environment>
+
+    <environment names="Staging,Production">
         <script src="~/bundles/lib.vendor.bundle.js"></script>
         <script src="~/bundles/counterup.bundle.js"></script>
         <script src="~/bundles/apexcharts.bundle.js"></script>
