@@ -7,31 +7,16 @@
     <title>SGIA UNEMAT</title>
     <link rel="icon" href="~/favicon.ico" type="image/x-icon">
 
-    <environment include="Development">
-        <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="~/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/plugins/datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/plugins/datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css" rel="stylesheet" />
 
-        <link href="~/plugins/summernote/dist/summernote.css" rel="stylesheet" />
-        <link href="~/css/style.min.css" rel="stylesheet" />
-        <link href="~/fontawesome/css/all.css" rel="stylesheet" />
-        <link href="~/css/style.custom.css" rel="stylesheet" />
-    </environment>
-
-    <environment names="Staging,Production">
-        <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css" rel="stylesheet" />
-        <link href="~/plugins/datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css" rel="stylesheet" />
-
-        <link href="~/plugins/summernote/dist/summernote.css" rel="stylesheet" />
-        <link href="~/css/style.min.css" rel="stylesheet" />
-        <link href="~/fontawesome/css/all.css" rel="stylesheet" />
-        <link href="~/css/style.custom.css" rel="stylesheet" />
-    </environment>
+    <link href="~/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+    <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="~/css/style.custom.css" rel="stylesheet" />
 </head>
 
 <body class="font-muli theme-cyan gradient">
@@ -57,14 +42,6 @@
             <div class="section-body" id="page_top">
                 <div class="container-fluid">
                     <div class="page-header">
-                        <div class="left">
-                            @*<div class="input-group">
-                                    <input type="text" class="form-control" placeholder="What you want to find">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">Search</button>
-                                    </div>
-                                </div>*@
-                        </div>
                         <div class="right">
                             <div class="notification d-flex">
                                 <div class="dropdown d-flex">
@@ -87,62 +64,23 @@
         </div>
     </div>
 
-    <environment include="Development">
-        <script src="~/bundles/lib.vendor.bundle.js"></script>
-        <script src="~/bundles/counterup.bundle.js"></script>
-        <script src="~/bundles/apexcharts.bundle.js"></script>
-        <script src="~/bundles/summernote.bundle.js"></script>
+    <script src="~/bundles/lib.vendor.bundle.js"></script>
+    <script src="~/bundles/counterup.bundle.js"></script>
+    <script src="~/bundles/apexcharts.bundle.js"></script>
+    <script src="~/bundles/summernote.bundle.js"></script>
 
-        <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-        <script src="~/bundles/dataTables.bundle.js"></script>
-        <script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/bundles/dataTables.bundle.js"></script>
+    <script src="~/plugins/sweetalert/sweetalert.min.js"></script>
 
-        <script src="~/js/core.js"></script>
-        <script src="~/js/page/dialogs.js"></script>
-        <script src="~/js/page/index.js"></script>
-        <script src="~/js/page/summernote.js"></script>
-        <script src="~/js/table/datatable.js"></script>
-        <script src="~/js/jquery-mask/jquery.mask.js"></script>
-        <script src="~/js/PluginsElias/Funcoes.js"></script>
-        <script src="~/js/PartialViews.js"></script>
-    </environment>
-
-    <environment names="Staging,Production">
-        <script src="~/bundles/lib.vendor.bundle.js"></script>
-        <script src="~/bundles/counterup.bundle.js"></script>
-        <script src="~/bundles/apexcharts.bundle.js"></script>
-        <script src="~/bundles/summernote.bundle.js"></script>
-
-        <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-        <script src="~/bundles/dataTables.bundle.js"></script>
-        <script src="~/plugins/sweetalert/sweetalert.min.js"></script>
-
-        <script src="~/js/core.js"></script>
-        <script src="~/js/page/dialogs.js"></script>
-        <script src="~/js/page/index.js"></script>
-        <script src="~/js/page/summernote.js"></script>
-        <script src="~/js/table/datatable.js"></script>
-        <script src="~/js/jquery-mask/jquery.mask.js"></script>
-        <script src="~/js/PluginsElias/Funcoes.js"></script>
-        <script src="~/js/PartialViews.js"></script>
-    </environment>
-
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    <script src="~/js/core.js"></script>
+    <script src="~/js/page/dialogs.js"></script>
+    <script src="~/js/page/index.js"></script>
+    <script src="~/js/page/summernote.js"></script>
+    <script src="~/js/table/datatable.js"></script>
+    <script src="~/js/jquery-mask/jquery.mask.js"></script>
+    <script src="~/js/PluginsElias/Funcoes.js"></script>
+    <script src="~/js/PartialViews.js"></script>
 
     @RenderSection("Scripts", required: false)
 
