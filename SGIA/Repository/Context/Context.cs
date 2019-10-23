@@ -33,6 +33,7 @@ namespace Repository
         public DbSet<UserPassword> UsersPassword { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
         public DbSet<TipoAcesso> TiposAcesso { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -71,6 +72,7 @@ namespace Repository
             modelBuilder.ApplyConfiguration<UserPassword>(new UserPasswordConfig());
             modelBuilder.ApplyConfiguration<UserImage>(new UserImageConfig());
             modelBuilder.ApplyConfiguration<TipoAcesso>(new TipoAcessoConfig());
+            modelBuilder.ApplyConfiguration<Log>(new LogConfig());
 
             base.OnModelCreating(modelBuilder);
         }

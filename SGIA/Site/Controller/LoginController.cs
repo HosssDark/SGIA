@@ -7,6 +7,7 @@ using System.Net;
 using Domain;
 using Site.Controllers.ViewModels;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Site.Controllers
 {
@@ -15,6 +16,8 @@ namespace Site.Controllers
         private IUserRepository _RepositoryUser;
         private IUserPasswordRepository _RepositoryUserPass;
         private LoginUser _LoginUser;
+        private ILogRepository _LogRep = new LogRepository();
+        private List<Log> Logs = new List<Log>();
 
         public LoginController(IUserRepository IUserRepository, IUserPasswordRepository userPasswordRepository, LoginUser loginUser)
         {
@@ -59,7 +62,8 @@ namespace Site.Controllers
 
                         var Password = passRep.GetById(model.UserId);
 
-                        if (Password.Guid == null)//Cadastro Confirmado
+                        //Cadastro Confirmado
+                        if (Password.Guid == null)
                         {
                             var password = _RepositoryUserPass.VerificationPassword(Model.Password);
 
@@ -71,27 +75,86 @@ namespace Site.Controllers
                             }
                             else
                             {
+                                #region + Log
+
+                                Logs.Add(new Log
+                                {
+                                    Description = string.Format("Erro: Email {0}, Senha Inválido {1}", Model.Email, Model.Password),
+                                    Origin = "Login",
+                                    UserChangeId = 1
+                                });
+
+                                #endregion
+
                                 ModelState.AddModelError("Password", "Senha Inválido");
                                 return View("Index", Model);
                             }
                         }
                         else
                         {
+                            #region + Log
+
+                            Logs.Add(new Log
+                            {
+                                Description = string.Format("Erro: Cadastro não foi confirmado Email {0}, Senha {1}, Guid {2}", Model.Email, Model.Password, Password.Guid),
+                                Origin = "Login",
+                                UserChangeId = 1
+                            });
+
+                            #endregion
+
                             ViewData["Error"] = "Cadastro não foi confirmado";
                             return View("Index", Model);
                         }
                     }
                     else
                     {
+                        #region + Log
+
+                        Logs.Add(new Log
+                        {
+                            Description = string.Format("Erro: Email Inválido {0}, Senha {1}", Model.Email, Model.Password),
+                            Origin = "Login",
+                            UserChangeId = 1
+                        });
+
+                        #endregion
+
                         ModelState.AddModelError("Email", "Email Inválido!");
                         return View("Index", Model);
                     }
                 }
 
+                #region + Log
+
+                Logs.Add(new Log
+                {
+                    Description = string.Format("Erro: Email Inválido {0}, Senha {1}", Model.Email, Model.Password),
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                _LogRep.AddAll(Logs);
+
+                #endregion
+
                 return View("Index", Model);
             }
             catch (Exception erro)
             {
+                #region + Log
+
+                Logs.Add(new Log
+                {
+                    Description = erro.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                _LogRep.AddAll(Logs);
+
+                #endregion
+
                 ViewData["Error"] = "Erro Inesperado!";
                 return View("Index");
             }
@@ -164,7 +227,7 @@ namespace Site.Controllers
                         Body = ""
                     };
 
-                    string retorno = this.SubmitEmai(email);
+                    string retorno = this.SubmitEmail(email);
 
                     ViewData["Success"] = retorno;
                     return RedirectToAction("Index");
@@ -215,7 +278,7 @@ namespace Site.Controllers
                             Body = ""
                         };
 
-                        string retorno = this.SubmitEmai(email);
+                        string retorno = this.SubmitEmail(email);
 
                         ViewData["Msg"] = retorno;
                         return View();
@@ -284,34 +347,18 @@ namespace Site.Controllers
             }
         }
 
-        public string SubmitEmai(Email Email)
+        public string SubmitEmail(Email Email)
         {
             try
             {
                 EmailSettings EmailSetting = new EmailSettings();
 
-                //MailMessage message = new MailMessage();
-                //message.From = new MailAddress(EmailSetting.UsernameEmail);
-                //message.To.Add(Email.ToEmail);
-                //message.Subject = Email.Subject;
-                //message.Body = Email.Body;
-                //message.IsBodyHtml = true;
-                //message.Priority = MailPriority.High;
-
-                //using (SmtpClient smtp = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort))
-                //{
-                //    smtp.UseDefaultCredentials = false;
-                //    smtp.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
-                //    smtp.EnableSsl = false;
-                //    smtp.Send(message);
-                //}
                 SmtpClient client = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort);
                 client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
 
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress(EmailSetting.FromEmail);
-
 
                 mailMessage.To.Add(Email.ToEmail);
                 mailMessage.Body = "Teste";
