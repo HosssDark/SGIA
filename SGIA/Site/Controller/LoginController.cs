@@ -90,7 +90,7 @@ namespace Site.Controllers
 
                 return View("Index", Model);
             }
-            catch (Exception)
+            catch (Exception erro)
             {
                 ViewData["Error"] = "Erro Inesperado!";
                 return View("Index");

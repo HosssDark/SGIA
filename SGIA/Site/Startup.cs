@@ -30,7 +30,10 @@ namespace Site
             });
 
             services.AddMemoryCache();
-            services.AddSession();
+            services.AddSession(option =>
+            {
+                option.Cookie.IsEssential = true;
+            });
 
             services.AddScoped<Session>();
             services.AddScoped<LoginUser>();

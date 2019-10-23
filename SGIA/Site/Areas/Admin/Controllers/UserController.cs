@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Functions;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
@@ -64,13 +65,20 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Email))
+                if (!string.IsNullOrEmpty(Model.Email))
                 {
-
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
                 else
                     ModelState.AddModelError("Email", "Obrigatório");
 
+                if (!string.IsNullOrEmpty(Model.EmailLattes))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+                
                 #endregion
 
                 if (ModelState.IsValid)
@@ -113,12 +121,19 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Email))
+                if (!string.IsNullOrEmpty(Model.Email))
                 {
-
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
                 else
                     ModelState.AddModelError("Email", "Obrigatório");
+
+                if (!string.IsNullOrEmpty(Model.EmailLattes))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
 
                 #endregion
 
