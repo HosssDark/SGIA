@@ -30,15 +30,17 @@ namespace Site
             });
 
             services.AddMemoryCache();
+   
+            services.AddScoped<Session>();
+            services.AddScoped<LoginUser>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                             .AddSessionStateTempDataProvider();
+
             services.AddSession(option =>
             {
                 option.Cookie.IsEssential = true;
             });
-
-            services.AddScoped<Session>();
-            services.AddScoped<LoginUser>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -54,6 +56,7 @@ namespace Site
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
