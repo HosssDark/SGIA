@@ -9,7 +9,7 @@ using Repository;
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Logged]
+    //[Logged]
     public class HomeController : Controller
     {
         private LoginUser _LoginUser;
@@ -44,6 +44,15 @@ namespace Site.Areas.Admin.Controllers
 
         public IActionResult DashBoard()
         {
+            ILogRepository _LogRep = new LogRepository();
+
+            _LogRep.Add(new Log
+            {
+                Description = string.Format("{0}", _LoginUser.GetUser()),
+                Origin = "DashBord",
+                UserChangeId = 1
+            });
+
             return View();
         }
 
@@ -70,7 +79,7 @@ namespace Site.Areas.Admin.Controllers
             {
                 IProjetoRepository _proRep = new ProjetoRepository();
                 IStatusRepository _staRep = new StatusRepository();
-                
+
                 var Model = (from pj in _proRep.GetAll()
                              join use in _userRep.GetAll() on pj.UserId equals use.UserId
                              join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
