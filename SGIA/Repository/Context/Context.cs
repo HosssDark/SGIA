@@ -13,7 +13,7 @@ namespace Repository
         public DbSet<Dicente> Dicentes { get; set; }
         public DbSet<Diciplina> Diciplinas { get; set; }
         public DbSet<DiciplinaLivro> DiciplinaLivros { get; set; }
-        public DbSet<DocenteTurma> DocenteTurmas { get; set; }
+        public DbSet<Semestre> Semestres { get; set; }
         public DbSet<Editora> Editoras { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<Estado> Estados { get; set; }
@@ -54,7 +54,7 @@ namespace Repository
             modelBuilder.ApplyConfiguration<Dicente>(new DicenteConfig());
             modelBuilder.ApplyConfiguration<Diciplina>(new DiciplinaConfig());
             modelBuilder.ApplyConfiguration<DiciplinaLivro>(new DiciplinaLivroConfig());
-            modelBuilder.ApplyConfiguration<DocenteTurma>(new DocenteTurmaConfig());
+            modelBuilder.ApplyConfiguration<Semestre>(new SemestreConfig());
             modelBuilder.ApplyConfiguration<Editora>(new EditoraConfig());
             modelBuilder.ApplyConfiguration<Endereco>(new EnderecoConfig());
             modelBuilder.ApplyConfiguration<HorarioAula>(new HorarioAulaConfig());

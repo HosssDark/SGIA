@@ -29,7 +29,7 @@ namespace Site
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
    
             services.AddScoped<Session>();
             services.AddScoped<LoginUser>();

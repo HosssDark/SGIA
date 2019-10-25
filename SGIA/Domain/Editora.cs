@@ -10,16 +10,16 @@ namespace Domain
         public int EditoraId { get; set; }
 
         [Display(Name = "Data de Cadastro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Nome")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Nome { get; set; }
 
         [Display(Name = "Status")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int StatusId { get; set; }
     }
 }

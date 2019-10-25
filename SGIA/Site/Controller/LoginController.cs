@@ -2,12 +2,10 @@
 using Repository;
 using Functions;
 using System;
-using System.Net.Mail;
-using System.Net;
 using Domain;
-using Site.Controllers.ViewModels;
 using System.Linq;
 using System.Collections.Generic;
+using static Site.Notification;
 
 namespace Site.Controllers
 {
@@ -220,24 +218,16 @@ namespace Site.Controllers
 
                     #endregion
 
-                    Email email = new Email
-                    {
-                        ToEmail = Model.Email,
-                        Subject = "Sistema de Gerenciamento de Informação Acadêmica",
-                        Body = ""
-                    };
 
-                    string retorno = this.SubmitEmail(email);
-
-                    ViewData["Success"] = retorno;
+                    ViewData["Success"] = "";
                     return RedirectToAction("Index");
                 }
 
                 return View();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                ViewData["Error"] = "Erro Inesperado!";
+                ViewData["Error"] = erro.Message;
                 return View();
             }
         }
@@ -271,16 +261,10 @@ namespace Site.Controllers
 
                     if (model != null)
                     {
-                        Email email = new Email
-                        {
-                            ToEmail = Model.Email,
-                            Subject = "Sistema de Gerenciamento de Informação Acadêmica",
-                            Body = ""
-                        };
 
-                        string retorno = this.SubmitEmail(email);
 
-                        ViewData["Msg"] = retorno;
+
+                        //ViewData["Msg"] = retorno;
                         return View();
                     }
                     else
@@ -347,32 +331,47 @@ namespace Site.Controllers
             }
         }
 
-        public string SubmitEmail(Email Email)
+        public IActionResult Notifications()
         {
-            try
+            List<NotificationList> List = new List<NotificationList>();
+
+            if (TempData.ContainsKey("Success"))
             {
-                EmailSettings EmailSetting = new EmailSettings();
+                TempData.TryGetValue("Success", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
 
-                SmtpClient client = new SmtpClient(EmailSetting.PrimaryDomain, EmailSetting.PrimaryPort);
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(EmailSetting.UsernameEmail, EmailSetting.UsernamePassword);
-
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(EmailSetting.FromEmail);
-
-                mailMessage.To.Add(Email.ToEmail);
-                mailMessage.Body = "Teste";
-                mailMessage.Subject = "Teste teste de email";
-                mailMessage.IsBodyHtml = true;
-                client.EnableSsl = true;
-                client.Send(mailMessage);
-
-                return "Email enviado com sucesso";
+                List.Add(new NotificationList
+                {
+                    Type = "Success",
+                    Message = Message
+                });
             }
-            catch (Exception erro)
+
+            if (TempData.ContainsKey("Error"))
             {
-                return "Erro Inesperado!";
+                TempData.TryGetValue("Error", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                List.Add(new NotificationList
+                {
+                    Type = "Error",
+                    Message = Message
+                });
             }
+
+            if (TempData.ContainsKey("Info"))
+            {
+                TempData.TryGetValue("Info", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                List.Add(new NotificationList
+                {
+                    Type = "Info",
+                    Message = Message
+                });
+            }
+
+            return Json(new { List = List });
         }
     }
 }

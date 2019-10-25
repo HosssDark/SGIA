@@ -10,43 +10,43 @@ namespace Domain
         public int DiciplinaId { get; set; }
 
         [Display(Name = "Data Cadastro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Nome")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Nome { get; set; }
 
         [Display(Name = "Carga Horária")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public double CargaHoraria { get; set; }
 
         [Display(Name = "Quant. Horas Semanais")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public double HoraSemanal { get; set; }
 
         [Display(Name = "Quant. Créditos Ensino")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int CreditoEnsino { get; set; }
 
         [Display(Name = "Crédito Atividade Prática")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int CreditoAtividadePratica { get; set; }
 
         [Display(Name = "Crédito Atividade Campo")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int CreditoAtividadeCampo { get; set; }
 
         [Display(Name = "Ementa")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public string Ementa { get; set; }
 
-        [Required]
         [Display(Name = "Turma")]
+        [Required(ErrorMessage = "Obrigatório")]
         public int TurmaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [Display(Name = "Status")]
         public int StatusId { get; set; }
     }

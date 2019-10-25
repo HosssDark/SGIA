@@ -10,14 +10,14 @@ namespace Domain
         public int DicenteId { get; set; }
 
         [Display(Name = "Data de Cadastro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Matricula")]
         public int Matricula { get; set; }
 
         [Display(Name = "Nome")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Nome { get; set; }
 

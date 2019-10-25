@@ -21,6 +21,7 @@ namespace Site.Areas.Admin.Controllers
         private IStatusRepository _staRep = new StatusRepository();
         private IUserImageRepository _imgRep = new UserImageRepository();
         private ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
+        private ILogRepository _LogRep = new LogRepository();
 
         private LoginUser _LoginUser;
 
@@ -63,9 +64,20 @@ namespace Site.Areas.Admin.Controllers
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao Obter Registro";
                 return View();
             }
         }
@@ -123,15 +135,26 @@ namespace Site.Areas.Admin.Controllers
 
                     _userRep.Attach(Model.User);
 
-                    ViewData["Success"] = "Registro gravado com sucesso";
+                    TempData["Success"] = "Registro alterado com sucesso";
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -161,16 +184,26 @@ namespace Site.Areas.Admin.Controllers
 
                     passRep.Attach(Model.Password);
 
-                    ViewData["Success"] = "Registro gravado com sucesso";
+                    TempData["Success"] = "Registro gravado com sucesso";
                     return View();
                 }
-
-                ViewData["Error"] = "";
+                                
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }

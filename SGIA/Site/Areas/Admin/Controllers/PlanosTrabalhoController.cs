@@ -13,6 +13,7 @@ namespace Site.Areas.Admin.Controllers
         private IPlanoTrabalhoRepository _traRep = new PlanoTrabalhoRepository();
         private IUserRepository _userRep = new UserRepository();
         private IStatusRepository _staRep = new StatusRepository();
+        private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
@@ -37,9 +38,20 @@ namespace Site.Areas.Admin.Controllers
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao Obter Registro";
                 return View();
             }
         }
@@ -77,15 +89,27 @@ namespace Site.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     _traRep.Add(Model);
+                    TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Gravar Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -96,9 +120,20 @@ namespace Site.Areas.Admin.Controllers
             {
                 return View(_traRep.GetById(Id));
             }
-            catch (Exception)
+            catch (Exception Error)
             {
-                ViewData["Error"] = "Registro não encontrado!";
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
                 return RedirectToAction("Index");
             }
         }
@@ -131,15 +166,27 @@ namespace Site.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     _traRep.Attach(Model);
+                    TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -150,9 +197,20 @@ namespace Site.Areas.Admin.Controllers
             {
                 return View(_traRep.GetById(Id));
             }
-            catch (Exception)
+            catch (Exception Error)
             {
-                ViewData["Error"] = "Registro não encontrado!";
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
                 return RedirectToAction("Index");
             }
         }
@@ -169,14 +227,26 @@ namespace Site.Areas.Admin.Controllers
                 {
                     _traRep.Remove(Model);
 
-                    return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
+                    return Json(new { Result = "OK", Message = "Registro excluido com sucesso" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                return Json(new { Result = "Erro", Message = error.Message });
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Excluir o Registro!";
+                return Json(new { Result = "Erro" });
             }
         }
     }

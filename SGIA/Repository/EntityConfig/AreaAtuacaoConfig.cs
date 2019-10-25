@@ -10,7 +10,7 @@ namespace Repository.EntityConfig
         {
             builder.HasKey(a => a.AreaAtuacaoId);
 
-            builder.ToTable("area_atuacao");
+            builder.ToTable("areas_atuacao");
         }
     }
 }

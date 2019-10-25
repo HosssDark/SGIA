@@ -1,33 +1,38 @@
-﻿using Domain;
-using Microsoft.AspNetCore.Mvc;
-using Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain;
+using Microsoft.AspNetCore.Mvc;
+using Repository;
+using Site.Areas.Admin.Controllers.ViewModels;
 
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Logged]
-    public class EditorasController : Controller
+    public class TurmasController : Controller
     {
-        private IEditoraRepository _ediRep = new EditoraRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private ITurmaRepository turmRep = new TurmaRepository();
 
         public IActionResult Index()
         {
             try
             {
-                var Model = (from ed in _ediRep.GetAll()
-                             join sta in _staRep.GetAll() on ed.StatusId equals sta.StatusId
-                             select new EditoraViewModel
+                IUserRepository useRep = new UserRepository();
+
+                var Turmas = turmRep.GetAll();
+
+                var Model = (from tur in Turmas
+                             join use in useRep.GetAll() on tur.CoordenadorId equals use.UserId
+                             select new TurmaViewModel
                              {
-                                 EditoraId = ed.EditoraId,
-                                 Nome = ed.Nome,
-                                 StatusId = ed.StatusId,
-                                 Status = sta.Descricao,
-                                 DataCadastro = ed.DataCadastro
+                                 TormaId = tur.TurmaId,
+                                 CoordenadorId = tur.CoordenadorId,
+                                 Coordenador = use,
+                                 Descricao = tur.Descricao,
+                                 Duracao = tur.Duracao,
+                                 Name = tur.Nome,
                              }).ToList();
 
                 return View(Model);
@@ -36,16 +41,16 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Log
 
-                _LogRep.Add(new Log
-                {
-                    Description = Error.Message,
-                    Origin = "Login",
-                    UserChangeId = 1
-                });
+                //_LogRep.Add(new Log
+                //{
+                //    Description = Error.Message,
+                //    Origin = "Login",
+                //    UserChangeId = 1
+                //});
 
                 #endregion
 
-                TempData["Error"] = "Erro ao Obter Registro";
+                ViewData["Error"] = "Erro ao Obter Registro";
                 return View();
             }
         }
@@ -57,7 +62,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Editora Model)
+        public IActionResult Adicionar(Turma Model)
         {
             try
             {
@@ -66,12 +71,29 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
+                if (Model.DataCadastro == null && Model.DataCadastro == DateTime.MinValue)
+                    ModelState.AddModelError("DataCadastro", "Obrigatório");
+
+                if (Model.QtdeSemestres == null && Model.QtdeSemestres == 0)
+                    ModelState.AddModelError("QtdeSemestres", "Obrigatório");
+
+                if (Model.QtdeSemestres <= 0)
+                    ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
+
+                if (Model.Duracao == null && Model.Duracao == 0)
+                    ModelState.AddModelError("Duracao", "Obrigatório");
+
+                if (Model.Duracao <= 0)
+                    ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
+
+                if (Model.CoordenadorId == null && Model.CoordenadorId == 0)
+                    ModelState.AddModelError("Coordenador", "Obrigatório");
+
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ediRep.Add(Model);
-
+                    turmRep.Add(Model);
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -93,7 +115,7 @@ namespace Site.Areas.Admin.Controllers
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Gravar Registro!";
-                return RedirectToAction("Index");
+                return View(Model);
             }
         }
 
@@ -101,7 +123,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_ediRep.GetById(Id));
+                return View(turmRep.GetById(Id));
             }
             catch (Exception Error)
             {
@@ -116,14 +138,14 @@ namespace Site.Areas.Admin.Controllers
 
                 #endregion
 
-                TempData["Error"] = "Registro não encontrado!";
+                ViewData["Error"] = "Registro não encontrado!";
                 return RedirectToAction("Index");
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Editora Model)
+        public IActionResult Alterar(Turma Model)
         {
             try
             {
@@ -132,11 +154,29 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
+                if (Model.DataCadastro == null && Model.DataCadastro == DateTime.MinValue)
+                    ModelState.AddModelError("DataCadastro", "Obrigatório");
+
+                if (Model.QtdeSemestres == null && Model.QtdeSemestres == 0)
+                    ModelState.AddModelError("QtdeSemestres", "Obrigatório");
+
+                if (Model.QtdeSemestres <= 0)
+                    ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
+
+                if (Model.Duracao == null && Model.Duracao == 0)
+                    ModelState.AddModelError("Duracao", "Obrigatório");
+
+                if (Model.Duracao <= 0)
+                    ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
+
+                if (Model.CoordenadorId == null && Model.CoordenadorId == 0)
+                    ModelState.AddModelError("Coordenador", "Obrigatório");
+
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ediRep.Attach(Model);
+                    turmRep.Attach(Model);
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -158,7 +198,7 @@ namespace Site.Areas.Admin.Controllers
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
-                return RedirectToAction("Index");
+                return View(Model);
             }
         }
 
@@ -168,16 +208,18 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _ediRep.GetById(Id);
+                var Model = turmRep.GetById(Id);
 
                 if (Model != null)
                 {
-                    _ediRep.Remove(Model);
+                    turmRep.Remove(Model);
 
-                    return Json(new { Result = "OK", Message = "Registro excluido com sucesso" });
+                    ViewData["Error"] = "Registro excluido com sucesso";
+                    return Json(new { Result = "OK" });
                 }
 
-                return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
+                TempData["Error"] = "Registro não encontrado!";
+                return Json(new { Result = "Erro" });
             }
             catch (Exception Error)
             {

@@ -5,11 +5,12 @@ using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using static Site.Notification;
 
 namespace Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Logged]
+    [Logged]
     public class HomeController : Controller
     {
         private LoginUser _LoginUser;
@@ -66,7 +67,7 @@ namespace Site.Areas.Admin.Controllers
             {
                 ProjetoTotal = _proRep.Get(a => a.StatusId == 1).Count(),
                 TurmasTotal = _turRep.Get().Count(),
-                DocentesTotal = _userRep.Get(a => a.StatusId == 1).Count(),
+                DocentesTotal = _userRep.Get(a => a.StatusId == 1 && a.TipoAcessoId == 2).Count(),
                 DicentesTotal = _dicRep.Get(a => a.StatusId == 1).Count()
             };
 
@@ -221,6 +222,49 @@ namespace Site.Areas.Admin.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Notifications()
+        {
+            List<NotificationList> List = new List<NotificationList>();
+
+            if (TempData.ContainsKey("Success"))
+            {
+                TempData.TryGetValue("Success", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                List.Add(new NotificationList
+                {
+                    Type = "Success",
+                    Message = Message
+                });
+            }
+
+            if (TempData.ContainsKey("Error"))
+            {
+                TempData.TryGetValue("Error", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                List.Add(new NotificationList
+                {
+                    Type = "Error",
+                    Message = Message
+                });
+            }
+
+            if (TempData.ContainsKey("Info"))
+            {
+                TempData.TryGetValue("Info", out object value);
+                var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                List.Add(new NotificationList
+                {
+                    Type = "Info",
+                    Message = Message
+                });
+            }
+
+            return Json(new { List = List });
         }
     }
 }

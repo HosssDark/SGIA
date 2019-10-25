@@ -10,19 +10,19 @@ namespace Domain
         public int DiciplinaLivroId { get; set; }
 
         [Display(Name = "Data de Cadastro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Diciplina")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int DiciplinaId { get; set; }
 
         [Display(Name = "Livro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int LivroId { get; set; }
 
         [Display(Name = "Status")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int StatusId { get; set; }
     }
 }

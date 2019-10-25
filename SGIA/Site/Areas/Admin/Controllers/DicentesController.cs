@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Functions;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
@@ -12,6 +13,7 @@ namespace Site.Areas.Admin.Controllers
     {
         private IDicenteRepository _dicRep = new DicenteRepository();
         private IStatusRepository _staRep = new StatusRepository();
+        private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
@@ -34,9 +36,20 @@ namespace Site.Areas.Admin.Controllers
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao Obter Registro";
                 return View();
             }
         }
@@ -60,20 +73,38 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
+                if (!string.IsNullOrEmpty(Model.Email))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+
                 #endregion
 
                 if (ModelState.IsValid)
                 {
                     _dicRep.Add(Model);
+                    TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Gravar Registro!";
                 return View(Model);
             }
         }
@@ -84,9 +115,20 @@ namespace Site.Areas.Admin.Controllers
             {
                 return View(_dicRep.GetById(Id));
             }
-            catch (Exception)
+            catch (Exception Error)
             {
-                ViewData["Error"] = "Registro não encontrado!";
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
                 return RedirectToAction("Index");
             }
         }
@@ -105,21 +147,38 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
+                if (!string.IsNullOrEmpty(Model.Email))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
+                }
+
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    //Model.UsuarioAlterouId = 
                     _dicRep.Attach(Model);
+                    TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
                 }
 
                 return View(Model);
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                ViewData["Error"] = error.Message;
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return View(Model);
             }
         }
@@ -136,14 +195,26 @@ namespace Site.Areas.Admin.Controllers
                 {
                     _dicRep.Remove(Model);
 
-                    return Json(new { Result = "OK", Message = "Registro excluido com sucesso!" });
+                    return Json(new { Result = "OK", Message = "Registro excluido com sucesso" });
                 }
 
                 return Json(new { Result = "Erro", Message = "Registro não encontrado!" });
             }
-            catch (Exception error)
+            catch (Exception Error)
             {
-                return Json(new { Result = "Erro", Message = error.Message });
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Excluir o Registro!";
+                return Json(new { Result = "Erro" });
             }
         }
     }

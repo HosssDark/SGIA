@@ -23,25 +23,25 @@
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.DiciplinaId)
                                 @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                                @Html.ValidationMessageFor(a => a.DiciplinaId)
+                                @Html.ValidationMessage("Dicip")
                             </div>
 
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.ProjetoId)
                                 @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.ProjetoId)
+                                @Html.ValidationMessage("Projet")
                             </div>
 
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.UserId)
                                 @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.UserId)
+                                @Html.ValidationMessage("Docente")
                             </div>
 
                             <div class="col-md-2">
                                 @Html.LabelFor(a => a.StatusId)
                                 @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.StatusId)
+                                @Html.ValidationMessage("Status")
                             </div>
 
                             <div class="col-md-2">

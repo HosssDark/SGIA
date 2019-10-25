@@ -9,6 +9,7 @@ namespace Repository
         public override Turma Add(Turma Entity)
         {
             Entity.DataCadastro = DateTime.Now;
+            Entity.StatusId = 1;
 
             return base.Add(Entity);
         }
@@ -18,6 +19,7 @@ namespace Repository
             foreach (var item in List)
             {
                 item.DataCadastro = DateTime.Now;
+                item.StatusId = 1;
             }
 
             return base.AddAll(List);

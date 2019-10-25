@@ -10,33 +10,33 @@ namespace Domain
         public int LivroId { get; set; }
 
         [Display(Name = "Data de Cadastro")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Título")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Titulo { get; set; }
 
         [Display(Name = "Autor")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Autor { get; set; }
 
         [Display(Name = "Editora")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int EditoraId { get; set; }
 
         [Display(Name = "Data Publicação")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public DateTime DataPublicacao { get; set; }
 
         [Display(Name = "Area de Conhecimento")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public string AreaConhecimento { get; set; }
 
         [Display(Name = "Status")]
-        [Required]
+        [Required(ErrorMessage = "Obrigatório")]
         public int StatusId { get; set; }
     }
 }

@@ -19,6 +19,10 @@ namespace Domain
         [Display(Name = "Titulo")]
         public int? TituloId { get; set; }
 
+        [Display(Name = "Cargo")]
+        [Required]
+        public int CargoId { get; set; }
+
         [Display(Name = "Nome")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Nome { get; set; }
@@ -34,6 +38,14 @@ namespace Domain
 
         [Display(Name = "Data Nascimento")]
         public DateTime? DataNascimento { get; set; }
+
+        [Display(Name = "CPF")]
+        [MaxLength(11, ErrorMessage = "Máximo de 11 caracteres")]
+        public string Cpf { get; set; }
+
+        [Display(Name = "RG")]
+        [MaxLength(8, ErrorMessage = "Máximo de 8 caracteres")]
+        public string Rg { get; set; }
 
         [Display(Name = "Telefone")]
         [MaxLength(15, ErrorMessage = "Máximo de 15 caracteres")]
