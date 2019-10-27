@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public class Endereco
+    public class Address
     {
         [Key]
         [Display(Name = "ID")]
@@ -38,9 +38,5 @@ namespace Domain
         [Display(Name = "Município")]
         [Required(ErrorMessage = "Obrigatório")]
         public int MunicipioId { get; set; }
-
-        [Display(Name = "Status")]
-        [Required(ErrorMessage = "Obrigatório")]
-        public int StatusId { get; set; }
     }
 }

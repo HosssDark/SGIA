@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -19,42 +19,15 @@ namespace Site.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Periodo = null, int? TurmaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Diciplinas = _dicRep.GetAll();
-
-                var Model = (from hr in _horRep.GetAll()
-                             join dp1 in Diciplinas on hr.DiciplinaPrimeiroId equals dp1.DiciplinaId into r1
-                             from dp1 in r1.DefaultIfEmpty()
-                             join dp2 in Diciplinas on hr.DiciplinaSegundoId equals dp2.DiciplinaId into r2
-                             from dp2 in r2.DefaultIfEmpty()
-                             join dp3 in Diciplinas on hr.DiciplinaTerceiroId equals dp3.DiciplinaId into r3
-                             from dp3 in r3.DefaultIfEmpty()
-                             join dp4 in Diciplinas on hr.DiciplinaQuartoId equals dp4.DiciplinaId into r4
-                             from dp4 in r4.DefaultIfEmpty()
-                             join tm in _turRep.GetAll() on hr.HorarioAulaId equals tm.TurmaId into r5
-                             from tm in r5.DefaultIfEmpty()
-                             join sta in _staRep.GetAll() on hr.StatusId equals sta.StatusId
-                             select new HorarioAulaViewModel
-                             {
-                                 HorarioAulaId = hr.HorarioAulaId,
-                                 DiciplinaPrimeiroId = hr.DiciplinaPrimeiroId,
-                                 DiciplinaPrimeiro = dp1.Nome,
-                                 DiciplinaSegundoId = hr.DiciplinaSegundoId,
-                                 DiciplinaSegundo = dp2.Nome,
-                                 DiciplinaTerceiroId = hr.DiciplinaTerceiroId,
-                                 DiciplinaTerceiro = dp3.Nome,
-                                 DiciplinaQuartoId = hr.DiciplinaQuartoId,
-                                 DiciplinaQuarto = dp4.Nome,
-                                 DataCadastro = hr.DataCadastro,
-                                 DiaSemana = hr.DiaSemana,
-                                 Periodo = hr.Periodo,
-                                 StatusId = hr.StatusId,
-                                 Status = sta.Descricao,
-                                 TurmaId = hr.TurmaId,
-                                 Turma = tm != null ? tm.Nome : ""
-                             }).ToList();
-
+                var Model = _horRep.Grid(Periodo, TurmaId, StatusId, DataInicial, DataFinal);
+            
                 return View(Model);
             }
             catch (Exception Error)
@@ -64,7 +37,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 
@@ -128,7 +101,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 
@@ -152,7 +125,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 
@@ -211,7 +184,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 
@@ -229,19 +202,103 @@ namespace Site.Areas.Admin.Controllers
                 return View(_horRep.GetById(Id));
             }
             catch (Exception Error)
-            { 
+            {
                 #region + Log
 
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "HorarioAulas",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        {
+            try
+            {
+                var List = _horRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "HorarioAulas",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -270,7 +327,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "HorarioAulas",
                     UserChangeId = 1
                 });
 

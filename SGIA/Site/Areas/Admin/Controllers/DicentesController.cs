@@ -3,7 +3,8 @@ using Functions;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
-using System.Linq;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -12,27 +13,18 @@ namespace Site.Areas.Admin.Controllers
     public class DicentesController : Controller
     {
         private IDicenteRepository _dicRep = new DicenteRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from dc in _dicRep.GetAll()
-                             join sta in _staRep.GetAll() on dc.StatusId equals sta.StatusId
-                             select new DicenteViewModel
-                             {
-                                 DicenteId = dc.DicenteId,
-                                 Matricula = dc.Matricula,
-                                 Nome = dc.Nome,
-                                 Email = dc.Email,
-                                 Telefone = dc.Telefone,
-                                 Celular = dc.Celular,
-                                 DataCadastro = dc.DataCadastro,
-                                 StatusId = dc.StatusId,
-                                 Status = sta.Descricao,
-                             }).ToList();
+                var Model = _dicRep.Grid(Buscar, StatusId, Matricula, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -43,7 +35,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Dicentes",
                     UserChangeId = 1
                 });
 
@@ -98,7 +90,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Dicentes",
                     UserChangeId = 1
                 });
 
@@ -122,7 +114,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Dicentes",
                     UserChangeId = 1
                 });
 
@@ -172,7 +164,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Dicentes",
                     UserChangeId = 1
                 });
 
@@ -180,6 +172,90 @@ namespace Site.Areas.Admin.Controllers
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return View(Model);
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Dicentes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DicenteReportViewModel Model)
+        {
+            try
+            {
+                var List = _dicRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Dicentes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -207,7 +283,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Dicentes",
                     UserChangeId = 1
                 });
 

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
-using System.Linq;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -17,24 +18,14 @@ namespace Site.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from pl in _traRep.GetAll()
-                             join use in _userRep.GetAll() on pl.UserId equals use.UserId
-                             join sta in _staRep.GetAll() on pl.StatusId equals sta.StatusId
-                             select new PlanoTrabalhoViewModel
-                             {
-                                 PlanoTrabalhoId = pl.PlanoTrabalhoId,
-                                 UserId = pl.UserId,
-                                 StatusId = pl.StatusId,
-                                 DataCadastro = pl.DataCadastro,
-                                 DescricaoAtividade = pl.DescricaoAtividade,
-                                 DiaSemana = pl.DiaSemana,
-                                 Docente = use.Nome,
-                                 HoraEncerramento = pl.HoraEncerramento,
-                                 HoraInicio = pl.HoraInicio,
-                                 Status = sta.Descricao
-                             }).ToList();
+                var Model = _traRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -45,7 +36,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 
@@ -103,7 +94,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 
@@ -127,7 +118,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 
@@ -180,7 +171,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 
@@ -204,13 +195,97 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "PlanosTrabalho",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        {
+            try
+            {
+                var List = _traRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "PlanosTrabalho",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -239,7 +314,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosTrabalho",
                     UserChangeId = 1
                 });
 

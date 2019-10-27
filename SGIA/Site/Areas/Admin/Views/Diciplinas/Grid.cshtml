@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Repository.Repository.ViewModel.DiciplinaViewModel>
+
+@{
+    Layout = null;
+}
+
+<div class="tab-pane active" id="Courses-all">
+    <div class="row row-deck">
+        @foreach (var Diciplina in Model)
+        {
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="card">
+                    <a href="#"><img class="card-img-top" src="~/images/gallery/1.jpg" alt=""></a>
+                    <div class="card-body d-flex flex-column">
+                        <h5><a href="courses-details.html">@Diciplina.Nome</a></h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-vcenter mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="w20"><i class="fa fa-calendar"></i></td>
+                                    <td class="tx-medium">Data de Cadastro</td>
+                                    <td class="text-right">@Diciplina.DataCadastro.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-clock"></i></td>
+                                    <td class="tx-medium">Carga Horária</td>
+                                    <td class="text-right">@Diciplina.CargaHoraria</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-clock"></i></td>
+                                    <td class="tx-medium">Hora Semanal</td>
+                                    <td class="text-right">@Diciplina.HoraSemanal</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="@Url.Action("Detalhes", "Diciplinas", new { Id = Diciplina.DiciplinaId })" class="btn btn-primary btn-sm">Detalhes</a>
+                        <a href="@Url.Action("Alterar", "Diciplinas", new { Id = Diciplina.DiciplinaId })" class="btn btn-primary btn-sm">Alterar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

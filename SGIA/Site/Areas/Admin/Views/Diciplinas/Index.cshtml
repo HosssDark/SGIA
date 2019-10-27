@@ -1,93 +1,101 @@
-﻿@model List<Site.DiciplinaViewModel>
-
-@{
+﻿@{
     ViewData["Title"] = "Diciplinas";
 }
 
-<div class="tab-pane active">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">@ViewData["Title"]</h3>
-        </div>
+@section Scripts{
+    <script>
+        $(function () {
 
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            @Html.Label("lblDiciplina", "Diciplina")
-                            @Html.TextBox("Diciplina", "", new { @class = "form-control", @autofocus = "autofocus"  })
-                        </div>
+            render_action();
+
+            $('#Status, #Editora').change(search);
+
+            $("#DataInicial, #DataFinal").datepicker({
+                dateFormat: 'dd/mm/yy',
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                nextText: 'Próximo',
+                prevText: 'Anterior'
+            });
+        });
+
+        function search() {
+
+            var filters = {
+                Buscar: $('#Buscar').val(),
+                StatusId: $('#Status').val(),
+                Editora: $('#Editora').val(),
+                DataInicial: $('#DataInicial').val(),
+                DataFinal: $('#DataFinal').val()
+            }
+
+            render_action(filters);
+        }
+
+        function render_action(filters) {
+            $.ajax({
+                method: 'GET',
+                url: '/Admin/Diciplinas/Grid',
+                dataType: 'html',
+                data: filters,
+                success: function (content) {
+                    $('#Grid').html(content);
+                }
+            });
+        }
+
+    </script>
+}
+
+<div class="card">
+
+    <div class="card-header">
+        <h3 class="card-title">@ViewData["Title"]</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.Label("lblNome", "Buscar por")
+                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Título' ou 'Autor'", @autofocus = "autofocus" })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.Label("lblEditora", "Editora")
+                        @Html.DropDownList("Editora", HelperLista.Editoras(), "Selecione", new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.Label("lblDataInicial", "Data Inicial")
+                        @Html.TextBox("DataInicial", "", new { @class = "form-control date" })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.Label("lblDataFinal", "Data Final")
+                        @Html.TextBox("DataFinal", "", new { @class = "form-control date" })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.Label("lblStatus", "Status")
+                        @Html.DropDownList("Status", HelperLista.Status(), null, new { @class = "form-control" })
                     </div>
                 </div>
-
-                <div class="col-md-2 bottom-margem">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-6">
-                            <a href="@Url.Action("Adicionar", "Diciplinas")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <br />
-
-            <div class="row">
-                <div class="table-responsive">
-                    <table class="table table-hover js-basic-example dataTable table-striped table_custom border-style spacing5">
-                        <thead>
-                            <tr>
-                                <th>Diciplina</th>
-                                <th>Carga Horária</th>
-                                <th>Hora Semanal</th>
-                                <th>Status</th>
-                                <th style="text-align: center;">Opções</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.OrderBy(a => a.DiciplinaId))
-                            {
-                                <tr>
-                                    <td style="vertical-align: middle !important;">@item.Nome</td>
-                                    <td style="vertical-align: middle !important;">@item.CargaHoraria</td>
-                                    <td style="vertical-align: middle !important;">@item.HoraSemanal</td>
-                                    <td style="vertical-align: middle !important;">@item.Status</td>
-                                    <td style="text-align: center;">
-
-                                        <a href="@Url.Action("Detalhes", "Diciplinas", new { Id = item.DiciplinaId })"
-                                           class="btn btn-icon btn-sm js-sweetalert"
-                                           title="Alterar">
-                                            <i class="fas fa-search text-primary"></i>
-                                        </a>
-                                        
-                                        <a href="@Url.Action("Alterar", "Diciplinas", new { Id = item.DiciplinaId })"
-                                           class="btn btn-icon btn-sm js-sweetalert"
-                                           title="Alterar">
-                                            <i class="fas fa-edit text-primary"></i>
-                                        </a>
-
-                                        <a href="#"
-                                           class="btn btn-icon btn-sm js-sweetalert Excluir"
-                                           title="Excluir"
-                                           data-id="@item.DiciplinaId"
-                                           data-url="/Diciplinas/Excluir?Id=">
-                                            <i class="fas fa-trash-alt text-danger"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+            <div class="col-md-2">
+                <a href="@Url.Action("Adicionar", "Diciplinas")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                <a href="@Url.Action("Relatorio", "Diciplinas")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
             </div>
 
-            <br />
-
-            <div class="footer-view">
-                <div class="col-md-12">
-                    <a href="@Url.Action("Index", "Home")" class="btn btn-default fa-pull-right">Fechar</a>
-                </div>
-            </div>
         </div>
+
     </div>
 </div>
+
+<div id="Grid"></div>

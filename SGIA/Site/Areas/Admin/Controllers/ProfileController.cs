@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Domain;
 using Functions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 
@@ -71,7 +70,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Profile",
                     UserChangeId = 1
                 });
 
@@ -84,7 +83,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(UserViewModel Model, IFormFile Arquivo)
+        public IActionResult Alterar(UserViewModel Model)
         {
             try
             {
@@ -109,37 +108,27 @@ namespace Site.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    if (Arquivo != null)
+                    _userRep.Attach(Model.User);
+
+                    if (Model.Arquivo != null)
                     {
                         IUserImageRepository imgRep = new UserImageRepository();
 
-                        IFormFile Imagem = Arquivo;
+                        var filePath = Path.GetTempFileName();
+                        var Info = new FileInfo(filePath);
 
-                        if (Imagem != null || Imagem.ContentType.ToLower().StartsWith("image/"))
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            MemoryStream ms = new MemoryStream();
-                            Imagem.OpenReadStream().CopyTo(ms);
+                            Model.Arquivo.CopyToAsync(stream);
 
-                            UserImage Image = new UserImage()
-                            {
-                                UserId = 1,
-                                Name = Imagem.Name,
-                                Dados = ms.ToArray(),
-                                ContentType = Imagem.ContentType,
-                                TipoAcesso = ""
-                            };
-
-                            imgRep.Add(Image);
+                            imgRep.SalvarArquivo(stream, "Usuarios", Model.Arquivo.FileName, _LoginUser.GetUser().UserId, Info.Extension);
                         }
                     }
 
-                    _userRep.Attach(Model.User);
-
                     TempData["Success"] = "Registro alterado com sucesso";
-                    return RedirectToAction("Index");
                 }
 
-                return View(Model);
+                return View("Index", Model);
             }
             catch (Exception Error)
             {
@@ -148,14 +137,14 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Profile",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
-                return RedirectToAction("Index");
+                return View("Index", Model);
             }
         }
 
@@ -167,14 +156,22 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                //if (string.IsNullOrEmpty(Model.Password.Email))
-                //    ModelState.AddModelError("", "Obrigatório");
+                if (!string.IsNullOrEmpty(Model.User.Email))
+                {
+                    if (!FunctionsValidate.ValidateEmail(Model.ChangePassword.Email))
+                        ModelState.AddModelError("ChangePassword_Email", "Email Inválido!");
+                }
+                else
+                    ModelState.AddModelError("ChangePassword_Email", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Password.Password))
-                    ModelState.AddModelError("Password_Password", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.ChangePassword.Password))
+                    ModelState.AddModelError("ChangePassword_Password", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.PasswordConfirm))
-                    ModelState.AddModelError("PasswordConfirm", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.ChangePassword.ConfirmPassword))
+                    ModelState.AddModelError("ConfirmPassword", "Obrigatório");
+
+                if (Model.ChangePassword.Password != Model.ChangePassword.ConfirmPassword)
+                    ModelState.AddModelError("ConfirmPassword", "Senhas não conferem");
 
                 #endregion
 
@@ -185,10 +182,9 @@ namespace Site.Areas.Admin.Controllers
                     passRep.Attach(Model.Password);
 
                     TempData["Success"] = "Registro gravado com sucesso";
-                    return View();
                 }
-                                
-                return View(Model);
+
+                return View("Index", Model);
             }
             catch (Exception Error)
             {
@@ -197,14 +193,59 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Profile",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
-                return RedirectToAction("Index");
+                return View("Index", Model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AttachAddress(UserViewModel Model)
+        {
+            try
+            {
+                #region + Validacao
+
+                if (!string.IsNullOrEmpty(Model.Address.Cep))
+                {
+                    if (!FunctionsValidate.ValidateCep(Model.Address.Cep))
+                        ModelState.AddModelError("Address_Cep", "CEP inválido!");
+                }
+
+                #endregion
+
+                if (ModelState.IsValid)
+                {
+                    IAddressRepository add = new AddressRepository();
+
+                    add.Attach(Model.Address);
+
+                    TempData["Success"] = "Registro gravado com sucesso";
+                }
+
+                return View("Index", Model);
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Profile",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
+                return View("Index", Model);
             }
         }
 

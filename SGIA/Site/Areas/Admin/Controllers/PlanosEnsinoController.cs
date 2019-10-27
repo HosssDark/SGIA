@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -12,45 +12,18 @@ namespace Site.Areas.Admin.Controllers
     public class PlanosEnsinoController : Controller
     {
         private IPlanoEnsinoRepository _ensRep = new PlanoEnsinoRepository();
-        private IDiciplinaRepository _dicRep = new DiciplinaRepository();
-        private IUserRepository _userRep = new UserRepository();
-        private ITurmaRepository _turRep = new TurmaRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? TurmaId = null, int? DiciplinaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from pl in _ensRep.GetAll()
-                             join dp in _dicRep.GetAll() on pl.DiciplinaId equals dp.DiciplinaId
-                             join use in _userRep.GetAll() on pl.UserId equals use.UserId
-                             join tm in _turRep.GetAll() on pl.TurmaId equals tm.TurmaId
-                             join sta in _staRep.GetAll() on pl.StatusId equals sta.StatusId
-                             select new PlanoEnsinoViewModel
-                             {
-                                 PlanoEnsinoId = pl.PlanoEnsinoId,
-                                 BiografiaBasicaId = pl.BiografiaBasicaId,
-                                 TurmaId = pl.TurmaId,
-                                 UserId = pl.UserId,
-                                 DiciplinaId = pl.DiciplinaId,
-                                 StatusId = pl.StatusId,
-                                 BiografiaComplementarId = pl.BiografiaComplementarId,
-                                 EmentaId = pl.EmentaId,
-                                 AtividadeTrabalhada = pl.AtividadeTrabalhada,
-                                 DataCadastro = pl.DataCadastro,
-                                 DataEmissao = pl.DataEmissao,
-                                 Diciplina = dp.Nome,
-                                 Docente = use.Nome,
-                                 EspecificacaoConteudo = pl.EspecificacaoConteudo,
-                                 MetodologiaAvaliacao = pl.MetodologiaAvaliacao,
-                                 ObjetivoArea = pl.ObjetivoArea,
-                                 ObjetivoGeral = pl.ObjetivoGeral,
-                                 RecursoUtilizado = pl.RecursoUtilizado,
-                                 Status = sta.Descricao,
-                                 TecnicaPedagogica = pl.TecnicaPedagogica,
-                                 Turma = tm.Nome
-                             }).ToList();
+                var Model = _ensRep.Grid(Buscar, TurmaId, DiciplinaId, StatusId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -61,7 +34,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 
@@ -140,7 +113,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 
@@ -164,7 +137,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 
@@ -238,7 +211,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 
@@ -262,13 +235,97 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "PlanosEnsino",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        {
+            try
+            {
+                var List = _ensRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "PlanosEnsino",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -297,7 +354,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "PlanosEnsino",
                     UserChangeId = 1
                 });
 

@@ -10,7 +10,6 @@ namespace Domain
         public int UserId { get; set; }
 
         [Display(Name = "Data de Cadastro")]
-        [Required]
         public DateTime DataCadastro { get; set; }
 
         [Display(Name = "Area de Atuação")]
@@ -20,15 +19,19 @@ namespace Domain
         public int? TituloId { get; set; }
 
         [Display(Name = "Cargo")]
-        [Required]
         public int CargoId { get; set; }
+
+        [Display(Name = "Tipo")]
+        public int? TipoId { get; set; }
+
+        [Display(Name = "Tipo de Acesso")]
+        public int TipoAcessoId { get; set; }
 
         [Display(Name = "Nome")]
         [MaxLength(60, ErrorMessage = "Máximo de 60 caracteres")]
         public string Nome { get; set; }
 
         [Display(Name = "Email")]
-        [Required]
         [MaxLength(100, ErrorMessage = "Máximo de 100 caracteres")]
         public string Email { get; set; }
 
@@ -38,14 +41,6 @@ namespace Domain
 
         [Display(Name = "Data Nascimento")]
         public DateTime? DataNascimento { get; set; }
-
-        [Display(Name = "CPF")]
-        [MaxLength(11, ErrorMessage = "Máximo de 11 caracteres")]
-        public string Cpf { get; set; }
-
-        [Display(Name = "RG")]
-        [MaxLength(8, ErrorMessage = "Máximo de 8 caracteres")]
-        public string Rg { get; set; }
 
         [Display(Name = "Telefone")]
         [MaxLength(15, ErrorMessage = "Máximo de 15 caracteres")]
@@ -61,18 +56,18 @@ namespace Domain
         [Display(Name = "Data Posse")]
         public DateTime? DataPosse { get; set; }
 
-        [Display(Name = "Tipo")]
-        public int? TipoId { get; set; }
-
-        [Display(Name = "Status")]
-        [Required]
-        public int StatusId { get; set; }
-
-        [Display(Name = "Tipo de Acesso")]
-        [Required]
-        public int TipoAcessoId { get; set; }
-
         [Display(Name = "Lembre de Mim")]
         public bool LembreMim { get; set; }
+
+        [Display(Name = "CPF")]
+        [MaxLength(14, ErrorMessage = "Máximo de 14 caracteres")]
+        public string Cpf { get; set; }
+
+        [Display(Name = "RG")]
+        [MaxLength(8, ErrorMessage = "Máximo de 8 caracteres")]
+        public string Rg { get; set; }
+
+        [Display(Name = "Status")]
+        public int StatusId { get; set; }
     }
 }

@@ -13,7 +13,8 @@
     $('.date').mask('99/99/9999', { 'placeholder': '__/__/____' })
     $('.datetime').mask('99/99/9999 99:99', { 'placeholder': '__/__/____ 00:00' })
     $('.time').mask('99:99', { 'placeholder': '00:00' });
-
+    $('.cpf').mask('999.999.999-99', { 'placeholder': '000.000.000-00' });
+    $('.cep').mask('99999-999', { 'placeholder': '00000-000' });
 });
 
 function Excluir(Url, Id) {

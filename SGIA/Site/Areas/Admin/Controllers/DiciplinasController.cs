@@ -1,6 +1,8 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using System;
 using System.Linq;
 
@@ -11,30 +13,18 @@ namespace Site.Areas.Admin.Controllers
     public class DiciplinasController : Controller
     {
         private IDiciplinaRepository _dicRep = new DiciplinaRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from dp in _dicRep.GetAll()
-                             join sta in _staRep.GetAll() on dp.StatusId equals sta.StatusId
-                             select new DiciplinaViewModel
-                             {
-                                 DiciplinaId = dp.DiciplinaId,
-                                 TurmaId = dp.TurmaId,
-                                 StatusId = dp.StatusId,
-                                 CargaHoraria = dp.CargaHoraria,
-                                 CreditoAtividadeCampo = dp.CreditoAtividadeCampo,
-                                 CreditoAtividadePratica = dp.CreditoAtividadePratica,
-                                 CreditoEnsino = dp.CreditoEnsino,
-                                 Ementa = dp.Ementa,
-                                 HoraSemanal = dp.HoraSemanal,
-                                 Nome = dp.Nome,
-                                 DataCadastro = dp.DataCadastro,
-                                 Status = sta.Descricao,
-                             }).ToList();
+                var Model = _dicRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -45,7 +35,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 
@@ -112,7 +102,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 
@@ -136,7 +126,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 
@@ -195,7 +185,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 
@@ -219,13 +209,97 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 
                 #endregion
 
                 TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Diciplinas",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        {
+            try
+            {
+                var List = _dicRep.Report();
+
+                #region + Filters
+
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                if(Model.TurmaId != 0)
+                    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Diciplinas",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }
@@ -254,7 +328,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Diciplinas",
                     UserChangeId = 1
                 });
 

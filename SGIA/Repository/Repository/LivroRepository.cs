@@ -1,6 +1,8 @@
 ﻿using Domain;
+using Repository.Repository.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Repository
 {
@@ -23,6 +25,50 @@ namespace Repository
             }
 
             return base.AddAll(List);
+        }
+
+        public IEnumerable<LivroViewModel> Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
+            IEditoraRepository _ediRep = new EditoraRepository();
+            IStatusRepository _staRep = new StatusRepository();
+
+            var Model = (from lv in this.GetAll()
+                         join ed in _ediRep.GetAll() on lv.EditoraId equals ed.EditoraId
+                         join sta in _staRep.GetAll() on lv.StatusId equals sta.StatusId
+                         select new LivroViewModel
+                         {
+                             LivroId = lv.LivroId,
+                             AreaConhecimento = lv.AreaConhecimento,
+                             Autor = lv.Autor,
+                             DataCadastro = lv.DataCadastro,
+                             DataPublicacao = lv.DataPublicacao,
+                             EditoraId = lv.EditoraId,
+                             Editora = ed.Nome,
+                             StatusId = lv.StatusId,
+                             Status = sta.Descricao,
+                             Titulo = lv.Titulo
+                         });
+
+            #region + Filtro
+
+            if (!string.IsNullOrEmpty(Buscar))
+                Model = Model.Where(a => a.Titulo.ToLower().Contains(Buscar.ToLower()) || a.Autor.ToLower().Contains(Buscar.ToLower()));
+
+            if (StatusId != null)
+                Model = Model.Where(a => a.StatusId == StatusId);
+
+            if (EditoraId != null)
+                Model = Model.Where(a => a.EditoraId == EditoraId);
+
+            if (DataInicial != null)
+                Model = Model.Where(a => a.DataCadastro >= DataInicial);
+
+            if (DataFinal != null)
+                Model = Model.Where(a => a.DataCadastro <= DataFinal);
+
+            #endregion
+
+            return Model;
         }
     }
 }

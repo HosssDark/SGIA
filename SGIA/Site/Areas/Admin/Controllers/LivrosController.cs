@@ -17,24 +17,14 @@ namespace Site.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+                return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from lv in _livRep.GetAll()
-                             join ed in _ediRep.GetAll() on lv.EditoraId equals ed.EditoraId
-                             join sta in _staRep.GetAll() on lv.StatusId equals sta.StatusId
-                             select new LivroViewModel
-                             {
-                                 LivroId = lv.LivroId,
-                                 AreaConhecimento = lv.AreaConhecimento,
-                                 Autor = lv.Autor,
-                                 DataCadastro = lv.DataCadastro,
-                                 DataPublicacao = lv.DataPublicacao,
-                                 EditoraId = lv.EditoraId,
-                                 Editora = ed.Nome,
-                                 StatusId = lv.StatusId,
-                                 Status = sta.Descricao,
-                                 Titulo = lv.Titulo
-                             }).ToList();
+                var Model = _livRep.Grid(Buscar, StatusId, EditoraId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -45,7 +35,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 
@@ -100,7 +90,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 
@@ -124,7 +114,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 
@@ -174,7 +164,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 
@@ -198,7 +188,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 
@@ -233,7 +223,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Livros",
                     UserChangeId = 1
                 });
 

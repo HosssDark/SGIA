@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.EntityConfig
 {
-    public class EnderecoConfig : IEntityTypeConfiguration<Endereco>
+    public class AddressConfig : IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Endereco> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
             builder.HasKey(a => a.EnderecoId);
 

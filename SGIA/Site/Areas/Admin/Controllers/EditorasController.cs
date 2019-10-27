@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -12,23 +12,18 @@ namespace Site.Areas.Admin.Controllers
     public class EditorasController : Controller
     {
         private IEditoraRepository _ediRep = new EditoraRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from ed in _ediRep.GetAll()
-                             join sta in _staRep.GetAll() on ed.StatusId equals sta.StatusId
-                             select new EditoraViewModel
-                             {
-                                 EditoraId = ed.EditoraId,
-                                 Nome = ed.Nome,
-                                 StatusId = ed.StatusId,
-                                 Status = sta.Descricao,
-                                 DataCadastro = ed.DataCadastro
-                             }).ToList();
+                var Model = _ediRep.Grid(Buscar, StatusId, DataInicial, DataInicial);
 
                 return View(Model);
             }
@@ -39,7 +34,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Editoras",
                     UserChangeId = 1
                 });
 
@@ -110,7 +105,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Editoras",
                     UserChangeId = 1
                 });
 
@@ -151,7 +146,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Editoras",
                     UserChangeId = 1
                 });
 
@@ -186,7 +181,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Editoras",
                     UserChangeId = 1
                 });
 

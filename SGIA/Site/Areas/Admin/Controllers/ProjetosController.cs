@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -12,30 +12,18 @@ namespace Site.Areas.Admin.Controllers
     public class ProjetosController : Controller
     {
         private IProjetoRepository _proRep = new ProjetoRepository();
-        private IUserRepository _userRep = new UserRepository();
-        private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
             try
             {
-                var Model = (from pj in _proRep.GetAll()
-                             join use in _userRep.GetAll() on pj.UserId equals use.UserId
-                             join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
-                             select new ProjetoViewModel
-                             {
-                                 ProjetoId = pj.ProjetoId,
-                                 UserId = pj.UserId,
-                                 StatusId = pj.StatusId,
-                                 Docente = use.Nome,
-                                 Nome = pj.Nome,
-                                 Status = sta.Descricao,
-                                 CargaHoraria = pj.CargaHoraria,
-                                 DataCadastro = pj.DataCadastro,
-                                 DataInicio = pj.DataInicio,
-                                 DataTermino = pj.DataTermino
-                             }).ToList();
+                var Model = _proRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -46,7 +34,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Projetos",
                     UserChangeId = 1
                 });
 
@@ -104,7 +92,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Projetos",
                     UserChangeId = 1
                 });
 
@@ -128,7 +116,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Projetos",
                     UserChangeId = 1
                 });
 
@@ -181,7 +169,91 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Projetos",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Projetos",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        {
+            try
+            {
+                var List = _proRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Projetos",
                     UserChangeId = 1
                 });
 
@@ -216,7 +288,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Projetos",
                     UserChangeId = 1
                 });
 
