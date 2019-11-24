@@ -13,7 +13,7 @@
             <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
 
-        @using (Html.BeginForm("Adicionar", "Dicentes", FormMethod.Post))
+        @using (Html.BeginForm("Adicionar", "Dicentes", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 

@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#Arquivo').change(readImage);
+    $('#File').change(readImage);
 })
 
 function readImage() {
