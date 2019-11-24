@@ -14,5 +14,7 @@ namespace Domain
         public string Classe { get; set; }
 
         public string Cor { get; set; }
+
+        public string Icon { get; set; }
     }
 }

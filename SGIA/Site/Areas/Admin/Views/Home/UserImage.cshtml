@@ -2,20 +2,18 @@
 
 @{
     Layout = null;
-
-    bool HaveImg = ViewBag.HaveImg;
 }
 
 <div class="dropdown d-flex">
     <a href="javascript:void(0)" class="chip ml-3" data-toggle="dropdown">
-        @if (HaveImg)
+        @*@if (HaveImg)
         {
             <span class="avatar" style="background-image: url('@Url.Action("ToSeeImagem","Profile", new { Id = Model.UserId })')"></span> @Model.Nome
         }
         else
-        {
-            <span class="avatar"></span> @Model.Nome
-        }
+        {*@
+        <span class="avatar"></span> @Model.Nome
+        @* } *@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">

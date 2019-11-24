@@ -115,13 +115,13 @@
                         @Html.ValidationMessageFor(a => a.TipoAcessoId)
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         @Html.LabelFor(a => a.DataCadastro)
                         @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "" })
                         @Html.ValidationMessageFor(a => a.DataCadastro)
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         @Html.LabelFor(a => a.StatusId)
                         @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "" })
                         @Html.ValidationMessageFor(a => a.StatusId)

@@ -33,6 +33,10 @@ namespace Domain
         [MaxLength(100, ErrorMessage = "Máximo de 100 caracteres")]
         public string Email { get; set; }
 
+        [Display(Name = "Turma")]
+        public int TurmaId { get; set; }
+
+        [Display(Name = "Status")]
         public int StatusId { get; set; }
     }
 }

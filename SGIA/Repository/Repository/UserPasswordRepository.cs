@@ -1,6 +1,8 @@
 ﻿using Domain;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Repository
 {
@@ -26,6 +28,49 @@ namespace Repository
         public UserPassword VerificationPassword(string Password)
         {
             return this.GetFirst(a => a.Password == Password);
+        }
+
+        public string UserRegister(string Email, string Password)
+        {
+            IUserRepository RepositoryUser = new UserRepository();
+
+            User User = new User()
+            {
+                Email = Email
+            };
+
+            RepositoryUser.Add(User);
+
+            UserPassword UserPassword = new UserPassword()
+            {
+                Password = this.MD5Hash(Password + User.Email),
+                Guid = Guid.NewGuid().ToString(),
+                UserId = User.UserId
+            };
+
+            this.Add(UserPassword);
+
+            return UserPassword.Guid;
+        }
+
+        public string MD5Hash(string Password)
+        {
+            string Hash = "!@#$%¨&*123456789?" + Password;
+
+            // Use input string to calculate MD5 hash
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.ASCII.GetBytes(Hash);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
         }
     }
 }

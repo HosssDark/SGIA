@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Repository.Repository.ViewModel.AtribuicaoViewModel>
+
+@{ 
+    Layout = null;
+}
+
+<div class="row clearfix margin-top-40">
+    <div class="table-responsive">
+        <table class="table table-hover js-basic-example dataTable table-striped table_custom border-style spacing5">
+            <thead>
+                <tr>
+                    <th>Diciplina</th>
+                    <th>Projeto</th>
+                    <th>Docente</th>
+                    <th>Status</th>
+                    <th style="text-align: center;">Opções</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.OrderBy(a => a.AtribuicaoId))
+                {
+                    <tr>
+                        <td style="vertical-align: middle !important;">@item.Diciplina</td>
+                        <td style="vertical-align: middle !important;">@item.Projeto</td>
+                        <td style="vertical-align: middle !important;">@item.Docente</td>
+                        <td style="vertical-align: middle !important;">@item.Status</td>
+                        <td style="text-align: center;">
+
+                            <a href="@Url.Action("Alterar", "Atribuicoes", new { Id = item.AtribuicaoId })"
+                               class="btn btn-icon btn-sm js-sweetalert"
+                               title="Alterar">
+                                <i class="fas fa-edit text-primary"></i>
+                            </a>
+
+                            <a href="#"
+                               class="btn btn-icon btn-sm js-sweetalert Excluir"
+                               title="Excluir"
+                               data-id="@item.AtribuicaoId"
+                               data-url="/Atribuicoes/Excluir?Id=">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

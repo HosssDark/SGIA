@@ -27,39 +27,47 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<TurmaViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<TurmaViewModel> Grid(string Buscar = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IUserRepository useRep = new UserRepository();
+            IStatusRepository staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Turmas = this.GetAll();
 
             var Model = (from tur in Turmas
-                         join use in useRep.GetAll() on tur.CoordenadorId equals use.UserId
+                         join use in useRep.GetAll() on tur.CoordenadorId equals use.UserId into r1
+                         from use in r1.DefaultIfEmpty()
+                         join sta in staRep.GetAll() on tur.StatusId equals sta.StatusId
                          select new TurmaViewModel
                          {
-                             TormaId = tur.TurmaId,
+                             TurmaId = tur.TurmaId,
                              CoordenadorId = tur.CoordenadorId,
-                             Coordenador = use,
+                             Coordenador = use != null ? use : null,
                              Descricao = tur.Descricao,
                              Duracao = tur.Duracao,
                              QtdeSemestres = tur.QtdeSemestres,
+                             DataCadastro = tur.DataCadastro,
                              Name = tur.Nome,
+                             QtdeEstudantes = this.GetDicenteCount(tur.TurmaId),
+                             StatusId = tur.StatusId,
+                             Status = sta.Descricao,
+                             Image = paramRep.GetImage(tur.TurmaId, "images", "Turmas", "Turma", Direct)
                          });
-
 
             #region + Filtro
 
             if (!string.IsNullOrEmpty(Buscar))
                 Model = Model.Where(a => a.Coordenador.Nome.ToLower().Contains(Buscar.ToLower()));
 
-            //if (StatusId != null)
-            //    Model = Model.Where(a => a.StatusId == StatusId);
+            if (StatusId != null)
+                Model = Model.Where(a => a.StatusId == StatusId);
 
-            //if (DataInicial != null)
-            //    Model = Model.Where(a => a.DataCadastro >= DataInicial);
+            if (DataInicial != null)
+                Model = Model.Where(a => a.DataCadastro >= DataInicial);
 
-            //if (DataFinal != null)
-            //    Model = Model.Where(a => a.DataCadastro <= DataFinal);
+            if (DataFinal != null)
+                Model = Model.Where(a => a.DataCadastro <= DataFinal);
 
             #endregion
 
@@ -73,17 +81,24 @@ namespace Repository
             var Turmas = this.GetAll();
 
             return (from tur in Turmas
-                         join use in useRep.GetAll() on tur.CoordenadorId equals use.UserId
-                         select new TurmaViewModel
-                         {
-                             TormaId = tur.TurmaId,
-                             CoordenadorId = tur.CoordenadorId,
-                             Coordenador = use,
-                             Descricao = tur.Descricao,
-                             Duracao = tur.Duracao,
-                             QtdeSemestres = tur.QtdeSemestres,
-                             Name = tur.Nome,
-                         });
+                    join use in useRep.GetAll() on tur.CoordenadorId equals use.UserId
+                    select new TurmaViewModel
+                    {
+                        TurmaId = tur.TurmaId,
+                        CoordenadorId = tur.CoordenadorId,
+                        Coordenador = use,
+                        Descricao = tur.Descricao,
+                        Duracao = tur.Duracao,
+                        QtdeSemestres = tur.QtdeSemestres,
+                        Name = tur.Nome,
+                    });
+        }
+
+        public int GetDicenteCount(int TurmaId)
+        {
+            IDicenteRepository dic = new DicenteRepository();
+
+            return dic.Get(a => a.TurmaId == TurmaId).Count();
         }
     }
 }

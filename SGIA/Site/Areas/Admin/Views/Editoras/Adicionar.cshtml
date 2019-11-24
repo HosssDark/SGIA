@@ -1,7 +1,11 @@
-﻿@model Domain.Editora
+﻿@model EditoraViewModel
 
 @{
     ViewData["Title"] = "Editoras - Adicionar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -18,9 +22,22 @@
 
                 <div class="row clearfix">
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Nome)
-                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.Nome)
+                        @Html.LabelFor(a => a.Editora.Nome)
+                        @Html.TextBoxFor(a => a.Editora.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Editora.Nome)
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
                     </div>
                 </div>
 

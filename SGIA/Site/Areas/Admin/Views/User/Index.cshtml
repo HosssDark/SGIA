@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         @Html.Label("lblNome", "Nome")
-                        @Html.TextBox("Buscar", "", new { @class = "form-control" })
+                        @Html.TextBox("Buscar", "", new { @class = "form-control", @autofocus = "autofocus" })
                     </div>
 
                     <div class="col-md-2">
@@ -87,14 +87,14 @@
 
                     <div class="col-md-2">
                         @Html.Label("lblStatus", "Status")
-                        @Html.DropDownList("Status", HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.DropDownList("Status", HelperLista.Status(), "Todos", new { @class = "form-control" })
                     </div>
                 </div>
             </div>
 
             <div class="col-md-2">
                 <a href="@Url.Action("Adicionar", "User")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
-                <a href="@Url.Action("Adicionar", "User")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
+                <a href="@Url.Action("Relatorio", "User")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
             </div>
 
         </div>

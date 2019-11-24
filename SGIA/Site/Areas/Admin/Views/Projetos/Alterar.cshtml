@@ -1,7 +1,11 @@
-﻿@model Domain.Projeto
+﻿@model ProjetoViewModel
 
 @{
     ViewData["Title"] = "Projetos - Alterar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -15,50 +19,63 @@
             <div class="card-body">
 
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(a => a.ProjetoId)
-                @Html.HiddenFor(a => a.DataCadastro)
+                @Html.HiddenFor(a => a.Projeto.ProjetoId)
+                @Html.HiddenFor(a => a.Projeto.DataCadastro)
 
                 <div class="row clearfix">
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Nome)
-                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.Nome)
+                        @Html.LabelFor(a => a.Projeto.Nome)
+                        @Html.TextBoxFor(a => a.Projeto.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Projeto.Nome)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.UserId)
-                        @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.UserId)
+                        @Html.LabelFor(a => a.Projeto.UserId)
+                        @Html.DropDownListFor(a => a.Projeto.UserId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Projeto.UserId)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.CargaHoraria)
-                        @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.CargaHoraria)
+                        @Html.LabelFor(a => a.Projeto.CargaHoraria)
+                        @Html.TextBoxFor(a => a.Projeto.CargaHoraria, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Projeto.CargaHoraria)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataInicio)
-                        @Html.TextBoxFor(a => a.DataInicio, "", new { @class = "form-control date" })
-                        @Html.ValidationMessageFor(a => a.DataInicio)
+                        @Html.LabelFor(a => a.Projeto.DataInicio)
+                        @Html.TextBoxFor(a => a.Projeto.DataInicio, "", new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(a => a.Projeto.DataInicio)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataTermino)
-                        @Html.TextBoxFor(a => a.DataTermino, "", new { @class = "form-control date" })
-                        @Html.ValidationMessageFor(a => a.DataTermino)
+                        @Html.LabelFor(a => a.Projeto.DataTermino)
+                        @Html.TextBoxFor(a => a.Projeto.DataTermino, "", new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(a => a.Projeto.DataTermino)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.StatusId)
-                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.StatusId)
+                        @Html.LabelFor(a => a.Projeto.StatusId)
+                        @Html.DropDownListFor(a => a.Projeto.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Projeto.StatusId)
                     </div>
 
-                    <div class="col-md-4">
-                        @Html.LabelFor(a => a.DataCadastro)
-                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    <div class="col-md-2">
+                        @Html.LabelFor(a => a.Projeto.DataCadastro)
+                        @Html.TextBoxFor(a => a.Projeto.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
                     </div>
                 </div>
 

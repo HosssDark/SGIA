@@ -1,0 +1,62 @@
+﻿@model Domain.Dicente
+
+@{
+    ViewData["Title"] = "Dicentes - Detalhes";
+}
+
+<div class="tab-pane active">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(a => a.DicenteId)
+            @Html.HiddenFor(a => a.DataCadastro)
+
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Matricula)
+                    @Html.TextBoxFor(a => a.Matricula, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Nome)
+                    @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-4">
+                    @Html.LabelFor(a => a.Email)
+                    @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Telefone)
+                    @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.Celular)
+                    @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.StatusId)
+                    @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-2">
+                    @Html.LabelFor(a => a.DataCadastro)
+                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                </div>
+            </div>
+
+            <div class="row clearfix margin-top-40">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "Dicentes")" class="btn btn-default fa-pull-right">Fechar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

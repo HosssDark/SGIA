@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
@@ -16,6 +18,14 @@ namespace Site.Areas.Admin.Controllers
         private ITurmaRepository _turRep = new TurmaRepository();
         private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public HorarioAulasController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -26,7 +36,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _horRep.Grid(Periodo, TurmaId, StatusId, DataInicial, DataFinal);
+                var Model = _horRep.Grid(Periodo, TurmaId, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
             
                 return View(Model);
             }
@@ -55,38 +65,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(HorarioAula Model)
+        public IActionResult Adicionar(HorarioAulaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.DiaSemana))
-                    ModelState.AddModelError("DiaSemana", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.HorarioAula.DiaSemana))
+                    ModelState.AddModelError("HorarioAula_DiaSemana", "Obrigatório");
 
-                if (Model.DiciplinaPrimeiroId == null && Model.DiciplinaPrimeiroId == 0)
-                    ModelState.AddModelError("DiciplinaPrimeiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaPrimeiroId == null && Model.HorarioAula.DiciplinaPrimeiroId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaPrimeiro", "Obrigatório");
 
-                if (Model.DiciplinaSegundoId == null && Model.DiciplinaSegundoId == 0)
-                    ModelState.AddModelError("DiciplinaSegundo", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaSegundoId == null && Model.HorarioAula.DiciplinaSegundoId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaSegundo", "Obrigatório");
 
-                if (Model.DiciplinaTerceiroId == null && Model.DiciplinaTerceiroId == 0)
-                    ModelState.AddModelError("DiciplinaTerceiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaTerceiroId == null && Model.HorarioAula.DiciplinaTerceiroId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaTerceiro", "Obrigatório");
 
-                if (Model.DiciplinaQuartoId == null && Model.DiciplinaQuartoId == 0)
-                    ModelState.AddModelError("DiciplinaQuarto", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaQuartoId == null && Model.HorarioAula.DiciplinaQuartoId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaQuarto", "Obrigatório");
 
-                if (Model.TurmaId == null && Model.TurmaId == 0)
-                    ModelState.AddModelError("Turma", "Obrigatório");
+                if (Model.HorarioAula.TurmaId == null && Model.HorarioAula.TurmaId == 0)
+                    ModelState.AddModelError("HorarioAula_Turma", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Periodo))
-                    ModelState.AddModelError("Periodo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.HorarioAula.Periodo))
+                    ModelState.AddModelError("HorarioAula_Periodo", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _horRep.Add(Model);
+                    _horRep.Add(Model.HorarioAula);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -116,7 +141,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_horRep.GetById(Id));
+                HorarioAulaViewModel Model = new HorarioAulaViewModel()
+                {
+                    HorarioAula = _horRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -138,38 +168,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(HorarioAula Model)
+        public IActionResult Alterar(HorarioAulaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.DiaSemana))
-                    ModelState.AddModelError("DiaSemana", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.HorarioAula.DiaSemana))
+                    ModelState.AddModelError("HorarioAula_DiaSemana", "Obrigatório");
 
-                if (Model.DiciplinaPrimeiroId == null && Model.DiciplinaPrimeiroId == 0)
-                    ModelState.AddModelError("DiciplinaPrimeiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaPrimeiroId == null && Model.HorarioAula.DiciplinaPrimeiroId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaPrimeiro", "Obrigatório");
 
-                if (Model.DiciplinaSegundoId == null && Model.DiciplinaSegundoId == 0)
-                    ModelState.AddModelError("DiciplinaSegundo", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaSegundoId == null && Model.HorarioAula.DiciplinaSegundoId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaSegundo", "Obrigatório");
 
-                if (Model.DiciplinaTerceiroId == null && Model.DiciplinaTerceiroId == 0)
-                    ModelState.AddModelError("DiciplinaTerceiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaTerceiroId == null && Model.HorarioAula.DiciplinaTerceiroId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaTerceiro", "Obrigatório");
 
-                if (Model.DiciplinaQuartoId == null && Model.DiciplinaQuartoId == 0)
-                    ModelState.AddModelError("DiciplinaQuarto", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaQuartoId == null && Model.HorarioAula.DiciplinaQuartoId == 0)
+                    ModelState.AddModelError("HorarioAula_DiciplinaQuarto", "Obrigatório");
 
-                if (Model.TurmaId == null && Model.TurmaId == 0)
-                    ModelState.AddModelError("Turma", "Obrigatório");
+                if (Model.HorarioAula.TurmaId == null && Model.HorarioAula.TurmaId == 0)
+                    ModelState.AddModelError("HorarioAula_Turma", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Periodo))
-                    ModelState.AddModelError("Periodo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.HorarioAula.Periodo))
+                    ModelState.AddModelError("HorarioAula_Periodo", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _horRep.Attach(Model);
+                    _horRep.Attach(Model.HorarioAula);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -245,7 +290,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

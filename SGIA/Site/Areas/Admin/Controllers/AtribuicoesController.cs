@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -22,24 +22,32 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = (from at in _atrRep.GetAll()
-                             join sta in _staRep.GetAll() on at.StatusId equals sta.StatusId
-                             join dp in _dicRep.GetAll() on at.DiciplinaId equals dp.DiciplinaId
-                             join pj in _proRep.GetAll() on at.ProjetoId equals pj.ProjetoId
-                             join dc in _userRep.GetAll() on at.UserId equals dc.UserId
-                             select new AtribuicaoViewModel
-                             {
-                                 AtribuicaoId = at.AtribuicaoId,
-                                 DiciplinaId = at.DiciplinaId,
-                                 ProjetoId = at.ProjetoId,
-                                 DocenteId = at.UserId,
-                                 DataCadastro = at.DataCadastro,
-                                 Diciplina = dp.Nome,
-                                 Projeto = pj.Nome,
-                                 StatusId = at.StatusId,
-                                 Status = sta.Descricao,
-                                 Docente = dc.Nome
-                             }).ToList();
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Atribuicoes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                ViewData["Error"] = "Erro ao Obter Registro";
+                return View();
+            }
+        }
+
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? DiciplinaId = null, int? ProjetoId = null, 
+                                  int? DocenteId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        {
+            try
+            {
+                var Model = _atrRep.Grid(Buscar, StatusId, DiciplinaId, ProjetoId, DocenteId, DataInicial, DataFinal);
 
                 return View(Model);
             }
@@ -50,7 +58,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Atribuicoes",
                     UserChangeId = 1
                 });
 
@@ -105,7 +113,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Atribuicoes",
                     UserChangeId = 1
                 });
 
@@ -129,7 +137,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Atribuicoes",
                     UserChangeId = 1
                 });
 
@@ -179,7 +187,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Atribuicoes",
                     UserChangeId = 1
                 });
 
@@ -187,6 +195,90 @@ namespace Site.Areas.Admin.Controllers
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return View(Model);
+            }
+        }
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Atribuicoes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(LivroReportViewModel Model)
+        {
+            try
+            {
+                var List = _atrRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Atribuicoes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
+                return RedirectToAction("Index");
             }
         }
 
@@ -216,7 +308,7 @@ namespace Site.Areas.Admin.Controllers
                 _LogRep.Add(new Log
                 {
                     Description = Error.Message,
-                    Origin = "Login",
+                    Origin = "Atribuicoes",
                     UserChangeId = 1
                 });
 

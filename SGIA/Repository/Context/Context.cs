@@ -31,9 +31,9 @@ namespace Repository
         public DbSet<User> Usuarios { get; set; }
         public DbSet<ParamDirectory> ParamDirectory { get; set; }
         public DbSet<UserPassword> UsersPassword { get; set; }
-        public DbSet<UserImage> UserImages { get; set; }
         public DbSet<TipoAcesso> TiposAcesso { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,9 +70,9 @@ namespace Repository
             modelBuilder.ApplyConfiguration<User>(new UserConfig());
             modelBuilder.ApplyConfiguration<ParamDirectory>(new ParamDirectoryConfig());
             modelBuilder.ApplyConfiguration<UserPassword>(new UserPasswordConfig());
-            modelBuilder.ApplyConfiguration<UserImage>(new UserImageConfig());
             modelBuilder.ApplyConfiguration<TipoAcesso>(new TipoAcessoConfig());
             modelBuilder.ApplyConfiguration<Log>(new LogConfig());
+            modelBuilder.ApplyConfiguration<EmailTemplate>(new EmailTemplateConfig());
 
             base.OnModelCreating(modelBuilder);
         }

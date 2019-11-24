@@ -83,14 +83,14 @@
 
                     <div class="col-md-2">
                         @Html.Label("lblStatus", "Status")
-                        @Html.DropDownList("Status", HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.DropDownList("Status", HelperLista.Status(), "Todos", new { @class = "form-control" })
                     </div>
                 </div>
             </div>
 
             <div class="col-md-2">
-                <a href="@Url.Action("Adicionar", "Livros")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
-                <a href="@Url.Action("Adicionar", "Livros")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
+                <a href="@Url.Action("Adicionar", "PlanosEnsino")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                <a href="@Url.Action("Relatorio", "PlanosEnsino")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
             </div>
 
         </div>

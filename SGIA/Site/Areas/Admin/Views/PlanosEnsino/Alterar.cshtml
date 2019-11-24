@@ -1,7 +1,11 @@
-﻿@model Domain.PlanoEnsino
+﻿@model PlanoEnsinoViewModel
 
 @{
     ViewData["Title"] = "Planos de Ensino - Alterar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -15,94 +19,107 @@
             <div class="card-body">
 
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(a => a.PlanoEnsinoId)
-                @Html.HiddenFor(a => a.DataCadastro)
+                @Html.HiddenFor(a => a.PlanoEnsino.PlanoEnsinoId)
+                @Html.HiddenFor(a => a.PlanoEnsino.DataCadastro)
 
                 <div class="row clearfix">
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.DiciplinaId)
-                        @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.DiciplinaId)
+                        @Html.LabelFor(a => a.PlanoEnsino.DiciplinaId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.DiciplinaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.DiciplinaId)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.UserId)
-                        @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.UserId)
+                        @Html.LabelFor(a => a.PlanoEnsino.UserId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.UserId, HelperLista.Docentes(), "Selecione", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.UserId)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.TurmaId)
-                        @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.TurmaId)
+                        @Html.LabelFor(a => a.PlanoEnsino.TurmaId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.TurmaId, HelperLista.Turmas(), "Selecione", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.TurmaId)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.ObjetivoArea)
-                        @Html.TextBoxFor(a => a.ObjetivoArea, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.ObjetivoArea)
+                        @Html.LabelFor(a => a.PlanoEnsino.ObjetivoArea)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.ObjetivoArea, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.ObjetivoArea)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.ObjetivoGeral)
-                        @Html.TextBoxFor(a => a.ObjetivoGeral, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.ObjetivoGeral)
+                        @Html.LabelFor(a => a.PlanoEnsino.ObjetivoGeral)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.ObjetivoGeral, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.ObjetivoGeral)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.EmentaId)
-                        @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.EmentaId)
+                        @Html.LabelFor(a => a.PlanoEnsino.EmentaId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.EmentaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.EmentaId)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.EspecificacaoConteudo)
-                        @Html.TextBoxFor(a => a.EspecificacaoConteudo, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.EspecificacaoConteudo)
+                        @Html.LabelFor(a => a.PlanoEnsino.EspecificacaoConteudo)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.EspecificacaoConteudo, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.EspecificacaoConteudo)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.MetodologiaAvaliacao)
-                        @Html.TextBoxFor(a => a.MetodologiaAvaliacao, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.MetodologiaAvaliacao)
+                        @Html.LabelFor(a => a.PlanoEnsino.MetodologiaAvaliacao)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.MetodologiaAvaliacao, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.MetodologiaAvaliacao)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.TecnicaPedagogica)
-                        @Html.TextBoxFor(a => a.TecnicaPedagogica, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.TecnicaPedagogica)
+                        @Html.LabelFor(a => a.PlanoEnsino.TecnicaPedagogica)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.TecnicaPedagogica, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.TecnicaPedagogica)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.RecursoUtilizado)
-                        @Html.TextBoxFor(a => a.RecursoUtilizado, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.RecursoUtilizado)
+                        @Html.LabelFor(a => a.PlanoEnsino.RecursoUtilizado)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.RecursoUtilizado, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.RecursoUtilizado)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.AtividadeTrabalhada)
-                        @Html.DropDownListFor(a => a.AtividadeTrabalhada, HelperLista.Editoras(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.AtividadeTrabalhada)
+                        @Html.LabelFor(a => a.PlanoEnsino.AtividadeTrabalhada)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.AtividadeTrabalhada, HelperLista.Editoras(), "Selecione", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.AtividadeTrabalhada)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataEmissao)
-                        @Html.TextBoxFor(a => a.DataEmissao, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DataEmissao)
+                        @Html.LabelFor(a => a.PlanoEnsino.DataEmissao)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.DataEmissao, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.DataEmissao)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.StatusId)
-                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.StatusId)
+                        @Html.LabelFor(a => a.PlanoEnsino.StatusId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.StatusId, HelperLista.Status(), "Selecione", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoEnsino.StatusId)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataCadastro)
-                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.LabelFor(a => a.PlanoEnsino.DataCadastro)
+                        @Html.TextBoxFor(a => a.PlanoEnsino.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
                     </div>
 
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <div class="row clearfix margin-top-40">

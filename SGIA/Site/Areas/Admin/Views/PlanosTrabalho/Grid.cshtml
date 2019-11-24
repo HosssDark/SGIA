@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Repository.Repository.ViewModel.ProjetoViewModel>
+﻿@model IEnumerable<Repository.Repository.ViewModel.PlanoTrabalhoViewModel>
 
 @{
     Layout = null;
@@ -6,14 +6,14 @@
 
 <div class="tab-pane active" id="Courses-all">
     <div class="row row-deck">
-        @foreach (var Projeto in Model)
+        @foreach (var Plano in Model)
         {
             <div class="col-xl-4 col-lg-4 col-md-6">
                 <div class="card">
-                    <a href="#"><img class="card-img-top" src="~/images/gallery/1.jpg" alt=""></a>
+                    <a href="#"><img class="card-img-top" src="@Plano.Image" height="200px" alt=""></a>
                     <div class="card-body d-flex flex-column">
-                        <h5><a href="courses-details.html">@Projeto.Nome</a></h5>
-                        <div class="text-muted">@Projeto.Docente</div>
+                        <h5><a href="#">@Plano.Docente</a></h5>
+                        @*<div class="text-muted">@Plano.Docente</div>*@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-vcenter mb-0">
@@ -21,27 +21,27 @@
                                 <tr>
                                     <td class="w20"><i class="fa fa-calendar"></i></td>
                                     <td class="tx-medium">Data de Cadastro</td>
-                                    <td class="text-right">@Projeto.DataCadastro.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-right">@Plano.DataCadastro.ToString("dd/MM/yyyy")</td>
                                 </tr>
                                 <tr>
                                     <td><i class="fa fa-calendar"></i></td>
-                                    <td class="tx-medium">Carga Horária</td>
-                                    <td class="text-right">@Projeto.CargaHoraria</td>
+                                    <td class="tx-medium">Dia da Semana</td>
+                                    <td class="text-right">@Plano.DiaSemana</td>
                                 </tr>
                                 <tr>
                                     <td><i class="fa fa-calendar"></i></td>
-                                    <td class="tx-medium">Data de Inicio</td>
-                                    <td class="text-right">@Projeto.DataInicio.ToString("dd/MM/yyyy")</td>
+                                    <td class="tx-medium">Horário de Inicio</td>
+                                    <td class="text-right">@Plano.HoraInicio</td>
                                 </tr>
                                 <tr>
                                     <td><i class="fa fa-calendar"></i></td>
-                                    <td class="tx-medium">Data de Término</td>
-                                    <td class="text-right">@Projeto.DataTermino.ToString("dd/MM/yyyy")</td>
+                                    <td class="tx-medium">Horário de Encerramento</td>
+                                    <td class="text-right">@Plano.HoraEncerramento</td>
                                 </tr>
                                 <tr>
                                     <td><i class="fa fa-calendar"></i></td>
                                     <td class="tx-medium">Status</td>
-                                    <td class="text-right">@Projeto.Status</td>
+                                    <td class="text-right">@Plano.Status</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -49,7 +49,7 @@
 
                     <div class="card-footer">
                         <div class="d-flex align-items-center mt-auto">
-                            <a href="@Url.Action("Alterar", "Projetos", new { Id = Projeto.ProjetoId })" class="btn btn-primary btn-sm">Alterar</a>
+                            <a href="@Url.Action("Alterar", "PlanosTrabalho", new { Id = Plano.PlanoTrabalhoId })" class="btn btn-primary btn-sm">Alterar</a>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,8 @@ using Repository;
 using System;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -15,6 +17,14 @@ namespace Site.Areas.Admin.Controllers
         private IUserRepository _userRep = new UserRepository();
         private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public PlanosTrabalhoController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -25,7 +35,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _traRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
+                var Model = _traRep.Grid(Buscar, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -54,32 +64,47 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(PlanoTrabalho Model)
+        public IActionResult Adicionar(PlanoTrabalhoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.UserId == null && Model.UserId == 0)
-                    ModelState.AddModelError("Docente", "Obrigatório");
+                if (Model.PlanoTrabalho.UserId == null && Model.PlanoTrabalho.UserId == 0)
+                    ModelState.AddModelError("PlanoTrabalho_Docente", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.DiaSemana))
-                    ModelState.AddModelError("DiaSemana", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.DiaSemana))
+                    ModelState.AddModelError("PlanoTrabalho_DiaSemana", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.HoraInicio))
-                    ModelState.AddModelError("HoraInicio", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraInicio))
+                    ModelState.AddModelError("PlanoTrabalho_HoraInicio", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.HoraEncerramento))
-                    ModelState.AddModelError("HoraEncerramento", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraEncerramento))
+                    ModelState.AddModelError("PlanoTrabalho_HoraEncerramento", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.DescricaoAtividade))
-                    ModelState.AddModelError("DescricaoAtividade", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.DescricaoAtividade))
+                    ModelState.AddModelError("PlanoTrabalho_DescricaoAtividade", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _traRep.Add(Model);
+                    _traRep.Add(Model.PlanoTrabalho);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "PlanosTrabalho", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -109,7 +134,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_traRep.GetById(Id));
+                PlanoTrabalhoViewModel Model = new PlanoTrabalhoViewModel()
+                {
+                    PlanoTrabalho = _traRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -131,32 +161,47 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(PlanoTrabalho Model)
+        public IActionResult Alterar(PlanoTrabalhoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.UserId == null && Model.UserId == 0)
-                    ModelState.AddModelError("Docente", "Obrigatório");
+                if (Model.PlanoTrabalho.UserId == null && Model.PlanoTrabalho.UserId == 0)
+                    ModelState.AddModelError("PlanoTrabalho_Docente", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.DiaSemana))
-                    ModelState.AddModelError("DiaSemana", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.DiaSemana))
+                    ModelState.AddModelError("PlanoTrabalho_DiaSemana", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.HoraInicio))
-                    ModelState.AddModelError("HoraInicio", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraInicio))
+                    ModelState.AddModelError("PlanoTrabalho_HoraInicio", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.HoraEncerramento))
-                    ModelState.AddModelError("HoraEncerramento", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraEncerramento))
+                    ModelState.AddModelError("PlanoTrabalho_HoraEncerramento", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.DescricaoAtividade))
-                    ModelState.AddModelError("DescricaoAtividade", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoTrabalho.DescricaoAtividade))
+                    ModelState.AddModelError("PlanoTrabalho_DescricaoAtividade", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _traRep.Attach(Model);
+                    _traRep.Attach(Model.PlanoTrabalho);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "PlanosTrabalho", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -232,7 +277,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

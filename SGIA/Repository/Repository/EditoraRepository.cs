@@ -27,9 +27,10 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<EditoraViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<EditoraViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from ed in this.GetAll()
                          join sta in _staRep.GetAll() on ed.StatusId equals sta.StatusId
@@ -39,7 +40,8 @@ namespace Repository
                              Nome = ed.Nome,
                              StatusId = ed.StatusId,
                              Status = sta.Descricao,
-                             DataCadastro = ed.DataCadastro
+                             DataCadastro = ed.DataCadastro,
+                             Image = paramRep.GetImage(ed.EditoraId, "images", "Dicentes", "Dicente", Direct)
                          });
 
             #region + Filtro

@@ -5,6 +5,8 @@ using Repository;
 using System;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -14,17 +16,26 @@ namespace Site.Areas.Admin.Controllers
     {
         private IDicenteRepository _dicRep = new DicenteRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public DicentesController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null, 
+                                  DateTime? DataInicial = null, DateTime? DataFinal = null)
         {
             try
             {
-                var Model = _dicRep.Grid(Buscar, StatusId, Matricula, DataInicial, DataFinal);
+                var Model = _dicRep.Grid(Buscar, StatusId, Matricula, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -53,29 +64,44 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Dicente Model)
+        public IActionResult Adicionar(DicenteViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.Matricula == null && Model.Matricula == 0)
-                    ModelState.AddModelError("Matricula", "Obrigatório");
+                if (Model.Dicente.Matricula == null && Model.Dicente.Matricula == 0)
+                    ModelState.AddModelError("Dicente_Matricula", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Dicente.Nome))
+                    ModelState.AddModelError("Dicente_Nome", "Obrigatório");
 
-                if (!string.IsNullOrEmpty(Model.Email))
+                if (!string.IsNullOrEmpty(Model.Dicente.Email))
                 {
-                    if (!FunctionsValidate.ValidateEmail(Model.Email))
-                        ModelState.AddModelError("Email", "Email Inválido!");
+                    if (!FunctionsValidate.ValidateEmail(Model.Dicente.Email))
+                        ModelState.AddModelError("Dicente_Email", "Email Inválido!");
                 }
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _dicRep.Add(Model);
+                    _dicRep.Add(Model.Dicente);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Dicentes", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -105,7 +131,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_dicRep.GetById(Id));
+                DicenteViewModel Model = new DicenteViewModel()
+                {
+                    Dicente = _dicRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -127,29 +158,44 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Dicente Model)
+        public IActionResult Alterar(DicenteViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.Matricula == null && Model.Matricula == 0)
-                    ModelState.AddModelError("Matricula", "Obrigatório");
+                if (Model.Dicente.Matricula == null && Model.Dicente.Matricula == 0)
+                    ModelState.AddModelError("Dicente_Matricula", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Dicente.Nome))
+                    ModelState.AddModelError("Dicente_Nome", "Obrigatório");
 
-                if (!string.IsNullOrEmpty(Model.Email))
+                if (!string.IsNullOrEmpty(Model.Dicente.Email))
                 {
-                    if (!FunctionsValidate.ValidateEmail(Model.Email))
-                        ModelState.AddModelError("Email", "Email Inválido!");
+                    if (!FunctionsValidate.ValidateEmail(Model.Dicente.Email))
+                        ModelState.AddModelError("Dicente_Email", "Email Inválido!");
                 }
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _dicRep.Attach(Model);
+                    _dicRep.Attach(Model.Dicente);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Dicentes", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -172,6 +218,30 @@ namespace Site.Areas.Admin.Controllers
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return View(Model);
+            }
+        }
+
+        public IActionResult Detalhes(int Id)
+        {
+            try
+            {
+                return View(_dicRep.GetById(Id));
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Dicentes",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
             }
         }
 

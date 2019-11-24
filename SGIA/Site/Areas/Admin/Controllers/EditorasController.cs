@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
-using Rotativa.AspNetCore;
-using Rotativa.AspNetCore.Options;
+using System.IO;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -13,6 +15,14 @@ namespace Site.Areas.Admin.Controllers
     {
         private IEditoraRepository _ediRep = new EditoraRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public EditorasController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -23,7 +33,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _ediRep.Grid(Buscar, StatusId, DataInicial, DataInicial);
+                var Model = _ediRep.Grid(Buscar, StatusId, DataInicial, DataInicial, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -52,20 +62,34 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Editora Model)
+        public IActionResult Adicionar(EditoraViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Editora.Nome))
+                    ModelState.AddModelError("Editora_Nome", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ediRep.Add(Model);
+                    _ediRep.Add(Model.Editora);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Editoras", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
 
                     TempData["Success"] = "Registro gravado com sucesso";
 
@@ -96,7 +120,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_ediRep.GetById(Id));
+                EditoraViewModel Model = new EditoraViewModel()
+                {
+                    Editora = _ediRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -118,20 +147,35 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Editora Model)
+        public IActionResult Alterar(EditoraViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Editora.Nome))
+                    ModelState.AddModelError("Editora_Nome", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ediRep.Attach(Model);
+                    _ediRep.Attach(Model.Editora);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Editoras", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");

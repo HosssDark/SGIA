@@ -1,9 +1,11 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Site.Areas.Admin.Controllers
@@ -14,6 +16,14 @@ namespace Site.Areas.Admin.Controllers
     {
         private IDiciplinaRepository _dicRep = new DiciplinaRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public DiciplinasController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -24,7 +34,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _dicRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
+                var Model = _dicRep.Grid(Buscar, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -53,41 +63,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Diciplina Model)
+        public IActionResult Adicionar(DiciplinaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Diciplina.Nome))
+                    ModelState.AddModelError("Diciplina_Nome", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Ementa))
-                    ModelState.AddModelError("Ementa", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Diciplina.Ementa))
+                    ModelState.AddModelError("Diciplina_Ementa", "Obrigatório");
 
-                if (Model.CargaHoraria == null && Model.CargaHoraria >= 0)
-                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria == null && Model.Diciplina.CargaHoraria >= 0)
+                    ModelState.AddModelError("Diciplina_CargaHoraria", "Obrigatório");
 
-                if (Model.HoraSemanal == null && Model.HoraSemanal >= 0)
-                    ModelState.AddModelError("HoraSemanal", "Obrigatório");
+                if (Model.Diciplina.HoraSemanal == null && Model.Diciplina.HoraSemanal >= 0)
+                    ModelState.AddModelError("Diciplina_HoraSemanal", "Obrigatório");
 
-                if (Model.CreditoEnsino == null && Model.CreditoEnsino >= 0)
-                    ModelState.AddModelError("CreditoEnsino", "Obrigatório");
+                if (Model.Diciplina.CreditoEnsino == null && Model.Diciplina.CreditoEnsino >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoEnsino", "Obrigatório");
 
-                if (Model.CreditoAtividadePratica == null && Model.CreditoAtividadePratica >= 0)
-                    ModelState.AddModelError("CreditoAtividadePratica", "Obrigatório");
+                if (Model.Diciplina.CreditoAtividadePratica == null && Model.Diciplina.CreditoAtividadePratica >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoAtividadePratica", "Obrigatório");
 
-                if (Model.CreditoAtividadeCampo == null && Model.CreditoAtividadeCampo >= 0)
-                    ModelState.AddModelError("CreditoAtividadeCampo", "Obrigatório");
+                if (Model.Diciplina.CreditoAtividadeCampo == null && Model.Diciplina.CreditoAtividadeCampo >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoAtividadeCampo", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    Model.DataCadastro = DateTime.Now;
-                    Model.StatusId = 1;
+                    _dicRep.Add(Model.Diciplina);
 
-                    _dicRep.Add(Model);
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+                    
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -117,7 +139,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_dicRep.GetById(Id));
+                DiciplinaViewModel Model = new DiciplinaViewModel()
+                {
+                    Diciplina = _dicRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -139,38 +166,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Diciplina Model)
+        public IActionResult Alterar(DiciplinaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
-                    ModelState.AddModelError("Nome", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Diciplina.Nome))
+                    ModelState.AddModelError("Diciplina_Nome", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Ementa))
-                    ModelState.AddModelError("Ementa", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Diciplina.Ementa))
+                    ModelState.AddModelError("Diciplina_Ementa", "Obrigatório");
 
-                if (Model.CargaHoraria == null && Model.CargaHoraria >= 0)
-                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria == null && Model.Diciplina.CargaHoraria >= 0)
+                    ModelState.AddModelError("Diciplina_CargaHoraria", "Obrigatório");
 
-                if (Model.HoraSemanal == null && Model.HoraSemanal >= 0)
-                    ModelState.AddModelError("HoraSemanal", "Obrigatório");
+                if (Model.Diciplina.HoraSemanal == null && Model.Diciplina.HoraSemanal >= 0)
+                    ModelState.AddModelError("Diciplina_HoraSemanal", "Obrigatório");
 
-                if (Model.CreditoEnsino == null && Model.CreditoEnsino >= 0)
-                    ModelState.AddModelError("CreditoEnsino", "Obrigatório");
+                if (Model.Diciplina.CreditoEnsino == null && Model.Diciplina.CreditoEnsino >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoEnsino", "Obrigatório");
 
-                if (Model.CreditoAtividadePratica == null && Model.CreditoAtividadePratica >= 0)
-                    ModelState.AddModelError("CreditoAtividadePratica", "Obrigatório");
+                if (Model.Diciplina.CreditoAtividadePratica == null && Model.Diciplina.CreditoAtividadePratica >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoAtividadePratica", "Obrigatório");
 
-                if (Model.CreditoAtividadeCampo == null && Model.CreditoAtividadeCampo >= 0)
-                    ModelState.AddModelError("CreditoAtividadeCampo", "Obrigatório");
+                if (Model.Diciplina.CreditoAtividadeCampo == null && Model.Diciplina.CreditoAtividadeCampo >= 0)
+                    ModelState.AddModelError("Diciplina_CreditoAtividadeCampo", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _dicRep.Attach(Model);
+                    _dicRep.Attach(Model.Diciplina);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -246,7 +288,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

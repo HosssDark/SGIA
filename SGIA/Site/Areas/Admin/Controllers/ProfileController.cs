@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Domain;
 using Functions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 
@@ -18,23 +19,24 @@ namespace Site.Areas.Admin.Controllers
         private ITituloRepository _titRep = new TituloRepository();
         private ITipoDocenteRepository _tipRep = new TipoDocenteRepository();
         private IStatusRepository _staRep = new StatusRepository();
-        private IUserImageRepository _imgRep = new UserImageRepository();
         private ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
         private ILogRepository _LogRep = new LogRepository();
-
+        private readonly IHostingEnvironment _appEnvironment;
         private LoginUser _LoginUser;
 
-        public ProfileController(LoginUser loginUser)
+        public ProfileController(LoginUser loginUser, IHostingEnvironment appEnvironment)
         {
             _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
         }
 
         public IActionResult Index()
         {
             try
             {
+                IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
+
                 var User = _userRep.Get(a => a.UserId == _LoginUser.GetUser().UserId);
-                var Image = _imgRep.Get(a => a.UserId == _LoginUser.GetUser().UserId);
 
                 var Model = (from use in User
                              join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
@@ -45,8 +47,6 @@ namespace Site.Areas.Admin.Controllers
                              from tp in r3.DefaultIfEmpty()
                              join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
                              join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId
-                             join img in Image on use.UserId equals img.UserId into r4
-                             from img in r4.DefaultIfEmpty()
                              where use.UserId == _LoginUser.GetUser().UserId
                              select new UserViewModel
                              {
@@ -58,7 +58,7 @@ namespace Site.Areas.Admin.Controllers
                                  Status = sta.Descricao,
                                  Classe = sta.Classe,
                                  Cor = sta.Cor,
-                                 Image = img != null ? img.Dados : null
+                                 Image = paramRep.GetImageUser(_LoginUser.GetUser().UserId, "images", "Usuarios", "Usuario", _appEnvironment.WebRootPath)
                              }).FirstOrDefault();
 
                 return View(Model);
@@ -110,25 +110,24 @@ namespace Site.Areas.Admin.Controllers
                 {
                     _userRep.Attach(Model.User);
 
-                    if (Model.Arquivo != null)
+                    if (Model.File != null)
                     {
-                        IUserImageRepository imgRep = new UserImageRepository();
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
 
-                        var filePath = Path.GetTempFileName();
-                        var Info = new FileInfo(filePath);
+                        var Info = new FileInfo(Model.File.FileName);
 
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
                         {
-                            Model.Arquivo.CopyToAsync(stream);
+                            Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "Usuarios", Model.Arquivo.FileName, _LoginUser.GetUser().UserId, Info.Extension);
+                            imgRep.SalvarArquivo(stream, "images", "Usuarios", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";
                 }
 
-                return View("Index", Model);
+                return RedirectToAction("Index");
             }
             catch (Exception Error)
             {
@@ -247,16 +246,6 @@ namespace Site.Areas.Admin.Controllers
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return View("Index", Model);
             }
-        }
-
-        [HttpGet]
-        public FileStreamResult ToSeeImagem(int Id)
-        {
-            UserImage imagem = _imgRep.GetById(Id);
-
-            MemoryStream Ms = new MemoryStream(imagem.Dados);
-
-            return new FileStreamResult(Ms, imagem.ContentType);
         }
     }
 }

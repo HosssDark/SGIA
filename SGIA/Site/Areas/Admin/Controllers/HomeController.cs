@@ -31,10 +31,6 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                IUserImageRepository imgRep = new UserImageRepository();
-
-                ViewBag.HaveImg = imgRep.Get(a => a.UserId == _LoginUser.GetUser().UserId).Any(a => a.Dados != null);
-
                 return View(_LoginUser.GetUser());
             }
             catch (Exception)

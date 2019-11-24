@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
@@ -13,6 +15,14 @@ namespace Site.Areas.Admin.Controllers
     {
         private IProjetoRepository _proRep = new ProjetoRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public ProjetosController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -23,7 +33,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _proRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
+                var Model = _proRep.Grid(Buscar, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -52,32 +62,47 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Projeto Model)
+        public IActionResult Adicionar(ProjetoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
+                if (string.IsNullOrEmpty(Model.Projeto.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
+                if (Model.Projeto.UserId == null && Model.Projeto.UserId == 0)
                     ModelState.AddModelError("DocenteId", "Obrigatório");
 
-                if (Model.CargaHoraria == null && Model.CargaHoraria >= 0)
+                if (Model.Projeto.CargaHoraria == null && Model.Projeto.CargaHoraria >= 0)
                     ModelState.AddModelError("DocenteId", "Obrigatório");
 
-                if (Model.DataInicio == null && Model.DataInicio == DateTime.MinValue)
+                if (Model.Projeto.DataInicio == null && Model.Projeto.DataInicio == DateTime.MinValue)
                     ModelState.AddModelError("DataInicio", "Obrigatório");
 
-                if (Model.DataTermino == null && Model.DataTermino == DateTime.MinValue)
+                if (Model.Projeto.DataTermino == null && Model.Projeto.DataTermino == DateTime.MinValue)
                     ModelState.AddModelError("DataTermino", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _proRep.Add(Model);
+                    _proRep.Add(Model.Projeto);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Projetos", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     ViewData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -107,7 +132,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_proRep.GetById(Id));
+                ProjetoViewModel Model = new ProjetoViewModel()
+                {
+                    Projeto = _proRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -129,32 +159,47 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Projeto Model)
+        public IActionResult Alterar(ProjetoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
+                if (string.IsNullOrEmpty(Model.Projeto.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
+                if (Model.Projeto.UserId == null && Model.Projeto.UserId == 0)
                     ModelState.AddModelError("DocenteId", "Obrigatório");
 
-                if (Model.CargaHoraria == null && Model.CargaHoraria >= 0)
+                if (Model.Projeto.CargaHoraria == null && Model.Projeto.CargaHoraria >= 0)
                     ModelState.AddModelError("DocenteId", "Obrigatório");
 
-                if (Model.DataInicio == null && Model.DataInicio == DateTime.MinValue)
+                if (Model.Projeto.DataInicio == null && Model.Projeto.DataInicio == DateTime.MinValue)
                     ModelState.AddModelError("DataInicio", "Obrigatório");
 
-                if (Model.DataTermino == null && Model.DataTermino == DateTime.MinValue)
+                if (Model.Projeto.DataTermino == null && Model.Projeto.DataTermino == DateTime.MinValue)
                     ModelState.AddModelError("DataTermino", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _proRep.Attach(Model);
+                    _proRep.Attach(Model.Projeto);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Projetos", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -206,7 +251,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

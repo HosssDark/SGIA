@@ -5,6 +5,7 @@ using Repository;
 using System;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -14,6 +15,12 @@ namespace Site.Areas.Admin.Controllers
     {
         private IUserRepository _userRep = new UserRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+
+        public UserController(IHostingEnvironment appEnvironment)
+        {
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -24,7 +31,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _userRep.Grid(Buscar, StatusId, AreaAtuacaoId, DataInicial, DataFinal);
+                var Model = _userRep.Grid(Buscar, StatusId, AreaAtuacaoId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -235,7 +242,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

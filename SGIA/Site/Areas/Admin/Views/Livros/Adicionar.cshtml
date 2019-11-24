@@ -1,6 +1,10 @@
-﻿@model Domain.Livro
+﻿@model LivroViewModel
 @{
     ViewData["Title"] = "Livros - Adicionar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -17,36 +21,49 @@
 
                 <div class="row clearfix">
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Titulo)
-                        @Html.TextBoxFor(a => a.Titulo, "", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.Titulo)
+                        @Html.LabelFor(a => a.Livro.Titulo)
+                        @Html.TextBoxFor(a => a.Livro.Titulo, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Livro.Titulo)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Autor)
-                        @Html.TextBoxFor(a => a.Autor, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Autor)
+                        @Html.LabelFor(a => a.Livro.Autor)
+                        @Html.TextBoxFor(a => a.Livro.Autor, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Livro.Autor)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.EditoraId)
-                        @Html.DropDownListFor(a => a.EditoraId, HelperLista.Editoras(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.EditoraId)
+                        @Html.LabelFor(a => a.Livro.EditoraId)
+                        @Html.DropDownListFor(a => a.Livro.EditoraId, HelperLista.Editoras(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Livro.EditoraId)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataPublicacao)
-                        @Html.TextBoxFor(a => a.DataPublicacao, "", new { @class = "form-control date" })
-                        @Html.ValidationMessageFor(a => a.DataPublicacao)
+                        @Html.LabelFor(a => a.Livro.DataPublicacao)
+                        @Html.TextBoxFor(a => a.Livro.DataPublicacao, "", new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(a => a.Livro.DataPublicacao)
                     </div>
 
                 </div>
 
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        @Html.LabelFor(a => a.AreaConhecimento)
-                        @Html.TextAreaFor(a => a.AreaConhecimento, 6, 30, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.AreaConhecimento)
+                        @Html.LabelFor(a => a.Livro.AreaConhecimento)
+                        @Html.TextAreaFor(a => a.Livro.AreaConhecimento, 6, 30, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Livro.AreaConhecimento)
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
                     </div>
                 </div>
 

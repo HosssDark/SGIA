@@ -1,7 +1,11 @@
-﻿@model Domain.Dicente
+﻿@model DicenteViewModel
 
 @{
     ViewData["Title"] = "Dicentes - Alterar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -15,57 +19,66 @@
 
             <div class="card-body">
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(a => a.DicenteId)
-                @Html.HiddenFor(a => a.DataCadastro)
+                @Html.HiddenFor(a => a.Dicente.DicenteId)
+                @Html.HiddenFor(a => a.Dicente.DataCadastro)
 
                 <div class="row">
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.Matricula)
-                        @Html.TextBoxFor(a => a.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.Matricula)
+                        @Html.LabelFor(a => a.Dicente.Matricula)
+                        @Html.TextBoxFor(a => a.Dicente.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.Dicente.Matricula)
                     </div>
 
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Nome)
-                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Nome)
+                        @Html.LabelFor(a => a.Dicente.Nome)
+                        @Html.TextBoxFor(a => a.Dicente.Nome, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Dicente.Nome)
                     </div>
-                </div>
 
-                <div class="row">
                     <div class="col-md-4">
-                        @Html.LabelFor(a => a.Email)
-                        @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Email)
+                        @Html.LabelFor(a => a.Dicente.Email)
+                        @Html.TextBoxFor(a => a.Dicente.Email, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Dicente.Email)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.Telefone)
-                        @Html.TextBoxFor(a => a.Telefone, "", new { @class = "form-control celular" })
-                        @Html.ValidationMessageFor(a => a.Telefone)
+                        @Html.LabelFor(a => a.Dicente.Telefone)
+                        @Html.TextBoxFor(a => a.Dicente.Telefone, "", new { @class = "form-control celular" })
+                        @Html.ValidationMessageFor(a => a.Dicente.Telefone)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.Celular)
-                        @Html.TextBoxFor(a => a.Celular, "", new { @class = "form-control celular" })
-                        @Html.ValidationMessageFor(a => a.Celular)
+                        @Html.LabelFor(a => a.Dicente.Celular)
+                        @Html.TextBoxFor(a => a.Dicente.Celular, "", new { @class = "form-control celular" })
+                        @Html.ValidationMessageFor(a => a.Dicente.Celular)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.StatusId)
-                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.StatusId)
+                        @Html.LabelFor(a => a.Dicente.StatusId)
+                        @Html.DropDownListFor(a => a.Dicente.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Dicente.StatusId)
                     </div>
 
                     <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataCadastro)
-                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                        @Html.LabelFor(a => a.Dicente.DataCadastro)
+                        @Html.TextBoxFor(a => a.Dicente.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
                     </div>
                 </div>
 
-                <br />
+                <div class="row clearfix margin-top-40">
 
-                <div class="footer-view">
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
                         <a href="@Url.Action("Index", "Dicentes")" class="btn btn-default fa-pull-right">Fechar</a>

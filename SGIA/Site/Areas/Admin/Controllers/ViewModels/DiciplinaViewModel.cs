@@ -1,8 +1,20 @@
-﻿using System;
+﻿using Domain;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Site
 {
-    public class DiciplinaRelatorioViewModel
+    public class DiciplinaViewModel
+    {
+        public Diciplina Diciplina { get; set; }
+        public string Image { get; set; }
+
+        [Display(Name = "Imagem")]
+        public IFormFile File { get; set; }
+    }
+
+    public class DiciplinaReportViewModel
     {
         public int TurmaId { get; set; }
         public int StatusId { get; set; }

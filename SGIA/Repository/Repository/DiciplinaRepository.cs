@@ -27,9 +27,10 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<DiciplinaViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<DiciplinaViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from dp in this.GetAll()
                          join sta in _staRep.GetAll() on dp.StatusId equals sta.StatusId
@@ -47,6 +48,7 @@ namespace Repository
                              Nome = dp.Nome,
                              DataCadastro = dp.DataCadastro,
                              Status = sta.Descricao,
+                             Image = paramRep.GetImage(dp.DiciplinaId, "images", "Diciplinas", "Diciplina", Direct)
                          });
 
             #region + Filters

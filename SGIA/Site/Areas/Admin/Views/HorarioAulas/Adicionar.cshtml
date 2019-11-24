@@ -1,7 +1,11 @@
-﻿@model Domain.HorarioAula
+﻿@model HorarioAulaViewModel
 
 @{
     ViewData["Title"] = "Horários de Aula - Adicionar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -18,45 +22,58 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiaSemana)
-                        @Html.DropDownListFor(a => a.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.DiaSemana)
+                        @Html.LabelFor(a => a.HorarioAula.DiaSemana)
+                        @Html.DropDownListFor(a => a.HorarioAula.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.DiaSemana)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiciplinaPrimeiroId)
-                        @Html.DropDownListFor(a => a.DiciplinaPrimeiroId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DiciplinaPrimeiroId)
+                        @Html.LabelFor(a => a.HorarioAula.DiciplinaPrimeiroId)
+                        @Html.DropDownListFor(a => a.HorarioAula.DiciplinaPrimeiroId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.DiciplinaPrimeiroId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiciplinaSegundoId)
-                        @Html.DropDownListFor(a => a.DiciplinaSegundoId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DiciplinaSegundoId)
+                        @Html.LabelFor(a => a.HorarioAula.DiciplinaSegundoId)
+                        @Html.DropDownListFor(a => a.HorarioAula.DiciplinaSegundoId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.DiciplinaSegundoId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiciplinaTerceiroId)
-                        @Html.DropDownListFor(a => a.DiciplinaTerceiroId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DiciplinaTerceiroId)
+                        @Html.LabelFor(a => a.HorarioAula.DiciplinaTerceiroId)
+                        @Html.DropDownListFor(a => a.HorarioAula.DiciplinaTerceiroId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.DiciplinaTerceiroId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiciplinaQuartoId)
-                        @Html.DropDownListFor(a => a.DiciplinaQuartoId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DiciplinaQuartoId)
+                        @Html.LabelFor(a => a.HorarioAula.DiciplinaQuartoId)
+                        @Html.DropDownListFor(a => a.HorarioAula.DiciplinaQuartoId, HelperLista.Diciplinas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.DiciplinaQuartoId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.TurmaId)
-                        @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.TurmaId)
+                        @Html.LabelFor(a => a.HorarioAula.TurmaId)
+                        @Html.DropDownListFor(a => a.HorarioAula.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.TurmaId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.Periodo)
-                        @Html.DropDownListFor(a => a.Periodo, HelperLista.Periodo(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Periodo)
+                        @Html.LabelFor(a => a.HorarioAula.Periodo)
+                        @Html.DropDownListFor(a => a.HorarioAula.Periodo, HelperLista.Periodo(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.HorarioAula.Periodo)
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
                     </div>
                 </div>
 

@@ -7,6 +7,8 @@ namespace Repository
 {
     public interface ILivroRepository : IRepositoryBase<Livro>, IDisposable
     {
-        IEnumerable<LivroViewModel> Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null);
+        IEnumerable<LivroViewModel> Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "");
+
+        IEnumerable<LivroViewModel> Report();
     }
 }

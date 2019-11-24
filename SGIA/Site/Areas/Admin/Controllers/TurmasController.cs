@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
-using Site.Areas.Admin.Controllers.ViewModels;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -16,6 +15,14 @@ namespace Site.Areas.Admin.Controllers
     {
         private ITurmaRepository _turmRep = new TurmaRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public TurmasController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -26,7 +33,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _turmRep.Grid(Buscar, StatusId, DataInicial, DataFinal);
+                var Model = _turmRep.Grid(Buscar, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -55,38 +62,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Turma Model)
+        public IActionResult Adicionar(TurmaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
+                if (string.IsNullOrEmpty(Model.Turma.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.DataCadastro == null && Model.DataCadastro == DateTime.MinValue)
+                if (Model.Turma.DataCadastro == null && Model.Turma.DataCadastro == DateTime.MinValue)
                     ModelState.AddModelError("DataCadastro", "Obrigatório");
 
-                if (Model.QtdeSemestres == null && Model.QtdeSemestres == 0)
+                if (Model.Turma.QtdeSemestres == null && Model.Turma.QtdeSemestres == 0)
                     ModelState.AddModelError("QtdeSemestres", "Obrigatório");
 
-                if (Model.QtdeSemestres <= 0)
+                if (Model.Turma.QtdeSemestres <= 0)
                     ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
 
-                if (Model.Duracao == null && Model.Duracao == 0)
+                if (Model.Turma.Duracao == null && Model.Turma.Duracao == 0)
                     ModelState.AddModelError("Duracao", "Obrigatório");
 
-                if (Model.Duracao <= 0)
+                if (Model.Turma.Duracao <= 0)
                     ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
 
-                if (Model.CoordenadorId == null && Model.CoordenadorId == 0)
+                if (Model.Turma.CoordenadorId == null && Model.Turma.CoordenadorId == 0)
                     ModelState.AddModelError("Coordenador", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _turmRep.Add(Model);
+                    _turmRep.Add(Model.Turma);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Turmas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -138,38 +160,53 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Turma Model)
+        public IActionResult Alterar(TurmaViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Nome))
+                if (string.IsNullOrEmpty(Model.Turma.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.DataCadastro == null && Model.DataCadastro == DateTime.MinValue)
+                if (Model.Turma.DataCadastro == null && Model.Turma.DataCadastro == DateTime.MinValue)
                     ModelState.AddModelError("DataCadastro", "Obrigatório");
 
-                if (Model.QtdeSemestres == null && Model.QtdeSemestres == 0)
+                if (Model.Turma.QtdeSemestres == null && Model.Turma.QtdeSemestres == 0)
                     ModelState.AddModelError("QtdeSemestres", "Obrigatório");
 
-                if (Model.QtdeSemestres <= 0)
+                if (Model.Turma.QtdeSemestres <= 0)
                     ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
 
-                if (Model.Duracao == null && Model.Duracao == 0)
+                if (Model.Turma.Duracao == null && Model.Turma.Duracao == 0)
                     ModelState.AddModelError("Duracao", "Obrigatório");
 
-                if (Model.Duracao <= 0)
+                if (Model.Turma.Duracao <= 0)
                     ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
 
-                if (Model.CoordenadorId == null && Model.CoordenadorId == 0)
+                if (Model.Turma.CoordenadorId == null && Model.Turma.CoordenadorId == 0)
                     ModelState.AddModelError("Coordenador", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _turmRep.Attach(Model);
+                    _turmRep.Attach(Model.Turma);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Turmas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -221,7 +258,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

@@ -1,8 +1,13 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -14,6 +19,14 @@ namespace Site.Areas.Admin.Controllers
         private IEditoraRepository _ediRep = new EditoraRepository();
         private IStatusRepository _staRep = new StatusRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public LivrosController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -24,7 +37,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _livRep.Grid(Buscar, StatusId, EditoraId, DataInicial, DataFinal);
+                var Model = _livRep.Grid(Buscar, StatusId, EditoraId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -53,29 +66,44 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(Livro Model)
+        public IActionResult Adicionar(LivroViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Titulo))
-                    ModelState.AddModelError("Titulo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.Titulo))
+                    ModelState.AddModelError("Livro_Titulo", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Autor))
-                    ModelState.AddModelError("Autor", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.Autor))
+                    ModelState.AddModelError("Livro_Autor", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.AreaConhecimento))
-                    ModelState.AddModelError("AreaConhecimento", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.AreaConhecimento))
+                    ModelState.AddModelError("Livro_AreaConhecimento", "Obrigatório");
 
-                if (Model.DataPublicacao == null && Model.DataPublicacao == DateTime.MinValue)
-                    ModelState.AddModelError("DataPublicacao", "Obrigatório");
+                if (Model.Livro.DataPublicacao == null && Model.Livro.DataPublicacao == DateTime.MinValue)
+                    ModelState.AddModelError("Livro_DataPublicacao", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _livRep.Add(Model);
+                    _livRep.Add(Model.Livro);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Livros", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -105,7 +133,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_livRep.GetById(Id));
+                LivroViewModel Model = new LivroViewModel()
+                {
+                    Livro = _livRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -127,29 +160,44 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(Livro Model)
+        public IActionResult Alterar(LivroViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (string.IsNullOrEmpty(Model.Titulo))
-                    ModelState.AddModelError("Titulo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.Titulo))
+                    ModelState.AddModelError("Livro_Titulo", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.Autor))
-                    ModelState.AddModelError("Autor", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.Autor))
+                    ModelState.AddModelError("Livro_Autor", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.AreaConhecimento))
-                    ModelState.AddModelError("AreaConhecimento", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Livro.AreaConhecimento))
+                    ModelState.AddModelError("Livro_AreaConhecimento", "Obrigatório");
 
-                if (Model.DataPublicacao == null && Model.DataPublicacao == DateTime.MinValue)
-                    ModelState.AddModelError("DataPublicacao", "Obrigatório");
+                if (Model.Livro.DataPublicacao == null && Model.Livro.DataPublicacao == DateTime.MinValue)
+                    ModelState.AddModelError("Livro_DataPublicacao", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _livRep.Attach(Model);
+                    _livRep.Attach(Model.Livro);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "Livros", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -195,6 +243,91 @@ namespace Site.Areas.Admin.Controllers
                 #endregion
 
                 TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+
+        public IActionResult Relatorio()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Livros",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Registro não encontrado!";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Relatorio(LivroReportViewModel Model)
+        {
+            try
+            {
+                var List = _livRep.Report();
+
+                #region + Filters
+
+                //if (Model.StatusId != 0)
+                //    List = List.Where(a => a.StatusId == Model.StatusId);
+
+                //if (Model.TurmaId != 0)
+                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+
+                //if (Model.DataInicial != null)
+                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+
+                //if (Model.DataFinal != null)
+                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+
+                #endregion
+
+                string Footer = "--outline --margin-bottom 15  --footer-right \"Página [page]/[toPage]\" --footer-font-size \"9\" --footer-spacing 4 ";
+
+                if (Model.Formato == "pdf")
+                {
+                    var pdf = new ViewAsPdf
+                    {
+                        ViewName = "",
+                        Model = List,
+                        PageSize = Size.A4,
+                        CustomSwitches = Footer,
+                    };
+
+                    return pdf;
+                }
+                else
+                    return View("", List);
+
+            }
+            catch (Exception Error)
+            {
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Livros",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                TempData["Error"] = "Erro ao tentar Alterar o Registro!";
                 return RedirectToAction("Index");
             }
         }

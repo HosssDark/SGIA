@@ -27,13 +27,14 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<PlanoEnsinoViewModel> Grid(string Buscar, int? TurmaId = null, int? DiciplinaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<PlanoEnsinoViewModel> Grid(string Buscar, int? TurmaId = null, int? DiciplinaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IPlanoEnsinoRepository _ensRep = new PlanoEnsinoRepository();
             IDiciplinaRepository _dicRep = new DiciplinaRepository();
             IUserRepository _userRep = new UserRepository();
             ITurmaRepository _turRep = new TurmaRepository();
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from pl in _ensRep.GetAll()
                          join dp in _dicRep.GetAll() on pl.DiciplinaId equals dp.DiciplinaId
@@ -62,7 +63,8 @@ namespace Repository
                              RecursoUtilizado = pl.RecursoUtilizado,
                              Status = sta.Descricao,
                              TecnicaPedagogica = pl.TecnicaPedagogica,
-                             Turma = tm.Nome
+                             Turma = tm.Nome,
+                             Image = paramRep.GetImage(pl.PlanoEnsinoId, "images", "PlanosEnsino", "PlanoEnsino", Direct)
                          });
 
             #region + Filtro

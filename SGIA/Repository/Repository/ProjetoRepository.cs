@@ -27,10 +27,11 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<ProjetoViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<ProjetoViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IUserRepository _userRep = new UserRepository();
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from pj in this.GetAll()
                          join use in _userRep.GetAll() on pj.UserId equals use.UserId
@@ -46,7 +47,9 @@ namespace Repository
                              CargaHoraria = pj.CargaHoraria,
                              DataCadastro = pj.DataCadastro,
                              DataInicio = pj.DataInicio,
-                             DataTermino = pj.DataTermino
+                             DataTermino = pj.DataTermino,
+                             StatusIcon = sta.Icon,
+                             Image = paramRep.GetImage(pj.ProjetoId, "images", "Projetos", "Projeto", Direct)
                          });
 
             #region + Filtro

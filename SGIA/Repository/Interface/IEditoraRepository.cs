@@ -7,6 +7,6 @@ namespace Repository
 {
     public interface IEditoraRepository : IRepositoryBase<Editora>, IDisposable
     {
-        IEnumerable<EditoraViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null);
+        IEnumerable<EditoraViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "");
     }
 }

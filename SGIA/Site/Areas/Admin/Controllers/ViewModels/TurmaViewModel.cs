@@ -1,11 +1,17 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Site.Areas.Admin.Controllers.ViewModels
+namespace Site
 {
     public class TurmaViewModel
     {
+        public Turma Turma { get; set; }
+        public string Image { get; set; }
 
+        [Display(Name = "Imagem")]
+        public IFormFile File { get; set; }
     }
 
     public class TurmaDetalhesViewModel

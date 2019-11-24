@@ -10,6 +10,8 @@
 
             $('#Status, #Editora').change(search);
 
+            $('#Buscar').keyup(search);
+
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
                 dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
@@ -83,7 +85,7 @@
 
                     <div class="col-md-2">
                         @Html.Label("lblStatus", "Status")
-                        @Html.DropDownList("Status", HelperLista.Status(), null, new { @class = "form-control" })
+                        @Html.DropDownList("Status", HelperLista.Status(), "Todos", new { @class = "form-control" })
                     </div>
                 </div>
             </div>

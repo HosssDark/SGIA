@@ -14,11 +14,11 @@ namespace Site
         public string Titulo { get; set; }
         public string Tipo { get; set; }
         public string TipoAcesso { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string Status { get; set; }
         public string Classe { get; set; }
         public string Cor { get; set; }
-        public IFormFile Arquivo { get; set; }
+        public IFormFile File { get; set; }
     }
 
     public class ChangePasswordViewModel

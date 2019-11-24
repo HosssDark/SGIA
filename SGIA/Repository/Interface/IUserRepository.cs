@@ -9,7 +9,7 @@ namespace Repository
     {
         User VerificationEmail(string Email);
 
-        IEnumerable<UserViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null);
+        IEnumerable<UserViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "");
 
         IEnumerable<UserViewModel> Report();
     }

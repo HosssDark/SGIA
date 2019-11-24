@@ -6,6 +6,7 @@ using Domain;
 using System.Linq;
 using System.Collections.Generic;
 using static Site.Notification;
+using Site.libraries.SubmitEmail;
 
 namespace Site.Controllers
 {
@@ -138,13 +139,13 @@ namespace Site.Controllers
 
                 return View("Index", Model);
             }
-            catch (Exception erro)
+            catch (Exception Error)
             {
                 #region + Log
 
                 Logs.Add(new Log
                 {
-                    Description = erro.Message,
+                    Description = Error.Message,
                     Origin = "Login",
                     UserChangeId = 1
                 });
@@ -173,6 +174,13 @@ namespace Site.Controllers
 
                 if (!string.IsNullOrEmpty(Model.Email))
                 {
+                    IUserRepository User = new UserRepository();
+
+                    bool Exist = User.Get(a => a.Email == Model.Email).Any();
+
+                    if (Exist)
+                        ModelState.AddModelError("Email", "Email já foi cadastrado!");
+
                     if (!FunctionsValidate.ValidateEmail(Model.Email))
                         ModelState.AddModelError("Email", "Email Inválido!");
                 }
@@ -188,47 +196,68 @@ namespace Site.Controllers
                 if (Model.Password != Model.ConfirmPassword)
                     ModelState.AddModelError("ConfirmPassword", "Senhas não conferem");
 
+
+
                 #endregion
 
                 if (ModelState.IsValid)
                 {
                     IUserPasswordRepository passRep = new UserPasswordRepository();
 
-                    #region + Set User
+                    var Guid = passRep.UserRegister(Model.Email, Model.Password);
 
-                    User User = new User()
+                    if (!string.IsNullOrEmpty(Guid))
                     {
-                        Email = Model.Email
-                    };
+                        string host = HttpContext.Request.Host.Host;
+                        
+                        if (host.ToString() == "localhost" || host.StartsWith("205"))
+                            host = HttpContext.Request.Host.Host + ":" + HttpContext.Request.Host.Port;
 
-                    _RepositoryUser.Add(User);
+                        string Link = string.Format("{0}://{1}/Login/RegisterConfirm?hash={2}", HttpContext.Request.Scheme, host, Guid);
 
-                    #endregion
+                        Email.EmailSettingsOutlook EmailOutlook = new Email.EmailSettingsOutlook();
 
-                    #region + Set Password
+                        Email.SubmitEmailSettings EmailSettings = new Email.SubmitEmailSettings()
+                        {
+                            ClientEmail = Model.Email,
+                            Name = "",
+                            Image = "http://hossshs-001-site1.ftempurl.com/images/logo_unemat.gif",
+                            Button = "Confirmar",
+                            Title = "SGIA - Sistema de Gereciamento de Informações Academicas",
+                            Email = EmailOutlook,
+                            Link = Link,
+                            SubjectMatter = "Email de Confirmação",
+                            Message = "Email de confirmação. <br/> Clique no botão confirmar."
+                        };
 
-                    UserPassword Password = new UserPassword()
+                        Email.SubmitEmail(EmailSettings);
+
+                        ViewData["Success"] = "Email enviado com sucesso, verifique sua caixa de email.";
+                    }
+                    else
                     {
-                        Password = MD5.MD5Hash(Model.Password),
-                        Guid = Guid.NewGuid().ToString(),
-                        UserId = User.UserId
-                    };
-
-                    passRep.Add(Password);
-
-                    #endregion
-
-
-                    ViewData["Success"] = "";
+                        ViewData["Error"] = "Erro Inesperado!";
+                    }
+                    
                     return RedirectToAction("Index");
                 }
 
                 return View();
             }
-            catch (Exception erro)
+            catch (Exception Error)
             {
-                ViewData["Error"] = erro.Message;
-                return View();
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                return RedirectToAction("Index");
             }
         }
 
@@ -261,11 +290,44 @@ namespace Site.Controllers
 
                     if (model != null)
                     {
+                        //IUserPasswordRepository passRep = new UserPasswordRepository();
 
+                        //var Guid = passRep.UserRegister(Model.Email, Model.Password);
 
+                        //if (!string.IsNullOrEmpty(Guid))
+                        //{
+                        //    string host = HttpContext.Request.Host.Host;
 
-                        //ViewData["Msg"] = retorno;
-                        return View();
+                        //    if (host.ToString() == "localhost" || host.StartsWith("205"))
+                        //        host = HttpContext.Request.Host.Host + ":" + HttpContext.Request.Host.Port;
+
+                        //    string Link = string.Format("{0}://{1}/Login/RegisterConfirm?hash={2}", HttpContext.Request.Scheme, host, Guid);
+
+                        //    Email.EmailSettingsOutlook EmailOutlook = new Email.EmailSettingsOutlook();
+
+                        //    Email.SubmitEmailSettings EmailSettings = new Email.SubmitEmailSettings()
+                        //    {
+                        //        ClientEmail = Model.Email,
+                        //        Name = "",
+                        //        Image = "http://hossshs-001-site1.ftempurl.com/images/logo_unemat.gif",
+                        //        Button = "Confirmar",
+                        //        Title = "SGIA - Sistema de Gereciamento de Informações Academicas",
+                        //        Email = EmailOutlook,
+                        //        Link = Link,
+                        //        SubjectMatter = "Email de Confirmação",
+                        //        Message = "Email de confirmação. <br/> Clique no botão confirmar."
+                        //    };
+
+                        //    Email.SubmitEmail(EmailSettings);
+
+                        //    ViewData["Success"] = "Email enviado com sucesso, verifique sua caixa de email.";
+                        //}
+                        //else
+                        //{
+                        //    ViewData["Error"] = "Erro Inesperado!";
+                        //}
+
+                        return RedirectToAction("Index");
                     }
                     else
                     {
@@ -276,10 +338,20 @@ namespace Site.Controllers
 
                 return View(Model);
             }
-            catch (Exception erro)
+            catch (Exception Error)
             {
-                ViewData["Error"] = "Erro Inesperado!";
-                return View();
+                #region + Log
+
+                _LogRep.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                #endregion
+
+                return RedirectToAction("Index");
             }
         }
 
@@ -309,8 +381,21 @@ namespace Site.Controllers
 
                 return View();
             }
-            catch (Exception)
+            catch (Exception Error)
             {
+                #region + Log
+
+                Logs.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                _LogRep.AddAll(Logs);
+
+                #endregion
+
                 ViewData["Error"] = "Erro Inesperado!";
                 return View();
             }
@@ -324,8 +409,21 @@ namespace Site.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            catch (Exception Error)
             {
+                #region + Log
+
+                Logs.Add(new Log
+                {
+                    Description = Error.Message,
+                    Origin = "Login",
+                    UserChangeId = 1
+                });
+
+                _LogRep.AddAll(Logs);
+
+                #endregion
+
                 ViewData["Error"] = "Erro Inesperado!";
                 return View();
             }

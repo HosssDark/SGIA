@@ -1,7 +1,11 @@
-﻿@model Domain.PlanoTrabalho
+﻿@model PlanoTrabalhoViewModel
 
 @{
     ViewData["Title"] = "Planos de Trabalho - Adicionar";
+}
+
+@section scripts{
+    <script src="~/js/change_image.js"></script>
 }
 
 <div class="tab-pane active">
@@ -18,27 +22,27 @@
 
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        @Html.LabelFor(a => a.UserId)
-                        @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.UserId)
+                        @Html.LabelFor(a => a.PlanoTrabalho.UserId)
+                        @Html.DropDownListFor(a => a.PlanoTrabalho.UserId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.UserId)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.DiaSemana)
-                        @Html.DropDownListFor(a => a.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DiaSemana)
+                        @Html.LabelFor(a => a.PlanoTrabalho.DiaSemana)
+                        @Html.DropDownListFor(a => a.PlanoTrabalho.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.DiaSemana)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.HoraInicio)
-                        @Html.TextBoxFor(a => a.HoraInicio, "", new { @class = "form-control time" })
-                        @Html.ValidationMessageFor(a => a.HoraInicio)
+                        @Html.LabelFor(a => a.PlanoTrabalho.HoraInicio)
+                        @Html.TextBoxFor(a => a.PlanoTrabalho.HoraInicio, "", new { @class = "form-control time" })
+                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.HoraInicio)
                     </div>
 
                     <div class="col-md-3">
-                        @Html.LabelFor(a => a.HoraEncerramento)
-                        @Html.TextBoxFor(a => a.HoraEncerramento, "", new { @class = "form-control time" })
-                        @Html.ValidationMessageFor(a => a.HoraEncerramento)
+                        @Html.LabelFor(a => a.PlanoTrabalho.HoraEncerramento)
+                        @Html.TextBoxFor(a => a.PlanoTrabalho.HoraEncerramento, "", new { @class = "form-control time" })
+                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.HoraEncerramento)
                     </div>
 
                 </div>
@@ -46,9 +50,22 @@
                 <div class="row clearfix">
 
                     <div class="col-md-6">
-                        @Html.LabelFor(a => a.DescricaoAtividade)
-                        @Html.TextAreaFor(a => a.DescricaoAtividade, 6, 30, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.DescricaoAtividade)
+                        @Html.LabelFor(a => a.PlanoTrabalho.DescricaoAtividade)
+                        @Html.TextAreaFor(a => a.PlanoTrabalho.DescricaoAtividade, 6, 30, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.DescricaoAtividade)
+                    </div>
+                </div>
+
+                <div class="row clearfix margin-top-40">
+
+                    <div class="col-sm-2">
+                        <img id=preview width="100" height="100" src="@Model.Image">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" class="form-control" />
+                        <span asp-validation-for="File" class="text-danger"></span>
                     </div>
                 </div>
 

@@ -7,7 +7,7 @@ namespace Repository
 {
     public interface ITurmaRepository : IRepositoryBase<Turma>, IDisposable
     {
-        IEnumerable<TurmaViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null);
+        IEnumerable<TurmaViewModel> Grid(string Buscar = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "");
 
         IEnumerable<TurmaViewModel> Report();
     }

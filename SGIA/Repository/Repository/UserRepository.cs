@@ -34,13 +34,14 @@ namespace Repository
             return this.Get(a => a.Email == Email).FirstOrDefault();
         }
 
-        public IEnumerable<UserViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<UserViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IAreaAtuacaoRepository _areRep = new AreaAtuacaoRepository();
             ITituloRepository _titRep = new TituloRepository();
             ITipoDocenteRepository _tipRep = new TipoDocenteRepository();
             ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from use in this.GetAll()
                          join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
@@ -69,6 +70,7 @@ namespace Repository
                              TipoAcesso = ace != null ? ace.Descricao : "",
                              Titulo = tl != null ? tl.Descricao : "",
                              Status = sta.Descricao,
+                             Image = paramRep.GetImageUser(use.UserId, "images", "Usuarios", "Usuario", Direct)
                          });
 
             #region + Filtro

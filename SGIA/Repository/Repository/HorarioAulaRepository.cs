@@ -27,12 +27,13 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<HorarioAulaViewModel> Grid(string Periodo = null, int? TurmaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<HorarioAulaViewModel> Grid(string Periodo = null, int? TurmaId = null, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IHorarioAulaRepository _horRep = new HorarioAulaRepository();
             IDiciplinaRepository _dicRep = new DiciplinaRepository();
             ITurmaRepository _turRep = new TurmaRepository();
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Diciplinas = _dicRep.GetAll();
 
@@ -52,25 +53,27 @@ namespace Repository
                          {
                              HorarioAulaId = hr.HorarioAulaId,
                              DiciplinaPrimeiroId = hr.DiciplinaPrimeiroId,
-                             DiciplinaPrimeiro = dp1.Nome,
+                             DiciplinaPrimeiro = dp1 != null ? dp1.Nome : "",
                              DiciplinaSegundoId = hr.DiciplinaSegundoId,
-                             DiciplinaSegundo = dp2.Nome,
+                             DiciplinaSegundo = dp2 != null ? dp2.Nome : "",
                              DiciplinaTerceiroId = hr.DiciplinaTerceiroId,
-                             DiciplinaTerceiro = dp3.Nome,
+                             DiciplinaTerceiro = dp3 != null ? dp3.Nome : "",
                              DiciplinaQuartoId = hr.DiciplinaQuartoId,
-                             DiciplinaQuarto = dp4.Nome,
+                             DiciplinaQuarto = dp4 != null ? dp4.Nome : "",
                              DataCadastro = hr.DataCadastro,
                              DiaSemana = hr.DiaSemana,
                              Periodo = hr.Periodo,
                              StatusId = hr.StatusId,
                              Status = sta.Descricao,
                              TurmaId = hr.TurmaId,
-                             Turma = tm != null ? tm.Nome : ""
+                             Turma = tm != null ? tm.Nome : "",
+                             StatusIcon = sta.Icon,
+                             Image = paramRep.GetImage(hr.HorarioAulaId, "images", "HorarioAulas", "HorarioAula", Direct)
                          });
 
             #region + Filtro
 
-            if (string.IsNullOrEmpty(Periodo))
+            if (!string.IsNullOrEmpty(Periodo))
                 Model = Model.Where(a => a.Periodo == Periodo);
 
             if (TurmaId != null)

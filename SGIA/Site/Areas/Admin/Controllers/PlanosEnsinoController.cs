@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
@@ -13,6 +15,14 @@ namespace Site.Areas.Admin.Controllers
     {
         private IPlanoEnsinoRepository _ensRep = new PlanoEnsinoRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private readonly IHostingEnvironment _appEnvironment;
+        private LoginUser _LoginUser;
+
+        public PlanosEnsinoController(LoginUser loginUser, IHostingEnvironment appEnvironment)
+        {
+            _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -23,7 +33,7 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                var Model = _ensRep.Grid(Buscar, TurmaId, DiciplinaId, StatusId, DataInicial, DataFinal);
+                var Model = _ensRep.Grid(Buscar, TurmaId, DiciplinaId, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }
@@ -52,53 +62,68 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Adicionar(PlanoEnsino Model)
+        public IActionResult Adicionar(PlanoEnsinoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.DiciplinaId == null && Model.DiciplinaId == 0)
-                    ModelState.AddModelError("Diciplina", "Obrigatório");
+                if (Model.PlanoEnsino.DiciplinaId == null && Model.PlanoEnsino.DiciplinaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Diciplina", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
-                    ModelState.AddModelError("Docente", "Obrigatório");
+                if (Model.PlanoEnsino.UserId == null && Model.PlanoEnsino.UserId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Docente", "Obrigatório");
 
-                if (Model.TurmaId == null && Model.TurmaId == 0)
-                    ModelState.AddModelError("Turma", "Obrigatório");
+                if (Model.PlanoEnsino.TurmaId == null && Model.PlanoEnsino.TurmaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Turma", "Obrigatório");
 
-                if (Model.EmentaId == null && Model.EmentaId == 0)
-                    ModelState.AddModelError("Ementa", "Obrigatório");
+                if (Model.PlanoEnsino.EmentaId == null && Model.PlanoEnsino.EmentaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Ementa", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ObjetivoArea))
-                    ModelState.AddModelError("ObjetivoArea", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoArea))
+                    ModelState.AddModelError("PlanoEnsino_ObjetivoArea", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ObjetivoGeral))
-                    ModelState.AddModelError("ObjetivoGeral", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoGeral))
+                    ModelState.AddModelError("PlanoEnsino_ObjetivoGeral", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.EspecificacaoConteudo))
-                    ModelState.AddModelError("EspecificacaoConteudo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.EspecificacaoConteudo))
+                    ModelState.AddModelError("PlanoEnsino_EspecificacaoConteudo", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.MetodologiaAvaliacao))
-                    ModelState.AddModelError("MetodologiaAvaliacao", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.MetodologiaAvaliacao))
+                    ModelState.AddModelError("PlanoEnsino_MetodologiaAvaliacao", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.TecnicaPedagogica))
-                    ModelState.AddModelError("TecnicaPedagogica", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.TecnicaPedagogica))
+                    ModelState.AddModelError("PlanoEnsino_TecnicaPedagogica", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.RecursoUtilizado))
-                    ModelState.AddModelError("RecursoUtilizado", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.RecursoUtilizado))
+                    ModelState.AddModelError("PlanoEnsino_RecursoUtilizado", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.AtividadeTrabalhada))
-                    ModelState.AddModelError("AtividadeTrabalhada", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.AtividadeTrabalhada))
+                    ModelState.AddModelError("PlanoEnsino_AtividadeTrabalhada", "Obrigatório");
 
-                if (Model.DataEmissao == null && Model.DataEmissao == DateTime.MinValue)
-                    ModelState.AddModelError("DataEmissao", "Obrigatório");
+                if (Model.PlanoEnsino.DataEmissao == null && Model.PlanoEnsino.DataEmissao == DateTime.MinValue)
+                    ModelState.AddModelError("PlanoEnsino_DataEmissao", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ensRep.Add(Model);
+                    _ensRep.Add(Model.PlanoEnsino);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -128,7 +153,12 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_ensRep.GetById(Id));
+                PlanoEnsinoViewModel Model = new PlanoEnsinoViewModel()
+                {
+                    PlanoEnsino = _ensRep.GetById(Id)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {
@@ -150,53 +180,68 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(PlanoEnsino Model)
+        public IActionResult Alterar(PlanoEnsinoViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (Model.DiciplinaId == null && Model.DiciplinaId == 0)
-                    ModelState.AddModelError("Diciplina", "Obrigatório");
+                if (Model.PlanoEnsino.DiciplinaId == null && Model.PlanoEnsino.DiciplinaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Diciplina", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
-                    ModelState.AddModelError("Docente", "Obrigatório");
+                if (Model.PlanoEnsino.UserId == null && Model.PlanoEnsino.UserId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Docente", "Obrigatório");
 
-                if (Model.TurmaId == null && Model.TurmaId == 0)
-                    ModelState.AddModelError("Turma", "Obrigatório");
+                if (Model.PlanoEnsino.TurmaId == null && Model.PlanoEnsino.TurmaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Turma", "Obrigatório");
 
-                if (Model.EmentaId == null && Model.EmentaId == 0)
-                    ModelState.AddModelError("Ementa", "Obrigatório");
+                if (Model.PlanoEnsino.EmentaId == null && Model.PlanoEnsino.EmentaId == 0)
+                    ModelState.AddModelError("PlanoEnsino_Ementa", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ObjetivoArea))
-                    ModelState.AddModelError("ObjetivoArea", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoArea))
+                    ModelState.AddModelError("PlanoEnsino_ObjetivoArea", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ObjetivoGeral))
-                    ModelState.AddModelError("ObjetivoGeral", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoGeral))
+                    ModelState.AddModelError("PlanoEnsino_ObjetivoGeral", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.EspecificacaoConteudo))
-                    ModelState.AddModelError("EspecificacaoConteudo", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.EspecificacaoConteudo))
+                    ModelState.AddModelError("PlanoEnsino_EspecificacaoConteudo", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.MetodologiaAvaliacao))
-                    ModelState.AddModelError("MetodologiaAvaliacao", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.MetodologiaAvaliacao))
+                    ModelState.AddModelError("PlanoEnsino_MetodologiaAvaliacao", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.TecnicaPedagogica))
-                    ModelState.AddModelError("TecnicaPedagogica", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.TecnicaPedagogica))
+                    ModelState.AddModelError("PlanoEnsino_TecnicaPedagogica", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.RecursoUtilizado))
-                    ModelState.AddModelError("RecursoUtilizado", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.RecursoUtilizado))
+                    ModelState.AddModelError("PlanoEnsino_RecursoUtilizado", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.AtividadeTrabalhada))
-                    ModelState.AddModelError("AtividadeTrabalhada", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.PlanoEnsino.AtividadeTrabalhada))
+                    ModelState.AddModelError("PlanoEnsino_AtividadeTrabalhada", "Obrigatório");
 
-                if (Model.DataEmissao == null && Model.DataEmissao == DateTime.MinValue)
-                    ModelState.AddModelError("DataEmissao", "Obrigatório");
+                if (Model.PlanoEnsino.DataEmissao == null && Model.PlanoEnsino.DataEmissao == DateTime.MinValue)
+                    ModelState.AddModelError("PlanoEnsino_DataEmissao", "Obrigatório");
 
                 #endregion
 
                 if (ModelState.IsValid)
                 {
-                    _ensRep.Attach(Model);
+                    _ensRep.Attach(Model.PlanoEnsino);
+
+                    if (Model.File != null)
+                    {
+                        IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                        var Info = new FileInfo(Model.File.FileName);
+
+                        using (var stream = new FileStream(Info.Name, FileMode.Create))
+                        {
+                            Model.File.CopyToAsync(stream);
+
+                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                        }
+                    }
+
                     ViewData["Success"] = "Registro alterado com sucesso";
 
                     return RedirectToAction("Index");
@@ -272,7 +317,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaRelatorioViewModel Model)
+        public IActionResult Relatorio(DiciplinaReportViewModel Model)
         {
             try
             {

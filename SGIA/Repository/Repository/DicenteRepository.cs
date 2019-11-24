@@ -27,9 +27,10 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<DicenteViewModel> Grid(string Buscar, int? StatusId = null, int? Matricula = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<DicenteViewModel> Grid(string Buscar, int? StatusId = null, int? Matricula = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from dc in this.GetAll()
                          join sta in _staRep.GetAll() on dc.StatusId equals sta.StatusId
@@ -44,6 +45,7 @@ namespace Repository
                              DataCadastro = dc.DataCadastro,
                              StatusId = dc.StatusId,
                              Status = sta.Descricao,
+                             Image = paramRep.GetImageUser(dc.DicenteId, "images", "Dicentes", "Dicente", Direct)
                          });
 
             #region + Filtro

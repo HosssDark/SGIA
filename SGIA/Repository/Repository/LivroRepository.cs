@@ -27,10 +27,11 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<LivroViewModel> Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IEnumerable<LivroViewModel> Grid(string Buscar, int? StatusId = null, int? EditoraId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IEditoraRepository _ediRep = new EditoraRepository();
             IStatusRepository _staRep = new StatusRepository();
+            IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
 
             var Model = (from lv in this.GetAll()
                          join ed in _ediRep.GetAll() on lv.EditoraId equals ed.EditoraId
@@ -46,7 +47,8 @@ namespace Repository
                              Editora = ed.Nome,
                              StatusId = lv.StatusId,
                              Status = sta.Descricao,
-                             Titulo = lv.Titulo
+                             Titulo = lv.Titulo,
+                             Image = paramRep.GetImage(lv.LivroId, "images", "Livros", "Livro", Direct)
                          });
 
             #region + Filtro
@@ -69,6 +71,29 @@ namespace Repository
             #endregion
 
             return Model;
+        }
+
+        public IEnumerable<LivroViewModel> Report()
+        {
+            IEditoraRepository _ediRep = new EditoraRepository();
+            IStatusRepository _staRep = new StatusRepository();
+
+            return (from lv in this.GetAll()
+                    join ed in _ediRep.GetAll() on lv.EditoraId equals ed.EditoraId
+                    join sta in _staRep.GetAll() on lv.StatusId equals sta.StatusId
+                    select new LivroViewModel
+                    {
+                        LivroId = lv.LivroId,
+                        AreaConhecimento = lv.AreaConhecimento,
+                        Autor = lv.Autor,
+                        DataCadastro = lv.DataCadastro,
+                        DataPublicacao = lv.DataPublicacao,
+                        EditoraId = lv.EditoraId,
+                        Editora = ed.Nome,
+                        StatusId = lv.StatusId,
+                        Status = sta.Descricao,
+                        Titulo = lv.Titulo
+                    });
         }
     }
 }
