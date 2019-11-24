@@ -1,12 +1,10 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Site.Areas.Admin.Controllers
@@ -100,7 +98,7 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Livros", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Livros", "Livro", Model.Livro.LivroId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
@@ -194,8 +192,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Livros", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Livros", "Livro", Model.Livro.LivroId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImage(Model.Livro.LivroId, "images", "Livros", "Livro", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";

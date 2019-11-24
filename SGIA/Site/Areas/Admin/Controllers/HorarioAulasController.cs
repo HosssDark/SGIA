@@ -108,7 +108,7 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", "HorarioAula", Model.HorarioAula.HorarioAulaId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
@@ -211,8 +211,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "HorarioAulas", "HorarioAula", Model.HorarioAula.HorarioAulaId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImage(Model.HorarioAula.HorarioAulaId, "images", "HorarioAulas", "HorarioAula", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";

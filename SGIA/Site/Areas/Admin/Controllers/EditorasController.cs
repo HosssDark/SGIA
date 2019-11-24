@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repository;
 using System;
 using System.IO;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -87,7 +85,7 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Editoras", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Editoras", "Editora", Model.Editora.EditoraId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
@@ -172,8 +170,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Editoras", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Editoras", "Editora", Model.Editora.EditoraId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImage(Model.Editora.EditoraId, "images", "Editoras", "Editora", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";

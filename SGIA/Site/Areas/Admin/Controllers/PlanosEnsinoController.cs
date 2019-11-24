@@ -120,7 +120,7 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", "PlanoEnsino", Model.PlanoEnsino.PlanoEnsinoId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
@@ -238,8 +238,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "PlanosEnsino", "PlanoEnsino", Model.PlanoEnsino.PlanoEnsinoId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImage(Model.PlanoEnsino.PlanoEnsinoId, "images", "PlanosEnsino", "PlanoEnsino", _appEnvironment.WebRootPath);
                     }
 
                     ViewData["Success"] = "Registro alterado com sucesso";

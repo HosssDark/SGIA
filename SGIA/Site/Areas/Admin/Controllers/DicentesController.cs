@@ -30,7 +30,7 @@ namespace Site.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null, 
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null,
                                   DateTime? DataInicial = null, DateTime? DataFinal = null)
         {
             try
@@ -98,7 +98,7 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Dicentes", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Dicentes", "Dicente", Model.Dicente.DicenteId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
 
@@ -131,9 +131,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Dicente = _dicRep.GetById(Id);
+
                 DicenteViewModel Model = new DicenteViewModel()
                 {
-                    Dicente = _dicRep.GetById(Id)
+                    Dicente = Dicente,
+                    Image = imgRep.GetImage(Dicente.DicenteId, "images", "Dicentes", "Dicente", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);
@@ -192,8 +197,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Dicentes", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Dicentes", "Dicente", Model.Dicente.DicenteId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImageUser(Model.Dicente.DicenteId, "images", "Dicentes", "Dicente", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";

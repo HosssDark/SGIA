@@ -106,10 +106,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", "Diciplina", Model.Diciplina.DiciplinaId, Info.Extension, _appEnvironment.WebRootPath);
                         }
                     }
-                    
+
                     TempData["Success"] = "Registro gravado com sucesso";
 
                     return RedirectToAction("Index");
@@ -139,9 +139,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Diciplina = _dicRep.GetById(Id);
+
                 DiciplinaViewModel Model = new DiciplinaViewModel()
                 {
-                    Diciplina = _dicRep.GetById(Id)
+                    Diciplina = Diciplina,
+                    Image = imgRep.GetImage(Diciplina.DiciplinaId, "images", "Diciplinas", "Diciplina", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);
@@ -209,8 +214,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Diciplinas", "Diciplina", Model.Diciplina.DiciplinaId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImage(Model.Diciplina.DiciplinaId, "images", "Diciplinas", "Diciplina", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";
@@ -299,7 +306,7 @@ namespace Site.Areas.Admin.Controllers
                 if (Model.StatusId != 0)
                     List = List.Where(a => a.StatusId == Model.StatusId);
 
-                if(Model.TurmaId != 0)
+                if (Model.TurmaId != 0)
                     List = List.Where(a => a.TurmaId == Model.TurmaId);
 
                 if (Model.DataInicial != null)
