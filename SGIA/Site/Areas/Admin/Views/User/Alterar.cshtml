@@ -14,6 +14,8 @@
         {
             @Html.AntiForgeryToken()
 
+            @Html.HiddenFor(a => a.UserId)
+
             <div class="card-body">
 
                 <div class="row clearfix">
@@ -94,39 +96,11 @@
                         @Html.ValidationMessageFor(a => a.StatusId)
                     </div>
 
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(a => a.Nome)
-                        @Html.TextBoxFor(a => a.Nome, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Nome)
-                    </div>
-
-                    <div class="col-md-4">
-                        @Html.LabelFor(a => a.Email)
-                        @Html.TextBoxFor(a => a.Email, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Email)
-                    </div>
-
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         @Html.LabelFor(a => a.TipoAcessoId)
                         @Html.DropDownListFor(a => a.TipoAcessoId, HelperLista.TiposAcesso(), null, new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.TipoAcessoId)
                     </div>
-
-                    <div class="col-md-2">
-                        @Html.LabelFor(a => a.DataCadastro)
-                        @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "" })
-                        @Html.ValidationMessageFor(a => a.DataCadastro)
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.LabelFor(a => a.StatusId)
-                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), null, new { @class = "form-control", @readonly = "" })
-                        @Html.ValidationMessageFor(a => a.StatusId)
-                    </div>
-
                 </div>
 
                 <div class="row clearfix margin-top-40">

@@ -40,8 +40,9 @@ namespace Repository
                              Nome = ed.Nome,
                              StatusId = ed.StatusId,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              DataCadastro = ed.DataCadastro,
-                             Image = paramRep.GetImage(ed.EditoraId, "images", "Dicentes", "Dicente", Direct)
+                             Image = paramRep.GetImage(ed.EditoraId, "images", "Editoras", "Editora", Direct)
                          });
 
             #region + Filtro

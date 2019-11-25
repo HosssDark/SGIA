@@ -47,6 +47,7 @@ namespace Repository
                              Editora = ed.Nome,
                              StatusId = lv.StatusId,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              Titulo = lv.Titulo,
                              Image = paramRep.GetImage(lv.LivroId, "images", "Livros", "Livro", Direct)
                          });

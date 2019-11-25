@@ -134,9 +134,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var PlanoTrabalho = _traRep.GetById(Id);
+
                 PlanoTrabalhoViewModel Model = new PlanoTrabalhoViewModel()
                 {
-                    PlanoTrabalho = _traRep.GetById(Id)
+                    PlanoTrabalho = PlanoTrabalho,
+                    Image = imgRep.GetImage(PlanoTrabalho.PlanoTrabalhoId, "images", "PlanosTrabalho", "PlanoTrabalho", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

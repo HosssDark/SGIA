@@ -27,11 +27,11 @@ namespace Site.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IActionResult Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, int? TiposAcessoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null)
         {
             try
             {
-                var Model = _userRep.Grid(Buscar, StatusId, AreaAtuacaoId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
+                var Model = _userRep.Grid(Buscar, StatusId, AreaAtuacaoId, TiposAcessoId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }

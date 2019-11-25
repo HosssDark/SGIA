@@ -141,9 +141,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var HorarioAula = _horRep.GetById(Id);
+
                 HorarioAulaViewModel Model = new HorarioAulaViewModel()
                 {
-                    HorarioAula = _horRep.GetById(Id)
+                    HorarioAula = HorarioAula,
+                    Image = imgRep.GetImage(HorarioAula.HorarioAulaId, "images", "HorarioAulas", "HorarioAula", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

@@ -46,8 +46,7 @@ namespace Repository
                          from dp3 in r3.DefaultIfEmpty()
                          join dp4 in Diciplinas on hr.DiciplinaQuartoId equals dp4.DiciplinaId into r4
                          from dp4 in r4.DefaultIfEmpty()
-                         join tm in _turRep.GetAll() on hr.HorarioAulaId equals tm.TurmaId into r5
-                         from tm in r5.DefaultIfEmpty()
+                         join tm in _turRep.GetAll() on hr.TurmaId equals tm.TurmaId 
                          join sta in _staRep.GetAll() on hr.StatusId equals sta.StatusId
                          select new HorarioAulaViewModel
                          {
@@ -66,7 +65,7 @@ namespace Repository
                              StatusId = hr.StatusId,
                              Status = sta.Descricao,
                              TurmaId = hr.TurmaId,
-                             Turma = tm != null ? tm.Nome : "",
+                             Turma = tm.Nome,
                              StatusIcon = sta.Icon,
                              Image = paramRep.GetImage(hr.HorarioAulaId, "images", "HorarioAulas", "HorarioAula", Direct)
                          });

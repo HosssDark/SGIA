@@ -34,7 +34,7 @@ namespace Repository
             return this.Get(a => a.Email == Email).FirstOrDefault();
         }
 
-        public IEnumerable<UserViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
+        public IEnumerable<UserGridViewModel> Grid(string Buscar, int? StatusId = null, int? AreaAtuacaoId = null, int? TiposAcessoId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IAreaAtuacaoRepository _areRep = new AreaAtuacaoRepository();
             ITituloRepository _titRep = new TituloRepository();
@@ -53,13 +53,14 @@ namespace Repository
                          join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId into r4
                          from ace in r4.DefaultIfEmpty()
                          join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
-                         select new UserViewModel
+                         select new UserGridViewModel
                          {
                              UserId = use.UserId,
                              TituloId = use.TituloId,
                              TipoId = use.TipoId,
                              TipoAcessoId = use.TipoAcessoId,
                              StatusId = use.StatusId,
+                             Nome = use.Nome,
                              CargaHoraria = use.CargaHoraria,
                              Celular = use.Celular,
                              Email = use.Email,
@@ -70,6 +71,8 @@ namespace Repository
                              TipoAcesso = ace != null ? ace.Descricao : "",
                              Titulo = tl != null ? tl.Descricao : "",
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
+                             DataCadastro = use.DataCadastro,
                              Image = paramRep.GetImageUser(use.UserId, "images", "Usuarios", "Usuario", Direct)
                          });
 
@@ -84,6 +87,9 @@ namespace Repository
             if (AreaAtuacaoId != null)
                 Model = Model.Where(a => a.AreaAtuacaoId == AreaAtuacaoId);
 
+            if (TiposAcessoId != null)
+                Model = Model.Where(a => a.TipoAcessoId == TiposAcessoId);
+
             if (DataInicial != null)
                 Model = Model.Where(a => a.DataCadastro >= DataInicial);
 
@@ -95,7 +101,7 @@ namespace Repository
             return Model;
         }
 
-        public IEnumerable<UserViewModel> Report()
+        public IEnumerable<UserGridViewModel> Report()
         {
             IAreaAtuacaoRepository _areRep = new AreaAtuacaoRepository();
             ITituloRepository _titRep = new TituloRepository();
@@ -104,33 +110,77 @@ namespace Repository
             IStatusRepository _staRep = new StatusRepository();
 
             return (from use in this.GetAll()
-                         join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
-                         from at in r1.DefaultIfEmpty()
-                         join tl in _titRep.GetAll() on use.TituloId equals tl.TituloId into r2
-                         from tl in r2.DefaultIfEmpty()
-                         join tp in _tipRep.GetAll() on use.TipoId equals tp.TipoDocenteId into r3
-                         from tp in r3.DefaultIfEmpty()
-                         join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId into r4
-                         from ace in r4.DefaultIfEmpty()
-                         join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
-                         select new UserViewModel
-                         {
-                             UserId = use.UserId,
-                             TituloId = use.TituloId,
-                             TipoId = use.TipoId,
-                             TipoAcessoId = use.TipoAcessoId,
-                             StatusId = use.StatusId,
-                             CargaHoraria = use.CargaHoraria,
-                             Celular = use.Celular,
-                             Email = use.Email,
-                             EmailLattes = use.EmailLattes,
-                             AreaAtuacaoId = use.AreaAtuacaoId,
-                             AreaAtuacao = at != null ? at.Descricao : "",
-                             Tipo = tp != null ? tp.Descricao : "",
-                             TipoAcesso = ace != null ? ace.Descricao : "",
-                             Titulo = tl != null ? tl.Descricao : "",
-                             Status = sta.Descricao,
-                         });
+                    join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
+                    from at in r1.DefaultIfEmpty()
+                    join tl in _titRep.GetAll() on use.TituloId equals tl.TituloId into r2
+                    from tl in r2.DefaultIfEmpty()
+                    join tp in _tipRep.GetAll() on use.TipoId equals tp.TipoDocenteId into r3
+                    from tp in r3.DefaultIfEmpty()
+                    join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId into r4
+                    from ace in r4.DefaultIfEmpty()
+                    join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
+                    select new UserGridViewModel
+                    {
+                        UserId = use.UserId,
+                        TituloId = use.TituloId,
+                        TipoId = use.TipoId,
+                        TipoAcessoId = use.TipoAcessoId,
+                        StatusId = use.StatusId,
+                        CargaHoraria = use.CargaHoraria,
+                        Celular = use.Celular,
+                        Email = use.Email,
+                        EmailLattes = use.EmailLattes,
+                        AreaAtuacaoId = use.AreaAtuacaoId,
+                        AreaAtuacao = at != null ? at.Descricao : "",
+                        Tipo = tp != null ? tp.Descricao : "",
+                        TipoAcesso = ace != null ? ace.Descricao : "",
+                        Titulo = tl != null ? tl.Descricao : "",
+                        Status = sta.Descricao,
+                    });
         }
+
+        //public UserViewModel GetProfile(int UserId)
+        //{
+        //    IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
+        //    IAreaAtuacaoRepository _areRep = new AreaAtuacaoRepository();
+        //    ITituloRepository _titRep = new TituloRepository();
+        //    ITipoDocenteRepository _tipRep = new TipoDocenteRepository();
+        //    IStatusRepository _staRep = new StatusRepository();
+        //    ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
+
+        //    var Use = this.Get(a => a.UserId == UserId);
+
+        //    var Model = (from use in Use
+        //                 join at in _areRep.GetAll() on use.AreaAtuacaoId equals at.AreaAtuacaoId into r1
+        //                 from at in r1.DefaultIfEmpty()
+        //                 join tl in _titRep.GetAll() on use.TituloId equals tl.TituloId into r2
+        //                 from tl in r2.DefaultIfEmpty()
+        //                 join tp in _tipRep.GetAll() on use.TipoId equals tp.TipoDocenteId into r3
+        //                 from tp in r3.DefaultIfEmpty()
+        //                 join sta in _staRep.GetAll() on use.StatusId equals sta.StatusId
+        //                 join ace in _aceRep.GetAll() on use.TipoAcessoId equals ace.TipoAcessoId
+        //                 select new UserGridViewModel
+        //                 {
+        //                     User = use,
+        //                     AreaAtuacao = at != null ? at.Descricao : "",
+        //                     Tipo = tp != null ? tp.Descricao : "",
+        //                     TipoAcesso = ace.Descricao,
+        //                     Titulo = tl != null ? tl.Descricao : "",
+        //                     Status = sta.Descricao,
+        //                     Classe = sta.Classe,
+        //                     Cor = sta.Cor,
+        //                     Image = paramRep.GetImageUser(_LoginUser.GetUser().UserId, "images", "Usuarios", "Usuario", _appEnvironment.WebRootPath)
+        //                 }).FirstOrDefault();
+
+        //    if (Model.User != null)
+        //    {
+        //        Model.ChangePassword.Email = Model.User.Email;
+        //        Model.ChangePassword.UserId = Model.User.UserId;
+
+        //        Model.Address.UserId = Model.User.UserId;
+        //    }
+
+        //    return Model;
+        //}
     }
 }

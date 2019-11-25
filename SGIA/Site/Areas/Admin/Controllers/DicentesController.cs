@@ -30,12 +30,12 @@ namespace Site.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Grid(string Buscar, int? StatusId = null, int? Matricula = null,
-                                  DateTime? DataInicial = null, DateTime? DataFinal = null)
+        public IActionResult Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, 
+                                  DateTime? DataFinal = null)
         {
             try
             {
-                var Model = _dicRep.Grid(Buscar, StatusId, Matricula, DataInicial, DataFinal, _appEnvironment.WebRootPath);
+                var Model = _dicRep.Grid(Buscar, StatusId, DataInicial, DataFinal, _appEnvironment.WebRootPath);
 
                 return View(Model);
             }

@@ -9,6 +9,8 @@
             render_action();
 
             $('#Status, #Editora').change(search);
+            $('#Buscar').keyup(search);
+            $('#DataInicial, #DataFinal').focusout(search);
 
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -63,7 +65,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         @Html.Label("lblNome", "Buscar por")
-                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Título' ou 'Autor'", @autofocus = "autofocus" })
+                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Projeto' ou 'Responsável'", @autofocus = "autofocus" })
                     </div>
 
                     <div class="col-md-2">

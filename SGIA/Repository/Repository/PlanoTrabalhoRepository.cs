@@ -49,6 +49,7 @@ namespace Repository
                              HoraEncerramento = pl.HoraEncerramento,
                              HoraInicio = pl.HoraInicio,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              Image = paramRep.GetImage(pl.PlanoTrabalhoId, "images", "PlanosTrabalho", "PlanoTrabalho", Direct)
                          });
 

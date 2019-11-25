@@ -9,6 +9,8 @@
             render_action();
 
             $('#Status, #Editora').change(search);
+            $('#Buscar').keyup(search);
+            $('#DataInicial, #DataFinal').focusout(search);
 
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -27,7 +29,7 @@
             var filters = {
                 Buscar: $('#Buscar').val(),
                 StatusId: $('#Status').val(),
-                Editora: $('#Editora').val(),
+                EditoraId: $('#Editora').val(),
                 DataInicial: $('#DataInicial').val(),
                 DataFinal: $('#DataFinal').val()
             }

@@ -16,7 +16,6 @@ namespace Repository
         public DbSet<Semestre> Semestres { get; set; }
         public DbSet<Editora> Editoras { get; set; }
         public DbSet<Address> Enderecos { get; set; }
-        public DbSet<Estado> Estados { get; set; }
         public DbSet<HorarioAula> HorarioAulas { get; set; }
         public DbSet<Municipio> Municipios { get; set; }
         public DbSet<Livro> Livros { get; set; }
@@ -73,6 +72,7 @@ namespace Repository
             modelBuilder.ApplyConfiguration<TipoAcesso>(new TipoAcessoConfig());
             modelBuilder.ApplyConfiguration<Log>(new LogConfig());
             modelBuilder.ApplyConfiguration<EmailTemplate>(new EmailTemplateConfig());
+            modelBuilder.ApplyConfiguration<Municipio>(new MunicipioConfig());
 
             base.OnModelCreating(modelBuilder);
         }

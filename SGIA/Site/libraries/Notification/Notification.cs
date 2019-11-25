@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace Site
+﻿namespace Site
 {
     public class Notification
     {
         public class NotificationList
         {
             public string Type { get; set; }
-            public IEnumerable<string> Message { get; set; }
+            public string Message { get; set; }
         }
     }
 }

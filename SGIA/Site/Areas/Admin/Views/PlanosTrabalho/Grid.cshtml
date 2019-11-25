@@ -8,7 +8,7 @@
     <div class="row row-deck">
         @foreach (var Plano in Model)
         {
-            <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="col-xl-3 col-lg-3 col-md-3">
                 <div class="card">
                     <a href="#"><img class="card-img-top" src="@Plano.Image" height="200px" alt=""></a>
                     <div class="card-body d-flex flex-column">
@@ -29,17 +29,17 @@
                                     <td class="text-right">@Plano.DiaSemana</td>
                                 </tr>
                                 <tr>
-                                    <td><i class="fa fa-calendar"></i></td>
+                                    <td><i class="fa fa-clock"></i></td>
                                     <td class="tx-medium">Horário de Inicio</td>
                                     <td class="text-right">@Plano.HoraInicio</td>
                                 </tr>
                                 <tr>
-                                    <td><i class="fa fa-calendar"></i></td>
+                                    <td><i class="fa fa-clock"></i></td>
                                     <td class="tx-medium">Horário de Encerramento</td>
                                     <td class="text-right">@Plano.HoraEncerramento</td>
                                 </tr>
                                 <tr>
-                                    <td><i class="fa fa-calendar"></i></td>
+                                    <td><i class="@Plano.StatusIcon"></i></td>
                                     <td class="tx-medium">Status</td>
                                     <td class="text-right">@Plano.Status</td>
                                 </tr>

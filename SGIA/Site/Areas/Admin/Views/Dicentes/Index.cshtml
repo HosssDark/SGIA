@@ -8,7 +8,10 @@
 
             render_action();
 
-            $('#Status, #AreaAtuacao').change(search);
+            $('#Status').change(search);
+            $('#Buscar').keyup(search);
+            $('#DataInicial, #DataFinal').focusout(search);
+
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
                 dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
@@ -61,18 +64,8 @@
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.Label("lblNome", "Nome")
-                        @Html.TextBox("Buscar", "", new { @class = "form-control", @autofocus = "autofocus" })
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.Label("lblTiposAcesso", "Tipo Acesso")
-                        @Html.DropDownList("TiposAcesso", HelperLista.TiposAcesso(), "Selecione", new { @class = "form-control" })
-                    </div>
-
-                    <div class="col-md-2">
-                        @Html.Label("lblAreaAtuacao", "Area Atuação")
-                        @Html.DropDownList("AreaAtuacao", HelperLista.AreaAtuacao(), "Selecione", new { @class = "form-control" })
+                        @Html.Label("lblNome", "Buscar por")
+                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Nome' ou 'Matricula'", @autofocus = "autofocus" })
                     </div>
 
                     <div class="col-md-2">

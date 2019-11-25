@@ -2,7 +2,7 @@
 
 namespace Repository.Repository.ViewModel
 {
-    public class UserViewModel
+    public class UserGridViewModel
     {
         public int UserId { get; set; }
         public DateTime DataCadastro { get; set; }
@@ -29,6 +29,7 @@ namespace Repository.Repository.ViewModel
         public string Rg { get; set; }
         public int StatusId { get; set; }
         public string Status { get; set; }
+        public string StatusIcon { get; set; }
         public string Image { get; set; }
     }
 }

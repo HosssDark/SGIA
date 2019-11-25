@@ -62,6 +62,7 @@ namespace Repository
                              ObjetivoGeral = pl.ObjetivoGeral,
                              RecursoUtilizado = pl.RecursoUtilizado,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              TecnicaPedagogica = pl.TecnicaPedagogica,
                              Turma = tm.Nome,
                              Image = paramRep.GetImage(pl.PlanoEnsinoId, "images", "PlanosEnsino", "PlanoEnsino", Direct)

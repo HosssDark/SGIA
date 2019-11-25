@@ -59,6 +59,7 @@ namespace Site.libraries.SubmitEmail
             oMail.To = Model.ClientEmail;
             oMail.Subject = Model.SubjectMatter;
             oMail.TextBody = Template;
+            
             SmtpServer oServer = new SmtpServer(Model.Email.PrimaryDomain);
             oServer.User = Model.Email.UsernameEmail;
             oServer.Password = Model.Email.UsernamePassword;

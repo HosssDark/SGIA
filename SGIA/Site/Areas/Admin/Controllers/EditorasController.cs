@@ -118,9 +118,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Editora = _ediRep.GetById(Id);
+
                 EditoraViewModel Model = new EditoraViewModel()
                 {
-                    Editora = _ediRep.GetById(Id)
+                    Editora = Editora,
+                    Image = imgRep.GetImage(Editora.EditoraId, "images", "Editoras", "Editora", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

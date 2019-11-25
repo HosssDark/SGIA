@@ -132,9 +132,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Projeto = _proRep.GetById(Id);
+
                 ProjetoViewModel Model = new ProjetoViewModel()
                 {
-                    Projeto = _proRep.GetById(Id)
+                    Projeto = Projeto,
+                    Image = imgRep.GetImage(Projeto.ProjetoId, "images", "Projetos", "Projeto", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

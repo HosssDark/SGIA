@@ -52,6 +52,7 @@ namespace Repository
                              QtdeEstudantes = this.GetDicenteCount(tur.TurmaId),
                              StatusId = tur.StatusId,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              Image = paramRep.GetImage(tur.TurmaId, "images", "Turmas", "Turma", Direct)
                          });
 

@@ -153,9 +153,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var PlanoEnsino = _ensRep.GetById(Id);
+
                 PlanoEnsinoViewModel Model = new PlanoEnsinoViewModel()
                 {
-                    PlanoEnsino = _ensRep.GetById(Id)
+                    PlanoEnsino = PlanoEnsino,
+                    Image = imgRep.GetImage(PlanoEnsino.PlanoEnsinoId, "images", "PlanosEnsino", "PlanoEnsino", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

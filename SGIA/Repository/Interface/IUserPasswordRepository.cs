@@ -5,8 +5,14 @@ namespace Repository
 {
     public interface IUserPasswordRepository: IRepositoryBase<UserPassword>, IDisposable
     {
-        UserPassword VerificationPassword(string Password);
+        UserPassword VerificationPassword(string Email, string Password);
 
         string UserRegister(string Email, string Password);
+
+        void ChangePassword(int UserId, string Password);
+
+        void ChangePassword(string Guid, string Email, string Password);
+
+        string ChangeGuid(string Email);
     }
 }

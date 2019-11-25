@@ -8,7 +8,10 @@
 
             render_action();
 
-            $('#Status, #AreaAtuacao').change(search);
+            $('#Status, #AreaAtuacao, #TiposAcesso').change(search);
+            $('#Buscar').keyup(search);
+            $('#DataInicial, #DataFinal').focusout(search);
+
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
                 dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
@@ -27,6 +30,7 @@
                 Buscar: $('#Buscar').val(),
                 StatusId: $('#Status').val(),
                 AreaAtuacaoId: $('#AreaAtuacao').val(),
+                TiposAcessoId: $('#TiposAcesso').val(),
                 DataInicial: $('#DataInicial').val(),
                 DataFinal: $('#DataFinal').val()
             }

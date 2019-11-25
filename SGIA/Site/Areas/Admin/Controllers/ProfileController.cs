@@ -21,6 +21,8 @@ namespace Site.Areas.Admin.Controllers
         private IStatusRepository _staRep = new StatusRepository();
         private ITipoAcessoRepository _aceRep = new TipoAcessoRepository();
         private ILogRepository _LogRep = new LogRepository();
+        private IAddressRepository _AddRep = new AddressRepository();
+
         private readonly IHostingEnvironment _appEnvironment;
         private LoginUser _LoginUser;
 
@@ -60,6 +62,21 @@ namespace Site.Areas.Admin.Controllers
                                  Cor = sta.Cor,
                                  Image = paramRep.GetImageUser(_LoginUser.GetUser().UserId, "images", "Usuarios", "Usuario", _appEnvironment.WebRootPath)
                              }).FirstOrDefault();
+
+                if (Model.User != null)
+                {
+                    Model.ChangePassword.Email = Model.User.Email;
+                    Model.ChangePassword.UserId = Model.User.UserId;
+
+                    var Address = _AddRep.GetFirst(a => a.UserId == Model.User.UserId);
+
+                    if (Address != null)
+                    {
+                        Model.Address = Address;
+                    }
+                    else
+                        Model.Address.UserId = Model.User.UserId;
+                }
 
                 return View(Model);
             }
@@ -120,8 +137,10 @@ namespace Site.Areas.Admin.Controllers
                         {
                             Model.File.CopyToAsync(stream);
 
-                            imgRep.SalvarArquivo(stream, "images", "Usuarios", Model.File.FileName, _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
+                            imgRep.SalvarArquivo(stream, "images", "Usuarios", "Usuario", _LoginUser.GetUser().UserId, Info.Extension, _appEnvironment.WebRootPath);
                         }
+
+                        Model.Image = imgRep.GetImageUser(_LoginUser.GetUser().UserId, "images", "Usuarios", "Usuario", _appEnvironment.WebRootPath);
                     }
 
                     TempData["Success"] = "Registro alterado com sucesso";
@@ -147,29 +166,34 @@ namespace Site.Areas.Admin.Controllers
             }
         }
 
+        public IActionResult AttachPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AttachPassword(UserViewModel Model)
+        public IActionResult AttachPassword(ChangePasswordViewModel Model)
         {
             try
             {
                 #region + Validacao
 
-                if (!string.IsNullOrEmpty(Model.User.Email))
+                if (!string.IsNullOrEmpty(Model.Email))
                 {
-                    if (!FunctionsValidate.ValidateEmail(Model.ChangePassword.Email))
-                        ModelState.AddModelError("ChangePassword_Email", "Email Inválido!");
+                    if (!FunctionsValidate.ValidateEmail(Model.Email))
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
                 else
-                    ModelState.AddModelError("ChangePassword_Email", "Obrigatório");
+                    ModelState.AddModelError("Email", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ChangePassword.Password))
-                    ModelState.AddModelError("ChangePassword_Password", "Obrigatório");
+                if (string.IsNullOrEmpty(Model.Password))
+                    ModelState.AddModelError("Password", "Obrigatório");
 
-                if (string.IsNullOrEmpty(Model.ChangePassword.ConfirmPassword))
+                if (string.IsNullOrEmpty(Model.ConfirmPassword))
                     ModelState.AddModelError("ConfirmPassword", "Obrigatório");
 
-                if (Model.ChangePassword.Password != Model.ChangePassword.ConfirmPassword)
+                if (Model.Password != Model.ConfirmPassword)
                     ModelState.AddModelError("ConfirmPassword", "Senhas não conferem");
 
                 #endregion
@@ -178,12 +202,12 @@ namespace Site.Areas.Admin.Controllers
                 {
                     IUserPasswordRepository passRep = new UserPasswordRepository();
 
-                    passRep.Attach(Model.Password);
+                    passRep.ChangePassword(Model.UserId, Model.Password);
 
                     TempData["Success"] = "Registro gravado com sucesso";
                 }
 
-                return View("Index", Model);
+                return RedirectToAction("Index");
             }
             catch (Exception Error)
             {
@@ -199,22 +223,27 @@ namespace Site.Areas.Admin.Controllers
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
-                return View("Index", Model);
+                return RedirectToAction("Index");
             }
+        }
+
+        public IActionResult AttachAddress()
+        {
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AttachAddress(UserViewModel Model)
+        public IActionResult AttachAddress(Address Model)
         {
             try
             {
                 #region + Validacao
 
-                if (!string.IsNullOrEmpty(Model.Address.Cep))
+                if (!string.IsNullOrEmpty(Model.Cep))
                 {
-                    if (!FunctionsValidate.ValidateCep(Model.Address.Cep))
-                        ModelState.AddModelError("Address_Cep", "CEP inválido!");
+                    if (!FunctionsValidate.ValidateCep(Model.Cep))
+                        ModelState.AddModelError("Cep", "CEP inválido!");
                 }
 
                 #endregion
@@ -223,12 +252,14 @@ namespace Site.Areas.Admin.Controllers
                 {
                     IAddressRepository add = new AddressRepository();
 
-                    add.Attach(Model.Address);
+                    Model.StatusId = 1;
+
+                    add.Attach(Model);
 
                     TempData["Success"] = "Registro gravado com sucesso";
                 }
 
-                return View("Index", Model);
+                return RedirectToAction("Index");
             }
             catch (Exception Error)
             {
@@ -244,7 +275,7 @@ namespace Site.Areas.Admin.Controllers
                 #endregion
 
                 TempData["Error"] = "Erro ao tentar Alterar o Registro!";
-                return View("Index", Model);
+                return RedirectToAction("Index");
             }
         }
     }

@@ -305,5 +305,47 @@ namespace Site
 
             return Lista.OrderBy(a => a.Text).ToList();
         }
+
+        public static List<SelectListItem> Municipios(int? MunicipioId = null)
+        {
+            IMunicipioRepository munRep = new MunicipioRepository();
+
+            var Municipios = munRep.GetAll();
+
+            var Lista = new List<SelectListItem>();
+
+            foreach (var item in Municipios)
+            {
+                Lista.Add(new SelectListItem
+                {
+                    Text = item.Nome,
+                    Value = item.MunicipioId.ToString(),
+                    Selected = (MunicipioId != null && item.MunicipioId == MunicipioId)
+                });
+            }
+
+            return Lista.OrderBy(a => a.Text).ToList();
+        }
+
+        public static List<SelectListItem> Estados(string Estado = "")
+        {
+            IMunicipioRepository munRep = new MunicipioRepository();
+
+            var Municipios = munRep.GetAll();
+
+            var Lista = new List<SelectListItem>();
+
+            foreach (var item in Municipios)
+            {
+                Lista.Add(new SelectListItem
+                {
+                    Text = item.Uf,
+                    Value = item.Uf,
+                    Selected = (Estado != null && item.Uf == Estado)
+                });
+            }
+
+            return Lista.OrderBy(a => a.Text).ToList();
+        }
     }
 }

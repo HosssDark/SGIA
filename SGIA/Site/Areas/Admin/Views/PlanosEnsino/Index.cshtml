@@ -8,7 +8,8 @@
 
             render_action();
 
-            $('#Status, #Editora').change(search);
+            $('#Status, #Diciplina, #Turma').change(search);
+            $('#DataInicial, #DataFinal').focusout(search);
 
             $("#DataInicial, #DataFinal").datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -25,9 +26,9 @@
         function search() {
 
             var filters = {
-                Buscar: $('#Buscar').val(),
                 StatusId: $('#Status').val(),
-                Editora: $('#Editora').val(),
+                DiciplinaId: $('#Diciplina').val(),
+                TurmaId: $('#Turma').val(),
                 DataInicial: $('#DataInicial').val(),
                 DataFinal: $('#DataFinal').val()
             }
@@ -61,14 +62,14 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="row">
-                    <div class="col-md-4">
-                        @Html.Label("lblNome", "Buscar por")
-                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Título' ou 'Autor'", @autofocus = "autofocus" })
+                    <div class="col-md-2">
+                        @Html.Label("lblDiciplina", "Diciplina")
+                        @Html.DropDownList("Diciplina", HelperLista.Diciplinas(), "Selecione", new { @class = "form-control" })
                     </div>
 
                     <div class="col-md-2">
-                        @Html.Label("lblEditora", "Editora")
-                        @Html.DropDownList("Editora", HelperLista.Editoras(), "Selecione", new { @class = "form-control" })
+                        @Html.Label("lblTurma", "Turma")
+                        @Html.DropDownList("Turma", HelperLista.Turmas(), "Selecione", new { @class = "form-control" })
                     </div>
 
                     <div class="col-md-2">

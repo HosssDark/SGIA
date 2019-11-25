@@ -131,9 +131,14 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Livro = _livRep.GetById(Id);
+
                 LivroViewModel Model = new LivroViewModel()
                 {
-                    Livro = _livRep.GetById(Id)
+                    Livro = Livro,
+                    Image = imgRep.GetImage(Livro.LivroId, "images", "Livros", "Livro", _appEnvironment.WebRootPath)
                 };
 
                 return View(Model);

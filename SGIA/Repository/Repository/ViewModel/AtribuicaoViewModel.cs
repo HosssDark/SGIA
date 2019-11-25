@@ -13,6 +13,7 @@ namespace Repository.Repository.ViewModel
         public int DocenteId { get; set; }
         public string Docente { get; set; }
         public int StatusId { get; set; }
+        public string StatusIcon { get; set; }
         public string Status { get; set; }
     }
 }

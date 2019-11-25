@@ -27,7 +27,7 @@ namespace Repository
             return base.AddAll(List);
         }
 
-        public IEnumerable<DicenteViewModel> Grid(string Buscar, int? StatusId = null, int? Matricula = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
+        public IEnumerable<DicenteViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "")
         {
             IStatusRepository _staRep = new StatusRepository();
             IParamDirectoryRepository paramRep = new ParamDirectoryRepository();
@@ -45,19 +45,17 @@ namespace Repository
                              DataCadastro = dc.DataCadastro,
                              StatusId = dc.StatusId,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              Image = paramRep.GetImageUser(dc.DicenteId, "images", "Dicentes", "Dicente", Direct)
                          });
 
             #region + Filtro
 
             if (!string.IsNullOrEmpty(Buscar))
-                Model = Model.Where(a => a.Nome.ToLower().Contains(Buscar.ToLower()));
+                Model = Model.Where(a => a.Nome.ToLower().Contains(Buscar.ToLower()) || a.Matricula.ToString() == Buscar);
 
             if (StatusId != null)
                 Model = Model.Where(a => a.StatusId == StatusId);
-
-            if (Matricula != null)
-                Model = Model.Where(a => a.Matricula == Matricula);
 
             if (DataInicial != null)
                 Model = Model.Where(a => a.DataCadastro >= DataInicial);

@@ -10,7 +10,7 @@ namespace Site
         public Diciplina Diciplina { get; set; }
         public string Image { get; set; }
 
-        [Display(Name = "Imagem")]
+        [Display(Name = "Imagem (700x500)")]
         public IFormFile File { get; set; }
     }
 

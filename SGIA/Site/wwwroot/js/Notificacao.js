@@ -28,32 +28,43 @@ function notificacao(retorno) {
             'overlayClose': true
         };
     }
+
+    if (typeof window.stackBarTop === 'undefined') {
+        window.stackBarTop = {
+            'dir1': 'down',
+            'firstpos1': 0,
+            'spacing1': 0,
+            'push': 'top'
+        };
+    }
+
     var opts = {
         title: '',
         text: "",
-        stack: window.stackModalLeft
+        addClass: 'stack-bar-top',
+        cornerClass: 'ui-pnotify-sharp',
+        shadow: false,
+        width: '100%',
+        stack: window.stackBarTop
     };
 
     for (var i = 0; i < retorno.list.length; i++) {
-
-        for (var j = 0; j < retorno.list[i].message.length; j++) {
-            switch (retorno.list[i].type) {
-                case 'Error':
-                    opts.title = retorno.list[i].message[j];
-                    opts.text = '';
-                    opts.type = 'error';
-                    break;
-                case 'Info':
-                    opts.title = retorno.list[i].message[j];
-                    opts.text = '';
-                    opts.type = 'info';
-                    break;
-                case 'Success':
-                    opts.title = retorno.list[i].message[j];
-                    opts.text = '';
-                    opts.type = 'success';
-                    break;
-            }
+        switch (retorno.list[i].type) {
+            case 'Error':
+                opts.title = retorno.list[i].message;
+                opts.text = '';
+                opts.type = 'error';
+                break;
+            case 'Info':
+                opts.title = retorno.list[i].message;
+                opts.text = '';
+                opts.type = 'info';
+                break;
+            case 'Success':
+                opts.title = retorno.list[i].message;
+                opts.text = '';
+                opts.type = 'success';
+                break;
         }
     }
 

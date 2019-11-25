@@ -138,7 +138,17 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
-                return View(_turmRep.GetById(Id));
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                var Turma = _turmRep.GetById(Id);
+
+                TurmaViewModel Model = new TurmaViewModel()
+                {
+                    Turma = Turma,
+                    Image = imgRep.GetImage(Turma.TurmaId, "images", "Turmas", "Turma", _appEnvironment.WebRootPath)
+                };
+
+                return View(Model);
             }
             catch (Exception Error)
             {

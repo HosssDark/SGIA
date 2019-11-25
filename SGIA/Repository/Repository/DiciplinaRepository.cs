@@ -48,6 +48,7 @@ namespace Repository
                              Nome = dp.Nome,
                              DataCadastro = dp.DataCadastro,
                              Status = sta.Descricao,
+                             StatusIcon = sta.Icon,
                              Image = paramRep.GetImage(dp.DiciplinaId, "images", "Diciplinas", "Diciplina", Direct)
                          });
 

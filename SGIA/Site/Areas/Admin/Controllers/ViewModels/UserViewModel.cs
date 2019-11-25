@@ -8,8 +8,8 @@ namespace Site
     {
         public User User { get; set; }
         public UserPassword Password { get; set; }
-        public Address Address { get; set; }
-        public ChangePasswordViewModel ChangePassword { get; set; }
+        public Address Address { get; set; } = new Address();
+        public ChangePasswordViewModel ChangePassword { get; set; } = new ChangePasswordViewModel();
         public string AreaAtuacao { get; set; }
         public string Titulo { get; set; }
         public string Tipo { get; set; }
@@ -18,22 +18,23 @@ namespace Site
         public string Status { get; set; }
         public string Classe { get; set; }
         public string Cor { get; set; }
+
+        [Display(Name = "Imagem (700x500)")]
         public IFormFile File { get; set; }
     }
 
     public class ChangePasswordViewModel
     {
-        [Required]
+        public int UserId { get; set; }
+
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Senha")]
         public string Password { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Senha")]
         public string ConfirmPassword { get; set; }

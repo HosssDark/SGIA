@@ -9,6 +9,7 @@ namespace Repository.Repository.ViewModel
         public string Nome { get; set; }
         public int StatusId { get; set; }
         public string Status { get; set; }
+        public string StatusIcon { get; set; }
         public string Image { get; set; }
     }
 }

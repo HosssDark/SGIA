@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using static Site.Notification;
@@ -16,10 +17,12 @@ namespace Site.Areas.Admin.Controllers
         private LoginUser _LoginUser;
 
         private IUserRepository _userRep = new UserRepository();
+        private readonly IHostingEnvironment _appEnvironment;
 
-        public HomeController(LoginUser loginUser)
+        public HomeController(LoginUser loginUser, IHostingEnvironment appEnvironment)
         {
             _LoginUser = loginUser;
+            _appEnvironment = appEnvironment;
         }
 
         public IActionResult Index()
@@ -31,6 +34,10 @@ namespace Site.Areas.Admin.Controllers
         {
             try
             {
+                IParamDirectoryRepository imgRep = new ParamDirectoryRepository();
+
+                ViewBag.Image = imgRep.GetImageUser(_LoginUser.GetUser().UserId, "images", "Usuarios", "Usuario", _appEnvironment.WebRootPath);
+
                 return View(_LoginUser.GetUser());
             }
             catch (Exception)
@@ -104,88 +111,6 @@ namespace Site.Areas.Admin.Controllers
             }
         }
 
-        //public IActionResult DashTurmas()
-        //{
-        //    try
-        //    {
-        //        var Model = (from tm in bd.Turmas
-        //                     select new DashTurmaViewModel
-        //                     {
-        //                         TurmaId = tm.TurmaId,
-        //                         Descricao = tm.Nome
-        //                     }).ToList();
-
-        //        return View(Model);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //public IActionResult DashDicentes()
-        //{
-        //    try
-        //    {
-        //        var Model = (from dc in bd.Dicentes
-        //                     join sta in bd.Status on dc.StatusId equals sta.StatusId
-        //                     select new DicenteViewModel
-        //                     {
-        //                         DicenteId = dc.DicenteId,
-        //                         Matricula = dc.Matricula,
-        //                         Nome = dc.Nome,
-        //                         Email = dc.Email,
-        //                         Telefone = dc.Telefone,
-        //                         Celular = dc.Celular,
-        //                         DataCadastro = dc.DataCadastro,
-        //                         StatusId = dc.StatusId,
-        //                         Status = sta.Descricao,
-        //                     }).ToList();
-
-        //        return View(Model);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //public IActionResult DashDocentes()
-        //{
-        //    try
-        //    {
-        //        var Model = (from dc in bd.Docentes
-        //                     join sta in bd.Status on dc.StatusId equals sta.StatusId
-        //                     select new DocenteViewModel
-        //                     {
-        //                         DocenteId = dc.DocenteId,
-        //                         AreaAtuacaoId = dc.AreaAtuacaoId,
-        //                         TipoId = dc.TipoId,
-        //                         TituloId = dc.TituloId,
-        //                         CargaHoraria = dc.CargaHoraria,
-        //                         Celular = dc.Celular,
-        //                         DataNascimento = dc.DataNascimento,
-        //                         DataPosse = dc.DataPosse,
-        //                         Email = dc.Email,
-        //                         EmailLattes = dc.EmailLattes,
-        //                         Nome = dc.Nome,
-        //                         Telefone = dc.Telefone,
-        //                         DataCadastro = dc.DataCadastro,
-        //                         StatusId = dc.StatusId,
-        //                         Status = sta.Descricao,
-        //                     }).ToList();
-
-        //        return View(Model);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
         public IActionResult LeftBar()
         {
             try
@@ -229,11 +154,14 @@ namespace Site.Areas.Admin.Controllers
                 TempData.TryGetValue("Success", out object value);
                 var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
 
-                List.Add(new NotificationList
+                foreach (var item in TempData.Values)
                 {
-                    Type = "Success",
-                    Message = Message
-                });
+                    List.Add(new NotificationList
+                    {
+                        Type = "Success",
+                        Message = item.ToString()
+                    });
+                }
             }
 
             if (TempData.ContainsKey("Error"))
@@ -241,11 +169,14 @@ namespace Site.Areas.Admin.Controllers
                 TempData.TryGetValue("Error", out object value);
                 var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
 
-                List.Add(new NotificationList
+                foreach (var item in TempData.Values)
                 {
-                    Type = "Error",
-                    Message = Message
-                });
+                    List.Add(new NotificationList
+                    {
+                        Type = "Error",
+                        Message = item.ToString()
+                    });
+                }
             }
 
             if (TempData.ContainsKey("Info"))
@@ -253,11 +184,14 @@ namespace Site.Areas.Admin.Controllers
                 TempData.TryGetValue("Info", out object value);
                 var Message = value as IEnumerable<string> ?? Enumerable.Empty<string>();
 
-                List.Add(new NotificationList
+                foreach (var item in TempData.Values)
                 {
-                    Type = "Info",
-                    Message = Message
-                });
+                    List.Add(new NotificationList
+                    {
+                        Type = "Info",
+                        Message = item.ToString()
+                    });
+                }
             }
 
             return Json(new { List = List });

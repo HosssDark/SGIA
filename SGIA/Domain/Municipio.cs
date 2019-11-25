@@ -8,8 +8,8 @@ namespace Domain
         [Display(Name = "ID")]
         public int MunicipioId { get; set; }
 
-        [Display(Name = "Código")]
-        public int Codigo { get; set; }
+        [Display(Name = "UF")]
+        public string Uf { get; set; }
 
         [Display(Name = "Nome")]
         public string Nome { get; set; }
