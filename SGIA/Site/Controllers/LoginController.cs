@@ -233,7 +233,7 @@ namespace Site.Controllers
 
                         Email.SubmitEmail(EmailSettings);
 
-                        ViewData["Success"] = "Email enviado com sucesso, verifique sua caixa de email.";
+                        TempData["Success"] = "Email enviado com sucesso, para " + Model.Email;
                     }
                     else
                     {
