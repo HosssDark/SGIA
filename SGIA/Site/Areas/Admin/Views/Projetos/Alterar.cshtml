@@ -31,7 +31,6 @@
 
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(a => a.Projeto.ProjetoId)
-                @Html.HiddenFor(a => a.Projeto.DataCadastro)
 
                 <div class="row clearfix">
 
@@ -55,13 +54,13 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.Projeto.DataInicio)
-                        @Html.TextBoxFor(a => a.Projeto.DataInicio, "", new { @class = "form-control date" })
+                        @Html.TextBoxFor(a => a.Projeto.DataInicio, "{0:dd/MM/yyyy}", new { @class = "form-control date" })
                         @Html.ValidationMessageFor(a => a.Projeto.DataInicio)
                     </div>
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.Projeto.DataTermino)
-                        @Html.TextBoxFor(a => a.Projeto.DataTermino, "", new { @class = "form-control date" })
+                        @Html.TextBoxFor(a => a.Projeto.DataTermino, "{0:dd/MM/yyyy}", new { @class = "form-control date" })
                         @Html.ValidationMessageFor(a => a.Projeto.DataTermino)
                     </div>
 
@@ -73,7 +72,7 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.Projeto.DataCadastro)
-                        @Html.TextBoxFor(a => a.Projeto.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                        @Html.TextBoxFor(a => a.Projeto.DataCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control date", @readonly = "readonly" })
                     </div>
                 </div>
 

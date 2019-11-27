@@ -20,7 +20,6 @@
 
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(a => a.Diciplina.DiciplinaId)
-                @Html.HiddenFor(a => a.Diciplina.DataCadastro)
 
                 <div class="row clearfix">
                     <div class="col-md-6">
@@ -67,8 +66,7 @@
 
                     <div class="col-md-3">
                         @Html.LabelFor(a => a.Diciplina.DataCadastro)
-                        @Html.TextBoxFor(a => a.Diciplina.DataCadastro, "", new { @class = "form-control date", @readolny = "readolny" })
-                        @Html.ValidationMessageFor(a => a.Diciplina.DataCadastro)
+                        @Html.TextBoxFor(a => a.Diciplina.DataCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control date", @readonly = "readonly" })
                     </div>
                 </div>
 

@@ -20,7 +20,6 @@
             <div class="card-body">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(a => a.Dicente.DicenteId)
-                @Html.HiddenFor(a => a.Dicente.DataCadastro)
 
                 <div class="row">
                     <div class="col-md-2">
@@ -61,7 +60,7 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.Dicente.DataCadastro)
-                        @Html.TextBoxFor(a => a.Dicente.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                        @Html.TextBoxFor(a => a.Dicente.DataCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control date", @readonly = "readonly" })
                     </div>
                 </div>
 

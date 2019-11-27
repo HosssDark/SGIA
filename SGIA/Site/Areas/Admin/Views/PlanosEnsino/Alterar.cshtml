@@ -31,7 +31,6 @@
 
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(a => a.PlanoEnsino.PlanoEnsinoId)
-                @Html.HiddenFor(a => a.PlanoEnsino.DataCadastro)
 
                 <div class="row clearfix">
 
@@ -103,7 +102,7 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.PlanoEnsino.DataEmissao)
-                        @Html.TextBoxFor(a => a.PlanoEnsino.DataEmissao, "", new { @class = "form-control date" })
+                        @Html.TextBoxFor(a => a.PlanoEnsino.DataEmissao, "{0:dd/MM/yyyy}", new { @class = "form-control date" })
                         @Html.ValidationMessageFor(a => a.PlanoEnsino.DataEmissao)
                     </div>
 
@@ -115,7 +114,7 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.PlanoEnsino.DataCadastro)
-                        @Html.TextBoxFor(a => a.PlanoEnsino.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                        @Html.TextBoxFor(a => a.PlanoEnsino.DataCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control date", @readonly = "readonly" })
                     </div>
 
                 </div>

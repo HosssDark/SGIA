@@ -58,7 +58,7 @@
 
                         <div class="col-md-3">
                             @Html.LabelFor(a => a.User.DataNascimento)
-                            @Html.TextBoxFor(a => a.User.DataNascimento, "", new { @class = "form-control date" })
+                            @Html.TextBoxFor(a => a.User.DataNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control date" })
                             @Html.ValidationMessageFor(a => a.User.DataNascimento)
                         </div>
 
