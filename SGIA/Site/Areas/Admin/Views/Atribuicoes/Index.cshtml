@@ -11,14 +11,8 @@
             $('#Status, #DiciplinaId, #ProjetoId, #DocenteId').change(search);
 
             $("#DataInicial, #DataFinal").datepicker({
-                dateFormat: 'dd/mm/yy',
-                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                nextText: 'Próximo',
-                prevText: 'Anterior'
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
             });
         });
 
@@ -63,11 +57,6 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="row">
-                    <div class="col-md-4">
-                        @Html.Label("lblNome", "Buscar por")
-                        @Html.TextBox("Buscar", "", new { @class = "form-control", @placeholder = "'Título' ou 'Autor'", @autofocus = "autofocus" })
-                    </div>
-
                     <div class="col-md-2">
                         @Html.Label("lblDiciplina", "Diciplina")
                         @Html.DropDownList("DiciplinaId", HelperLista.Diciplinas(), "Selecione", new { @class = "form-control" })
@@ -101,8 +90,8 @@
             </div>
 
             <div class="col-md-2">
-                <a href="@Url.Action("Adicionar", "Atribuicoes")" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
-                <a href="@Url.Action("Adicionar", "Atribuicoes")" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
+                <a href="@Url.Action("Adicionar", "Atribuicoes")" style="margin-top: 26px;" class="btn btn-sm btn-primary btn-block" title="">Adicionar</a>
+                <a href="@Url.Action("Relatorio", "Atribuicoes" )" class="btn btn-sm btn-primary btn-block" title="">Imprimir</a>
             </div>
 
         </div>

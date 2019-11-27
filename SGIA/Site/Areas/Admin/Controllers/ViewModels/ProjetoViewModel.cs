@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Site
@@ -15,6 +16,10 @@ namespace Site
 
     public class ProjetoReportViewModel
     {
-
+        public int DocenteId { get; set; }
+        public int StatusId { get; set; }
+        public string Formato { get; set; } = "pdf";
+        public DateTime? DataInicial { get; set; }
+        public DateTime? DataFinal { get; set; }
     }
 }

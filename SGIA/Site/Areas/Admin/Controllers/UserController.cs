@@ -6,6 +6,8 @@ using System;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using Microsoft.AspNetCore.Hosting;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -242,7 +244,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(UserReportViewModel Model)
         {
             try
             {
@@ -250,17 +252,14 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
-                //if (Model.TurmaId != 0)
-                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
-
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -270,16 +269,20 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioUser",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
+                        Cookies = new Dictionary<string, string>()
+                        {
+                            {"TempFileView","true"}
+                        }
                     };
 
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioUser", List.ToList());
 
             }
             catch (Exception Error)

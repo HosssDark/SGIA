@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
+using Rotativa.AspNetCore;
+using Site.ModelBinders;
 
 namespace Site
 {
@@ -40,6 +42,11 @@ namespace Site
             services.AddSession(option =>
             {
                 option.Cookie.IsEssential = true;
+            });
+
+            services.AddMvc(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
             });
         }
 
@@ -82,6 +89,8 @@ namespace Site
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }

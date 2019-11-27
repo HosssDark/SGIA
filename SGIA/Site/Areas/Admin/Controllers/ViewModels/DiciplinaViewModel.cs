@@ -16,7 +16,6 @@ namespace Site
 
     public class DiciplinaReportViewModel
     {
-        public int TurmaId { get; set; }
         public int StatusId { get; set; }
         public string Formato { get; set; } = "pdf";
         public DateTime? DataInicial { get; set; }

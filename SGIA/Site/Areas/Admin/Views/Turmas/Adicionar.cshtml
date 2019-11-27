@@ -26,7 +26,7 @@
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.Turma.Nome)
                                 @Html.TextBoxFor(a => a.Turma.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
-                                @Html.ValidationMessageFor(a => a.Turma.Nome)
+                                @Html.ValidationMessage("Nome")
                             </div>
 
                             <div class="col-md-4">
@@ -35,21 +35,21 @@
                                 @Html.ValidationMessageFor(a => a.Turma.Descricao)
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.QtdeSemestres)
                                 @Html.TextBoxFor(a => a.Turma.QtdeSemestres, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.Turma.QtdeSemestres)
+                                @Html.ValidationMessage("QtdeSemestres")
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.Duracao)
                                 @Html.TextBoxFor(a => a.Turma.Duracao, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.Turma.Duracao)
+                                @Html.ValidationMessage("Duracao")
                             </div>
 
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.Turma.CoordenadorId)
-                                @Html.DropDownListFor(a => a.Turma.CoordenadorId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                                @Html.DropDownListFor(a => a.Turma.CoordenadorId, HelperLista.Docentes(), "Selecione", new { @class = "form-control" })
                                 @Html.ValidationMessage("Coordenador")
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                 <img id=preview width="100" height="100" src="~/images/sem-imagem.jpg">
                             </div>
 
-                            <div class="col-md-6" style="margin-left: -9%;">
+                            <div class="col-md-6">
                                 <label asp-for="File"></label>
                                 <input asp-for="File" class="form-control" />
                                 <span asp-validation-for="File" class="text-danger"></span>

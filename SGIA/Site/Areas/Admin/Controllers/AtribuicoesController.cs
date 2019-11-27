@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
@@ -82,13 +83,13 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.DiciplinaId == null && Model.DiciplinaId == 0)
+                if (Model.DiciplinaId == null || Model.DiciplinaId == 0)
                     ModelState.AddModelError("Dicip", "Obrigatório");
 
-                if (Model.ProjetoId == null && Model.ProjetoId == 0)
+                if (Model.ProjetoId == null || Model.ProjetoId == 0)
                     ModelState.AddModelError("Projet", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
+                if (Model.UserId == null || Model.UserId == 0)
                     ModelState.AddModelError("Docente", "Obrigatório");
 
                 #endregion
@@ -156,17 +157,14 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.DiciplinaId == null && Model.DiciplinaId == 0)
+                if (Model.DiciplinaId == null || Model.DiciplinaId == 0)
                     ModelState.AddModelError("Dicip", "Obrigatório");
 
-                if (Model.ProjetoId == null && Model.ProjetoId == 0)
+                if (Model.ProjetoId == null || Model.ProjetoId == 0)
                     ModelState.AddModelError("Projet", "Obrigatório");
 
-                if (Model.UserId == null && Model.UserId == 0)
+                if (Model.UserId == null || Model.UserId == 0)
                     ModelState.AddModelError("Docente", "Obrigatório");
-
-                if (Model.StatusId == null && Model.StatusId == 0)
-                    ModelState.AddModelError("Status", "Obrigatório");
 
                 #endregion
 
@@ -224,7 +222,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(LivroReportViewModel Model)
+        public IActionResult Relatorio(AtribuicaoReportViewModel Model)
         {
             try
             {
@@ -232,17 +230,17 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
                 //if (Model.TurmaId != 0)
                 //    List = List.Where(a => a.TurmaId == Model.TurmaId);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -252,8 +250,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioAtribuicoes",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -261,7 +259,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioAtribuicoes", List.ToList());
 
             }
             catch (Exception Error)

@@ -14,17 +14,17 @@
 
                 <div class="row clearfix">
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         @Html.LabelFor(a => a.DiciplinaId)
                         @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @readonly = "readonly" })
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         @Html.LabelFor(a => a.UserId)
                         @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control", @readonly = "readonly" })
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         @Html.LabelFor(a => a.TurmaId)
                         @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), null, new { @class = "form-control", @readonly = "readonly" })
                     </div>
@@ -39,7 +39,7 @@
                         @Html.TextBoxFor(a => a.ObjetivoGeral, "", new { @class = "form-control", @readonly = "readonly" })
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         @Html.LabelFor(a => a.EmentaId)
                         @Html.DropDownListFor(a => a.EmentaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @readonly = "readonly" })
                     </div>
@@ -88,7 +88,6 @@
 
                 <div class="row clearfix margin-top-40">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary fa-pull-left">Gravar</button>
                         <a href="@Url.Action("Index", "PlanosEnsino")" class="btn btn-default fa-pull-right">Fechar</a>
                     </div>
                 </div>

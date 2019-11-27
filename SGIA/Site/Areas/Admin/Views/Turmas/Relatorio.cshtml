@@ -1,7 +1,7 @@
 ﻿@model DiciplinaReportViewModel
 
 @{
-    ViewData["Title"] = "Dicentes - Relatório";
+    ViewData["Title"] = "Turmas - Relatório";
 }
 
 @section Scripts{
@@ -9,14 +9,8 @@
         $(function () {
 
             $("#DataInicial, #DataFinal").datepicker({
-                dateFormat: 'dd/mm/yy',
-                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                nextText: 'Próximo',
-                prevText: 'Anterior'
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
             });
         });
 
@@ -30,30 +24,26 @@
             <h3 class="card-title">@ViewData["Title"]</h3>
         </div>
         <div class="card-body">
-            @using (Html.BeginForm("Relatorio", "Dicentes", FormMethod.Post))
+            @using (Html.BeginForm("Relatorio", "Turmas", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
 
                 <div class="row clearfix">
-                    <div class="col-md-6">
-                        @Html.Label("Turma")
-                        @Html.DropDownListFor(a => a.TurmaId, HelperLista.Turmas(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.TurmaId)
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         @Html.Label("Status")
-                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), "Selecione", new { @class = "form-control" })
+                        @Html.DropDownListFor(a => a.StatusId, HelperLista.Status(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
                         @Html.ValidationMessageFor(a => a.StatusId)
                     </div>
+                </div>
 
-                    <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-4">
                         @Html.Label("Data Inicial")
                         @Html.TextBoxFor(a => a.DataInicial, "", new { @class = "form-control date" })
                         @Html.ValidationMessageFor(a => a.DataInicial)
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         @Html.Label("Data Final")
                         @Html.TextBoxFor(a => a.DataFinal, "", new { @class = "form-control date" })
                         @Html.ValidationMessageFor(a => a.DataFinal)
@@ -63,7 +53,7 @@
                 <div class="row clearfix margin-top-40">
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary fa-pull-left">Imprimir</button>
-                        <a href="@Url.Action("Index", "Dicentes")" class="btn btn-default fa-pull-right">Fechar</a>
+                        <a href="@Url.Action("Index", "Turmas")" class="btn btn-default fa-pull-right">Fechar</a>
                     </div>
                 </div>
             }

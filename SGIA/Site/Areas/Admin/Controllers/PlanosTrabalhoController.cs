@@ -6,6 +6,7 @@ using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Linq;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -70,20 +71,20 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.PlanoTrabalho.UserId == null && Model.PlanoTrabalho.UserId == 0)
-                    ModelState.AddModelError("PlanoTrabalho_Docente", "Obrigatório");
+                if (Model.PlanoTrabalho.UserId == null || Model.PlanoTrabalho.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.DiaSemana))
-                    ModelState.AddModelError("PlanoTrabalho_DiaSemana", "Obrigatório");
+                    ModelState.AddModelError("DiaSemana", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraInicio))
-                    ModelState.AddModelError("PlanoTrabalho_HoraInicio", "Obrigatório");
+                    ModelState.AddModelError("HoraInicio", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraEncerramento))
-                    ModelState.AddModelError("PlanoTrabalho_HoraEncerramento", "Obrigatório");
+                    ModelState.AddModelError("HoraEncerramento", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.DescricaoAtividade))
-                    ModelState.AddModelError("PlanoTrabalho_DescricaoAtividade", "Obrigatório");
+                    ModelState.AddModelError("DescricaoAtividade", "Obrigatório");
 
                 #endregion
 
@@ -172,20 +173,20 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.PlanoTrabalho.UserId == null && Model.PlanoTrabalho.UserId == 0)
-                    ModelState.AddModelError("PlanoTrabalho_Docente", "Obrigatório");
+                if (Model.PlanoTrabalho.UserId == null || Model.PlanoTrabalho.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.DiaSemana))
-                    ModelState.AddModelError("PlanoTrabalho_DiaSemana", "Obrigatório");
+                    ModelState.AddModelError("DiaSemana", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraInicio))
-                    ModelState.AddModelError("PlanoTrabalho_HoraInicio", "Obrigatório");
+                    ModelState.AddModelError("HoraInicio", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.HoraEncerramento))
-                    ModelState.AddModelError("PlanoTrabalho_HoraEncerramento", "Obrigatório");
+                    ModelState.AddModelError("HoraEncerramento", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoTrabalho.DescricaoAtividade))
-                    ModelState.AddModelError("PlanoTrabalho_DescricaoAtividade", "Obrigatório");
+                    ModelState.AddModelError("DescricaoAtividade", "Obrigatório");
 
                 #endregion
 
@@ -284,7 +285,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(PlanoTrabalhoReportViewModel Model)
         {
             try
             {
@@ -292,17 +293,17 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
                 //if (Model.TurmaId != 0)
                 //    List = List.Where(a => a.TurmaId == Model.TurmaId);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -312,8 +313,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioPlanosTrabalho",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -321,7 +322,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioPlanosTrabalho", List.ToList());
 
             }
             catch (Exception Error)

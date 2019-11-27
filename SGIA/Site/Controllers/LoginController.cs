@@ -172,6 +172,9 @@ namespace Site.Controllers
             {
                 #region + Validacao
 
+                if (string.IsNullOrEmpty(Model.Name))
+                    ModelState.AddModelError("Nome", "Obrigatório");
+
                 if (!string.IsNullOrEmpty(Model.Email))
                 {
                     IUserRepository User = new UserRepository();
@@ -196,15 +199,13 @@ namespace Site.Controllers
                 if (Model.Password != Model.ConfirmPassword)
                     ModelState.AddModelError("ConfirmPassword", "Senhas não conferem");
 
-
-
                 #endregion
 
                 if (ModelState.IsValid)
                 {
                     IUserPasswordRepository passRep = new UserPasswordRepository();
 
-                    var Guid = passRep.UserRegister(Model.Email, Model.Password);
+                    var Guid = passRep.UserRegister(Model.Name, Model.Email, Model.Password);
 
                     if (!string.IsNullOrEmpty(Guid))
                     {

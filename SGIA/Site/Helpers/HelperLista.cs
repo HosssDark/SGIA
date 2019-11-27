@@ -151,7 +151,7 @@ namespace Site
                 Lista.Add(new SelectListItem
                 {
                     Text = item.Nome,
-                    Value = item.StatusId.ToString(),
+                    Value = item.UserId.ToString(),
                     Selected = (UserId != null && item.UserId == UserId)
                 });
             }

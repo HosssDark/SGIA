@@ -36,13 +36,13 @@
 
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.AreaAtuacaoId)
-                        @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
+                        @Html.DropDownListFor(a => a.AreaAtuacaoId, HelperLista.AreaAtuacao(), "Selecione", new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.AreaAtuacaoId)
                     </div>
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.TituloId)
-                        @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
+                        @Html.DropDownListFor(a => a.TituloId, HelperLista.Titulos(), "Selecione", new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.TituloId)
                     </div>
 
@@ -67,7 +67,6 @@
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.CargaHoraria)
                         @Html.TextBoxFor(a => a.CargaHoraria, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.CargaHoraria)
                     </div>
 
                     <div class="col-md-2">
@@ -78,7 +77,7 @@
 
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.TipoId)
-                        @Html.DropDownListFor(a => a.TipoId, HelperLista.TipoDocentes(), null, new { @class = "form-control" })
+                        @Html.DropDownListFor(a => a.TipoId, HelperLista.TipoDocentes(), "Selecione", new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.TipoId)
                     </div>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -71,22 +72,19 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Turma.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.Turma.DataCadastro == null && Model.Turma.DataCadastro == DateTime.MinValue)
-                    ModelState.AddModelError("DataCadastro", "Obrigatório");
-
-                if (Model.Turma.QtdeSemestres == null && Model.Turma.QtdeSemestres == 0)
+                if (Model.Turma.QtdeSemestres == null || Model.Turma.QtdeSemestres == 0)
                     ModelState.AddModelError("QtdeSemestres", "Obrigatório");
 
                 if (Model.Turma.QtdeSemestres <= 0)
                     ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
 
-                if (Model.Turma.Duracao == null && Model.Turma.Duracao == 0)
+                if (Model.Turma.Duracao == null || Model.Turma.Duracao == 0)
                     ModelState.AddModelError("Duracao", "Obrigatório");
 
                 if (Model.Turma.Duracao <= 0)
                     ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
 
-                if (Model.Turma.CoordenadorId == null && Model.Turma.CoordenadorId == 0)
+                if (Model.Turma.CoordenadorId == null || Model.Turma.CoordenadorId == 0)
                     ModelState.AddModelError("Coordenador", "Obrigatório");
 
                 #endregion
@@ -179,22 +177,19 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Turma.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.Turma.DataCadastro == null && Model.Turma.DataCadastro == DateTime.MinValue)
-                    ModelState.AddModelError("DataCadastro", "Obrigatório");
-
-                if (Model.Turma.QtdeSemestres == null && Model.Turma.QtdeSemestres == 0)
+                if (Model.Turma.QtdeSemestres == null || Model.Turma.QtdeSemestres == 0)
                     ModelState.AddModelError("QtdeSemestres", "Obrigatório");
 
                 if (Model.Turma.QtdeSemestres <= 0)
                     ModelState.AddModelError("QtdeSemestres", "Semestres não pode ter valor negativo!");
 
-                if (Model.Turma.Duracao == null && Model.Turma.Duracao == 0)
+                if (Model.Turma.Duracao == null || Model.Turma.Duracao == 0)
                     ModelState.AddModelError("Duracao", "Obrigatório");
 
                 if (Model.Turma.Duracao <= 0)
                     ModelState.AddModelError("Duracao", "Duração não pode ter valor negativo!");
 
-                if (Model.Turma.CoordenadorId == null && Model.Turma.CoordenadorId == 0)
+                if (Model.Turma.CoordenadorId == null || Model.Turma.CoordenadorId == 0)
                     ModelState.AddModelError("Coordenador", "Obrigatório");
 
                 #endregion
@@ -270,7 +265,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(TurmaReportViewModel Model)
         {
             try
             {
@@ -278,17 +273,14 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
-                //if (Model.TurmaId != 0)
-                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
-
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -298,8 +290,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioTurmas",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -307,7 +299,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioTurmas", List.ToList());
 
             }
             catch (Exception Error)

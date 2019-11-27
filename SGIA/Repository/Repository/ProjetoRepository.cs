@@ -93,5 +93,30 @@ namespace Repository
                              DataTermino = pj.DataTermino
                          });
         }
+
+        public IEnumerable<DashProjetosViewModel> Dash()
+        {
+            IUserRepository _userRep = new UserRepository();
+            IStatusRepository _staRep = new StatusRepository();
+
+            return (from pj in this.GetAll()
+                         join use in _userRep.GetAll() on pj.UserId equals use.UserId
+                         join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
+                         select new DashProjetosViewModel
+                         {
+                             ProjetoId = pj.ProjetoId,
+                             StatusId = pj.StatusId,
+                             Descricao = pj.Nome,
+                             DocenteId = pj.UserId,
+                             Docente = use.Nome,
+                             CargaHoraria = pj.CargaHoraria,
+                             DataInicio = pj.DataInicio,
+                             DataTermino = pj.DataTermino,
+                             Progresso = 10,
+                             Status = sta.Descricao,
+                             Classe = sta.Classe,
+                             Cor = sta.Cor
+                         });
+        }
     }
 }

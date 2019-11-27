@@ -7,7 +7,7 @@ namespace Repository
     {
         UserPassword VerificationPassword(string Email, string Password);
 
-        string UserRegister(string Email, string Password);
+        string UserRegister(string Name, string Email, string Password);
 
         void ChangePassword(int UserId, string Password);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -71,16 +72,19 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Projeto.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.Projeto.UserId == null && Model.Projeto.UserId == 0)
-                    ModelState.AddModelError("DocenteId", "Obrigatório");
+                if (Model.Projeto.UserId == null || Model.Projeto.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
-                if (Model.Projeto.CargaHoraria == null && Model.Projeto.CargaHoraria >= 0)
-                    ModelState.AddModelError("DocenteId", "Obrigatório");
+                if (Model.Projeto.CargaHoraria == null || Model.Projeto.CargaHoraria == 0)
+                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
 
-                if (Model.Projeto.DataInicio == null && Model.Projeto.DataInicio == DateTime.MinValue)
+                if (Model.Projeto.CargaHoraria <= 0)
+                    ModelState.AddModelError("CargaHoraria", "Carga Horária não pode ser negativa!");
+
+                if (Model.Projeto.DataInicio == null || Model.Projeto.DataInicio == DateTime.MinValue)
                     ModelState.AddModelError("DataInicio", "Obrigatório");
 
-                if (Model.Projeto.DataTermino == null && Model.Projeto.DataTermino == DateTime.MinValue)
+                if (Model.Projeto.DataTermino == null || Model.Projeto.DataTermino == DateTime.MinValue)
                     ModelState.AddModelError("DataTermino", "Obrigatório");
 
                 #endregion
@@ -173,16 +177,19 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Projeto.Nome))
                     ModelState.AddModelError("Nome", "Obrigatório");
 
-                if (Model.Projeto.UserId == null && Model.Projeto.UserId == 0)
-                    ModelState.AddModelError("DocenteId", "Obrigatório");
+                if (Model.Projeto.UserId == null || Model.Projeto.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
-                if (Model.Projeto.CargaHoraria == null && Model.Projeto.CargaHoraria >= 0)
-                    ModelState.AddModelError("DocenteId", "Obrigatório");
+                if (Model.Projeto.CargaHoraria == null || Model.Projeto.CargaHoraria == 0)
+                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
 
-                if (Model.Projeto.DataInicio == null && Model.Projeto.DataInicio == DateTime.MinValue)
+                if (Model.Projeto.CargaHoraria <= 0)
+                    ModelState.AddModelError("CargaHoraria", "Carga Horária não pode ser negativa!");
+
+                if (Model.Projeto.DataInicio == null || Model.Projeto.DataInicio == DateTime.MinValue)
                     ModelState.AddModelError("DataInicio", "Obrigatório");
 
-                if (Model.Projeto.DataTermino == null && Model.Projeto.DataTermino == DateTime.MinValue)
+                if (Model.Projeto.DataTermino == null || Model.Projeto.DataTermino == DateTime.MinValue)
                     ModelState.AddModelError("DataTermino", "Obrigatório");
 
                 #endregion
@@ -258,25 +265,26 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(ProjetoReportViewModel Model)
         {
             try
             {
                 var List = _proRep.Report();
+                //string Type = Model.DocenteId != 0 ? "RelatorioResponsavel" : "RelatorioProjetos";
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
-                //if (Model.TurmaId != 0)
-                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+                if (Model.DocenteId != 0)
+                    List = List.Where(a => a.UserId == Model.DocenteId);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -286,8 +294,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioProjetos",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -295,7 +303,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioProjetos", List.ToList());
 
             }
             catch (Exception Error)

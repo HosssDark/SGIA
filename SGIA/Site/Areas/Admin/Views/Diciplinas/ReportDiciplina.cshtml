@@ -1,7 +1,71 @@
-﻿
+﻿@model List<Repository.Repository.ViewModel.DiciplinaViewModel>
+
 @{
-    ViewData["Title"] = "ReportDiciplina";
+    Layout = null;
 }
 
-<h1>ReportDiciplina</h1>
+<html>
+<head>
+    <meta charset="utf-8">
 
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Relatório Diciplinas</h2>
+    <table>
+
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Nome</td>
+                <td>Carga Horária</td>
+                <td>Hora Semanal</td>
+                <td>Crédito Ensino</td>
+                <td>Crédito Atividade Prática</td>
+                <td>Crédito Atividade Campo</td>
+                <td class="text-center">Data de Cadastro</td>
+                <td class="text-center">Status</td>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.OrderBy(a => a.DiciplinaId))
+            {
+                <tr>
+                    <td>@item.DiciplinaId</td>
+                    <td>@item.Nome</td>
+                    <td>@item.CargaHoraria</td>
+                    <td>@item.HoraSemanal</td>
+                    <td>@item.CreditoEnsino</td>
+                    <td>@item.CreditoAtividadePratica</td>
+                    <td>@item.CreditoAtividadeCampo</td>
+                    <td class="text-center">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@item.Status</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</body>
+</html>

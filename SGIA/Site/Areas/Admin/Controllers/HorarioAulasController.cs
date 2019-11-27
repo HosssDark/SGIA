@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -74,20 +75,20 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.HorarioAula.DiaSemana))
                     ModelState.AddModelError("HorarioAula_DiaSemana", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaPrimeiroId == null && Model.HorarioAula.DiciplinaPrimeiroId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaPrimeiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaPrimeiroId == null || Model.HorarioAula.DiciplinaPrimeiroId == 0)
+                    ModelState.AddModelError("DiciplinaPrimeiro", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaSegundoId == null && Model.HorarioAula.DiciplinaSegundoId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaSegundo", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaSegundoId == null || Model.HorarioAula.DiciplinaSegundoId == 0)
+                    ModelState.AddModelError("DiciplinaSegundo", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaTerceiroId == null && Model.HorarioAula.DiciplinaTerceiroId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaTerceiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaTerceiroId == null || Model.HorarioAula.DiciplinaTerceiroId == 0)
+                    ModelState.AddModelError("DiciplinaTerceiro", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaQuartoId == null && Model.HorarioAula.DiciplinaQuartoId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaQuarto", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaQuartoId == null || Model.HorarioAula.DiciplinaQuartoId == 0)
+                    ModelState.AddModelError("DiciplinaQuarto", "Obrigatório");
 
-                if (Model.HorarioAula.TurmaId == null && Model.HorarioAula.TurmaId == 0)
-                    ModelState.AddModelError("HorarioAula_Turma", "Obrigatório");
+                if (Model.HorarioAula.TurmaId == null || Model.HorarioAula.TurmaId == 0)
+                    ModelState.AddModelError("Turma", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.HorarioAula.Periodo))
                     ModelState.AddModelError("HorarioAula_Periodo", "Obrigatório");
@@ -182,20 +183,20 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.HorarioAula.DiaSemana))
                     ModelState.AddModelError("HorarioAula_DiaSemana", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaPrimeiroId == null && Model.HorarioAula.DiciplinaPrimeiroId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaPrimeiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaPrimeiroId == null || Model.HorarioAula.DiciplinaPrimeiroId == 0)
+                    ModelState.AddModelError("DiciplinaPrimeiro", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaSegundoId == null && Model.HorarioAula.DiciplinaSegundoId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaSegundo", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaSegundoId == null || Model.HorarioAula.DiciplinaSegundoId == 0)
+                    ModelState.AddModelError("DiciplinaSegundo", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaTerceiroId == null && Model.HorarioAula.DiciplinaTerceiroId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaTerceiro", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaTerceiroId == null || Model.HorarioAula.DiciplinaTerceiroId == 0)
+                    ModelState.AddModelError("DiciplinaTerceiro", "Obrigatório");
 
-                if (Model.HorarioAula.DiciplinaQuartoId == null && Model.HorarioAula.DiciplinaQuartoId == 0)
-                    ModelState.AddModelError("HorarioAula_DiciplinaQuarto", "Obrigatório");
+                if (Model.HorarioAula.DiciplinaQuartoId == null || Model.HorarioAula.DiciplinaQuartoId == 0)
+                    ModelState.AddModelError("DiciplinaQuarto", "Obrigatório");
 
-                if (Model.HorarioAula.TurmaId == null && Model.HorarioAula.TurmaId == 0)
-                    ModelState.AddModelError("HorarioAula_Turma", "Obrigatório");
+                if (Model.HorarioAula.TurmaId == null || Model.HorarioAula.TurmaId == 0)
+                    ModelState.AddModelError("Turma", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.HorarioAula.Periodo))
                     ModelState.AddModelError("HorarioAula_Periodo", "Obrigatório");
@@ -297,7 +298,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(HorarioAulaReportViewModel Model)
         {
             try
             {
@@ -305,17 +306,17 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
                 //if (Model.TurmaId != 0)
                 //    List = List.Where(a => a.TurmaId == Model.TurmaId);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -325,8 +326,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioHorarioAulas",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -334,7 +335,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioHorarioAulas", List.ToList());
 
             }
             catch (Exception Error)

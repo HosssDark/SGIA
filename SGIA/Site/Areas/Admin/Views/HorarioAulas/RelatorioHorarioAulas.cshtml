@@ -1,0 +1,71 @@
+﻿@model List<Repository.Repository.ViewModel.HorarioAulaViewModel>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Relatório Horários de Aula</h2>
+    <table>
+
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Dia Semana</td>
+                <td>Diciplina Primeiro Hor.</td>
+                <td>Diciplina Segundo Hor.</td>
+                <td>Diciplina Terceiro Hor.</td>
+                <td>Diciplina Quarto Hor.</td>
+                <td>Turma</td>
+                <td>Periodo</td>
+                <td class="text-center">Data de Cadastro</td>
+                <td class="text-center">Status</td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.OrderBy(a => a.HorarioAulaId))
+            {
+                <tr>
+                    <td>@item.HorarioAulaId</td>
+                    <td>@item.DiaSemana</td>
+                    <td>@item.DiciplinaPrimeiro</td>
+                    <td>@item.DiciplinaSegundo</td>
+                    <td>@item.DiciplinaTerceiro</td>
+                    <td>@item.DiciplinaQuarto</td>
+                    <td>@item.Turma</td>
+                    <td>@item.Periodo</td>
+                    <td class="text-center">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@item.Status</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</body>
+</html>

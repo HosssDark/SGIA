@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -68,17 +69,17 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.PlanoEnsino.DiciplinaId == null && Model.PlanoEnsino.DiciplinaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Diciplina", "Obrigatório");
+                if (Model.PlanoEnsino.DiciplinaId == null || Model.PlanoEnsino.DiciplinaId == 0)
+                    ModelState.AddModelError("Diciplina", "Obrigatório");
 
-                if (Model.PlanoEnsino.UserId == null && Model.PlanoEnsino.UserId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Docente", "Obrigatório");
+                if (Model.PlanoEnsino.UserId == null || Model.PlanoEnsino.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
-                if (Model.PlanoEnsino.TurmaId == null && Model.PlanoEnsino.TurmaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Turma", "Obrigatório");
+                if (Model.PlanoEnsino.TurmaId == null || Model.PlanoEnsino.TurmaId == 0)
+                    ModelState.AddModelError("Turma", "Obrigatório");
 
-                if (Model.PlanoEnsino.EmentaId == null && Model.PlanoEnsino.EmentaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Ementa", "Obrigatório");
+                if (Model.PlanoEnsino.EmentaId == null || Model.PlanoEnsino.EmentaId == 0)
+                    ModelState.AddModelError("Ementa", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoArea))
                     ModelState.AddModelError("PlanoEnsino_ObjetivoArea", "Obrigatório");
@@ -191,17 +192,17 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.PlanoEnsino.DiciplinaId == null && Model.PlanoEnsino.DiciplinaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Diciplina", "Obrigatório");
+                if (Model.PlanoEnsino.DiciplinaId == null || Model.PlanoEnsino.DiciplinaId == 0)
+                    ModelState.AddModelError("Diciplina", "Obrigatório");
 
-                if (Model.PlanoEnsino.UserId == null && Model.PlanoEnsino.UserId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Docente", "Obrigatório");
+                if (Model.PlanoEnsino.UserId == null || Model.PlanoEnsino.UserId == 0)
+                    ModelState.AddModelError("Docente", "Obrigatório");
 
-                if (Model.PlanoEnsino.TurmaId == null && Model.PlanoEnsino.TurmaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Turma", "Obrigatório");
+                if (Model.PlanoEnsino.TurmaId == null || Model.PlanoEnsino.TurmaId == 0)
+                    ModelState.AddModelError("Turma", "Obrigatório");
 
-                if (Model.PlanoEnsino.EmentaId == null && Model.PlanoEnsino.EmentaId == 0)
-                    ModelState.AddModelError("PlanoEnsino_Ementa", "Obrigatório");
+                if (Model.PlanoEnsino.EmentaId == null || Model.PlanoEnsino.EmentaId == 0)
+                    ModelState.AddModelError("Ementa", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.PlanoEnsino.ObjetivoArea))
                     ModelState.AddModelError("PlanoEnsino_ObjetivoArea", "Obrigatório");
@@ -324,7 +325,7 @@ namespace Site.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Relatorio(DiciplinaReportViewModel Model)
+        public IActionResult Relatorio(PlanoEnsinoReportViewModel Model)
         {
             try
             {
@@ -332,17 +333,17 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
                 //if (Model.TurmaId != 0)
                 //    List = List.Where(a => a.TurmaId == Model.TurmaId);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -352,8 +353,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioPlanosEnsino",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -361,7 +362,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioPlanosEnsino", List.ToList());
 
             }
             catch (Exception Error)

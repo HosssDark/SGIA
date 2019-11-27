@@ -82,28 +82,36 @@ namespace Site.Areas.Admin.Controllers
             try
             {
                 IProjetoRepository _proRep = new ProjetoRepository();
-                IStatusRepository _staRep = new StatusRepository();
 
-                var Model = (from pj in _proRep.GetAll()
-                             join use in _userRep.GetAll() on pj.UserId equals use.UserId
-                             join sta in _staRep.GetAll() on pj.StatusId equals sta.StatusId
-                             select new DashProjetosViewModel
-                             {
-                                 ProjetoId = pj.ProjetoId,
-                                 StatusId = pj.StatusId,
-                                 Descricao = pj.Nome,
-                                 DocenteId = pj.UserId,
-                                 Docente = use.Nome,
-                                 CargaHoraria = pj.CargaHoraria,
-                                 DataInicio = pj.DataInicio,
-                                 DataTermino = pj.DataTermino,
-                                 Progresso = 10,
-                                 Status = sta.Descricao,
-                                 Classe = sta.Classe,
-                                 Cor = sta.Cor
-                             }).ToList();
+                return View(_proRep.Dash().ToList());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-                return View(Model);
+        public IActionResult DashTurmas()
+        {
+            try
+            {
+                IProjetoRepository _proRep = new ProjetoRepository();
+
+                return View(_proRep.Dash().ToList());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IActionResult DashDicentes()
+        {
+            try
+            {
+                IProjetoRepository _proRep = new ProjetoRepository();
+
+                return View(_proRep.Dash().ToList());
             }
             catch (Exception)
             {
@@ -116,6 +124,8 @@ namespace Site.Areas.Admin.Controllers
             try
             {
                 IMenuRepository _menRep = new MenuRepository();
+
+                ViewBag.TipoAcesso = _LoginUser.GetUser().TipoAcessoId;
 
                 return View(_menRep.GetAll().ToList());
             }

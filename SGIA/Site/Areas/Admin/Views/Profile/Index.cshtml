@@ -46,13 +46,13 @@
 
                         <div class="col-md-3">
                             @Html.LabelFor(a => a.User.AreaAtuacaoId)
-                            @Html.DropDownListFor(a => a.User.AreaAtuacaoId, HelperLista.AreaAtuacao(), null, new { @class = "form-control" })
+                            @Html.DropDownListFor(a => a.User.AreaAtuacaoId, HelperLista.AreaAtuacao(), "Selecione", new { @class = "form-control" })
                             @Html.ValidationMessageFor(a => a.User.AreaAtuacaoId)
                         </div>
 
                         <div class="col-md-3">
                             @Html.LabelFor(a => a.User.TituloId)
-                            @Html.DropDownListFor(a => a.User.TituloId, HelperLista.Titulos(), null, new { @class = "form-control" })
+                            @Html.DropDownListFor(a => a.User.TituloId, HelperLista.Titulos(), "Selecione", new { @class = "form-control" })
                             @Html.ValidationMessageFor(a => a.User.TituloId)
                         </div>
 
@@ -93,7 +93,7 @@
                             <img id=preview width="100" height="100" src="@Model.Image">
                         </div>
 
-                        <div class="col-md-4" style="margin-left: -7%;">
+                        <div class="col-md-4">
                             <label asp-for="File"></label>
                             <input asp-for="File" class="form-control" />
                             <span asp-validation-for="File" class="text-danger"></span>

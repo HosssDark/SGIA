@@ -1,0 +1,65 @@
+﻿@model List<Repository.Repository.ViewModel.PlanoTrabalhoViewModel>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Relatório Planos de Trabalho</h2>
+    <table>
+
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Dia Semana</td>
+                <td>Hora Inicio</td>
+                <td>Hora Encerramento</td>
+                <td>Descrição Atividade</td>
+                <td class="text-center">Data de Cadastro</td>
+                <td class="text-center">Status</td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.OrderBy(a => a.PlanoTrabalhoId))
+            {
+                <tr>
+                    <td>@item.PlanoTrabalhoId</td>
+                    <td>@item.DiaSemana</td>
+                    <td>@item.HoraInicio</td>
+                    <td>@item.HoraEncerramento</td>
+                    <td>@item.DescricaoAtividade</td>
+                    <td class="text-center">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@item.Status</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</body>
+</html>

@@ -6,6 +6,17 @@
 
 @section scripts{
     <script src="~/js/change_image.js"></script>
+
+    <script>
+        $(function () {
+
+            $("#PlanoEnsino_DataEmissao").datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
+            });
+        });
+
+    </script>
 }
 
 <div class="tab-pane active">
@@ -24,20 +35,20 @@
 
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.PlanoEnsino.DiciplinaId)
-                        @Html.DropDownListFor(a => a.PlanoEnsino.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.PlanoEnsino.DiciplinaId)
+                        @Html.DropDownListFor(a => a.PlanoEnsino.DiciplinaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
+                        @Html.ValidationMessage("Diciplina")
                     </div>
 
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.PlanoEnsino.UserId)
                         @Html.DropDownListFor(a => a.PlanoEnsino.UserId, HelperLista.Docentes(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.PlanoEnsino.UserId)
+                        @Html.ValidationMessage("Docente")
                     </div>
 
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.PlanoEnsino.TurmaId)
                         @Html.DropDownListFor(a => a.PlanoEnsino.TurmaId, HelperLista.Turmas(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.PlanoEnsino.TurmaId)
+                        @Html.ValidationMessage("Turma")
                     </div>
 
                     <div class="col-md-4">
@@ -55,7 +66,7 @@
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.PlanoEnsino.EmentaId)
                         @Html.DropDownListFor(a => a.PlanoEnsino.EmentaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.PlanoEnsino.EmentaId)
+                        @Html.ValidationMessage("Ementa")
                     </div>
 
                     <div class="col-md-4">
@@ -84,7 +95,7 @@
 
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.PlanoEnsino.AtividadeTrabalhada)
-                        @Html.DropDownListFor(a => a.PlanoEnsino.AtividadeTrabalhada, HelperLista.Editoras(), "Selecione", new { @class = "form-control" })
+                        @Html.TextBoxFor(a => a.PlanoEnsino.AtividadeTrabalhada, "", new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.PlanoEnsino.AtividadeTrabalhada)
                     </div>
 
@@ -102,7 +113,7 @@
                         <img id=preview width="100" height="100" src="~/images/sem-imagem.jpg">
                     </div>
 
-                    <div class="col-md-6" style="margin-left: -9%;">
+                    <div class="col-md-6">
                         <label asp-for="File"></label>
                         <input asp-for="File" class="form-control" />
                         <span asp-validation-for="File" class="text-danger"></span>

@@ -26,7 +26,7 @@
                     <div class="col-md-2">
                         @Html.LabelFor(a => a.Dicente.Matricula)
                         @Html.TextBoxFor(a => a.Dicente.Matricula, "", new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.Dicente.Matricula)
+                        @Html.ValidationMessage("Matricula")
                     </div>
 
                     <div class="col-md-4">
@@ -38,7 +38,7 @@
                     <div class="col-md-4">
                         @Html.LabelFor(a => a.Dicente.Email)
                         @Html.TextBoxFor(a => a.Dicente.Email, "", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.Dicente.Email)
+                        @Html.ValidationMessage("Email")
                     </div>
 
                     <div class="col-md-2">
@@ -71,7 +71,7 @@
                         <img id=preview width="100" height="100" src="@Model.Image">
                     </div>
 
-                    <div class="col-md-5" style="margin-left: -9%;">
+                    <div class="col-md-5">
                         <label asp-for="File"></label>
                         <input asp-for="File" class="form-control" />
                         <span asp-validation-for="File" class="text-danger"></span>

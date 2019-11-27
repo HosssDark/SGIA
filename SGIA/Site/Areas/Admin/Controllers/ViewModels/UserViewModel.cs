@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Site
@@ -38,5 +39,14 @@ namespace Site
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Senha")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class UserReportViewModel
+    {
+        public int UserId { get; set; }
+        public int StatusId { get; set; }
+        public string Formato { get; set; } = "pdf";
+        public DateTime? DataInicial { get; set; }
+        public DateTime? DataFinal { get; set; }
     }
 }

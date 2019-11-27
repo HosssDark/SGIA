@@ -7,6 +7,7 @@ using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 
 namespace Site.Areas.Admin.Controllers
 {
@@ -70,8 +71,8 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.Dicente.Matricula == null && Model.Dicente.Matricula == 0)
-                    ModelState.AddModelError("Dicente_Matricula", "Obrigatório");
+                if (Model.Dicente.Matricula == null || Model.Dicente.Matricula == 0)
+                    ModelState.AddModelError("Matricula", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.Dicente.Nome))
                     ModelState.AddModelError("Dicente_Nome", "Obrigatório");
@@ -79,7 +80,7 @@ namespace Site.Areas.Admin.Controllers
                 if (!string.IsNullOrEmpty(Model.Dicente.Email))
                 {
                     if (!FunctionsValidate.ValidateEmail(Model.Dicente.Email))
-                        ModelState.AddModelError("Dicente_Email", "Email Inválido!");
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
 
                 #endregion
@@ -169,8 +170,8 @@ namespace Site.Areas.Admin.Controllers
             {
                 #region + Validacao
 
-                if (Model.Dicente.Matricula == null && Model.Dicente.Matricula == 0)
-                    ModelState.AddModelError("Dicente_Matricula", "Obrigatório");
+                if (Model.Dicente.Matricula == null || Model.Dicente.Matricula == 0)
+                    ModelState.AddModelError("Matricula", "Obrigatório");
 
                 if (string.IsNullOrEmpty(Model.Dicente.Nome))
                     ModelState.AddModelError("Dicente_Nome", "Obrigatório");
@@ -178,7 +179,7 @@ namespace Site.Areas.Admin.Controllers
                 if (!string.IsNullOrEmpty(Model.Dicente.Email))
                 {
                     if (!FunctionsValidate.ValidateEmail(Model.Dicente.Email))
-                        ModelState.AddModelError("Dicente_Email", "Email Inválido!");
+                        ModelState.AddModelError("Email", "Email Inválido!");
                 }
 
                 #endregion
@@ -286,17 +287,14 @@ namespace Site.Areas.Admin.Controllers
 
                 #region + Filters
 
-                //if (Model.StatusId != 0)
-                //    List = List.Where(a => a.StatusId == Model.StatusId);
+                if (Model.StatusId != 0)
+                    List = List.Where(a => a.StatusId == Model.StatusId);
 
-                //if (Model.TurmaId != 0)
-                //    List = List.Where(a => a.TurmaId == Model.TurmaId);
+                if (Model.DataInicial != null)
+                    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
-                //if (Model.DataInicial != null)
-                //    List = List.Where(a => a.DataCadastro >= Model.DataInicial);
-
-                //if (Model.DataFinal != null)
-                //    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
+                if (Model.DataFinal != null)
+                    List = List.Where(a => a.DataCadastro <= Model.DataFinal);
 
                 #endregion
 
@@ -306,8 +304,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "RelatorioDicentes",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -315,7 +313,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("RelatorioDicentes", List.ToList());
 
             }
             catch (Exception Error)

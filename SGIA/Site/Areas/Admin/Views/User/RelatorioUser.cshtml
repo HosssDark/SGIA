@@ -1,0 +1,63 @@
+﻿@model List<Repository.Repository.ViewModel.UserGridViewModel>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Relatório Usuários</h2>
+    <table>
+
+        <thead>
+            <tr>
+                <td>Nome</td>
+                <td>Area de Atuação</td>
+                <td>Carga Horária</td>
+                <td class="text-center">Data de Cadastro</td>
+                <td class="text-center">Status</td>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.OrderBy(a => a.UserId))
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td class="">@item.AreaAtuacao</td>
+                    <td>@item.CargaHoraria</td>
+                    <td class="text-center">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@item.Status</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</body>
+</html>

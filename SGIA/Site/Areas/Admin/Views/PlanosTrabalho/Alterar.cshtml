@@ -26,25 +26,25 @@
                     <div class="col-md-6">
                         @Html.LabelFor(a => a.PlanoTrabalho.UserId)
                         @Html.DropDownListFor(a => a.PlanoTrabalho.UserId, HelperLista.Docentes(), null, new { @class = "form-control", @autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.UserId)
+                        @Html.ValidationMessage("Docente")
                     </div>
 
                     <div class="col-md-3">
                         @Html.LabelFor(a => a.PlanoTrabalho.DiaSemana)
                         @Html.DropDownListFor(a => a.PlanoTrabalho.DiaSemana, HelperLista.DiaSemana(), null, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.DiaSemana)
+                        @Html.ValidationMessage("DiaSemana")
                     </div>
 
                     <div class="col-md-3">
                         @Html.LabelFor(a => a.PlanoTrabalho.HoraInicio)
                         @Html.TextBoxFor(a => a.PlanoTrabalho.HoraInicio, "", new { @class = "form-control time" })
-                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.HoraInicio)
+                        @Html.ValidationMessage("HoraInicio")
                     </div>
 
                     <div class="col-md-3">
                         @Html.LabelFor(a => a.PlanoTrabalho.HoraEncerramento)
                         @Html.TextBoxFor(a => a.PlanoTrabalho.HoraEncerramento, "", new { @class = "form-control time" })
-                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.HoraEncerramento)
+                        @Html.ValidationMessage("HoraEncerramento")
                     </div>
 
                     <div class="col-md-3">
@@ -63,7 +63,7 @@
                     <div class="col-md-6">
                         @Html.LabelFor(a => a.PlanoTrabalho.DescricaoAtividade)
                         @Html.TextAreaFor(a => a.PlanoTrabalho.DescricaoAtividade, 6, 30, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.PlanoTrabalho.DescricaoAtividade)
+                        @Html.ValidationMessage("DescricaoAtividade")
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
                         <img id=preview width="100" height="100" src="@Model.Image">
                     </div>
 
-                    <div class="col-md-5" style="margin-left: -9%;">
+                    <div class="col-md-5">
                         <label asp-for="File"></label>
                         <input asp-for="File" class="form-control" />
                         <span asp-validation-for="File" class="text-danger"></span>

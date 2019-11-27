@@ -21,19 +21,19 @@
                         <div class="row">
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.DiciplinaId)
-                                @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), null, new { @class = "form-control", @autofocus = "autofocus" })
+                                @Html.DropDownListFor(a => a.DiciplinaId, HelperLista.Diciplinas(), "Selecione", new { @class = "form-control", @autofocus = "autofocus" })
                                 @Html.ValidationMessage("Dicip")
                             </div>
 
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.ProjetoId)
-                                @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), null, new { @class = "form-control" })
+                                @Html.DropDownListFor(a => a.ProjetoId, HelperLista.Projetos(), "Selecione", new { @class = "form-control" })
                                 @Html.ValidationMessage("Projet")
                             </div>
 
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.UserId)
-                                @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                                @Html.DropDownListFor(a => a.UserId, HelperLista.Docentes(), "Selecione", new { @class = "form-control" })
                                 @Html.ValidationMessage("Docente")
                             </div>
                         </div>

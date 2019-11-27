@@ -31,12 +31,13 @@ namespace Repository
             return this.GetFirst(a => a.Password == this.MD5Hash(Password + Email));
         }
 
-        public string UserRegister(string Email, string Password)
+        public string UserRegister(string Name, string Email, string Password)
         {
             IUserRepository RepositoryUser = new UserRepository();
 
             User User = new User()
             {
+                Nome = Name,
                 Email = Email
             };
 

@@ -75,20 +75,35 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Diciplina.Ementa))
                     ModelState.AddModelError("Diciplina_Ementa", "Obrigatório");
 
-                if (Model.Diciplina.CargaHoraria == null && Model.Diciplina.CargaHoraria >= 0)
-                    ModelState.AddModelError("Diciplina_CargaHoraria", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria == null || Model.Diciplina.CargaHoraria == 0)
+                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
 
-                if (Model.Diciplina.HoraSemanal == null && Model.Diciplina.HoraSemanal >= 0)
-                    ModelState.AddModelError("Diciplina_HoraSemanal", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CargaHoraria", "Carga Horária não pode ser negativa!");
 
-                if (Model.Diciplina.CreditoEnsino == null && Model.Diciplina.CreditoEnsino >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoEnsino", "Obrigatório");
+                if (Model.Diciplina.HoraSemanal == null || Model.Diciplina.HoraSemanal == 0)
+                    ModelState.AddModelError("HoraSemanal", "Obrigatório");
 
-                if (Model.Diciplina.CreditoAtividadePratica == null && Model.Diciplina.CreditoAtividadePratica >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoAtividadePratica", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("HoraSemanal", "Hora Semanal não pode ser negativa!");
 
-                if (Model.Diciplina.CreditoAtividadeCampo == null && Model.Diciplina.CreditoAtividadeCampo >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoAtividadeCampo", "Obrigatório");
+                if (Model.Diciplina.CreditoEnsino == null || Model.Diciplina.CreditoEnsino == 0)
+                    ModelState.AddModelError("CreditoEnsino", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoEnsino", "Crédito Ensino não pode ser negativa!");
+
+                if (Model.Diciplina.CreditoAtividadePratica == null || Model.Diciplina.CreditoAtividadePratica == 0)
+                    ModelState.AddModelError("CreditoAtividadePratica", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoAtividadePratica", "Crédito Atividade Prática não pode ser negativa!");
+
+                if (Model.Diciplina.CreditoAtividadeCampo == null || Model.Diciplina.CreditoAtividadeCampo == 0)
+                    ModelState.AddModelError("CreditoAtividadeCampo", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoAtividadeCampo", "Crádito Atividade Campo não pode ser negativa!");
 
                 #endregion
 
@@ -183,20 +198,35 @@ namespace Site.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(Model.Diciplina.Ementa))
                     ModelState.AddModelError("Diciplina_Ementa", "Obrigatório");
 
-                if (Model.Diciplina.CargaHoraria == null && Model.Diciplina.CargaHoraria >= 0)
-                    ModelState.AddModelError("Diciplina_CargaHoraria", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria == null || Model.Diciplina.CargaHoraria == 0)
+                    ModelState.AddModelError("CargaHoraria", "Obrigatório");
 
-                if (Model.Diciplina.HoraSemanal == null && Model.Diciplina.HoraSemanal >= 0)
-                    ModelState.AddModelError("Diciplina_HoraSemanal", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CargaHoraria", "Carga Horária não pode ser negativa!");
 
-                if (Model.Diciplina.CreditoEnsino == null && Model.Diciplina.CreditoEnsino >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoEnsino", "Obrigatório");
+                if (Model.Diciplina.HoraSemanal == null || Model.Diciplina.HoraSemanal == 0)
+                    ModelState.AddModelError("HoraSemanal", "Obrigatório");
 
-                if (Model.Diciplina.CreditoAtividadePratica == null && Model.Diciplina.CreditoAtividadePratica >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoAtividadePratica", "Obrigatório");
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("HoraSemanal", "Hora Semanal não pode ser negativa!");
 
-                if (Model.Diciplina.CreditoAtividadeCampo == null && Model.Diciplina.CreditoAtividadeCampo >= 0)
-                    ModelState.AddModelError("Diciplina_CreditoAtividadeCampo", "Obrigatório");
+                if (Model.Diciplina.CreditoEnsino == null || Model.Diciplina.CreditoEnsino == 0)
+                    ModelState.AddModelError("CreditoEnsino", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoEnsino", "Crédito Ensino não pode ser negativa!");
+
+                if (Model.Diciplina.CreditoAtividadePratica == null || Model.Diciplina.CreditoAtividadePratica == 0)
+                    ModelState.AddModelError("CreditoAtividadePratica", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoAtividadePratica", "Crédito Atividade Prática não pode ser negativa!");
+
+                if (Model.Diciplina.CreditoAtividadeCampo == null || Model.Diciplina.CreditoAtividadeCampo == 0)
+                    ModelState.AddModelError("CreditoAtividadeCampo", "Obrigatório");
+
+                if (Model.Diciplina.CargaHoraria <= 0)
+                    ModelState.AddModelError("CreditoAtividadeCampo", "Crádito Atividade Campo não pode ser negativa!");
 
                 #endregion
 
@@ -306,9 +336,6 @@ namespace Site.Areas.Admin.Controllers
                 if (Model.StatusId != 0)
                     List = List.Where(a => a.StatusId == Model.StatusId);
 
-                if (Model.TurmaId != 0)
-                    List = List.Where(a => a.TurmaId == Model.TurmaId);
-
                 if (Model.DataInicial != null)
                     List = List.Where(a => a.DataCadastro >= Model.DataInicial);
 
@@ -323,8 +350,8 @@ namespace Site.Areas.Admin.Controllers
                 {
                     var pdf = new ViewAsPdf
                     {
-                        ViewName = "",
-                        Model = List,
+                        ViewName = "ReportDiciplina",
+                        Model = List.ToList(),
                         PageSize = Size.A4,
                         CustomSwitches = Footer,
                     };
@@ -332,7 +359,7 @@ namespace Site.Areas.Admin.Controllers
                     return pdf;
                 }
                 else
-                    return View("", List);
+                    return View("ReportDiciplina", List.ToList());
 
             }
             catch (Exception Error)

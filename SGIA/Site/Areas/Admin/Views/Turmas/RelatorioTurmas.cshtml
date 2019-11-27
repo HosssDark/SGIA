@@ -1,0 +1,68 @@
+﻿@model List<Repository.Repository.ViewModel.TurmaViewModel>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Relatório Turmas</h2>
+    <table>
+
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Nome</td>
+                <td>Qtde Semestres</td>
+                <td>Qtde Estudantes</td>
+                <td>Duração</td>
+                <td>Coordenador</td>
+                <td class="text-center">Data de Cadastro</td>
+                <td class="text-center">Status</td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.OrderBy(a => a.TurmaId))
+            {
+                <tr>
+                    <td>@item.TurmaId</td>
+                    <td>@item.Name</td>
+                    <td>@item.QtdeSemestres</td>
+                    <td>@item.QtdeEstudantes</td>
+                    <td>@item.Duracao</td>
+                    <td>@item.Coordenador</td>
+                    <td class="text-center">@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@item.Status</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</body>
+</html>

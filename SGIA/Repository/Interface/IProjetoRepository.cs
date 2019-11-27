@@ -10,5 +10,7 @@ namespace Repository
         IEnumerable<ProjetoViewModel> Grid(string Buscar, int? StatusId = null, DateTime? DataInicial = null, DateTime? DataFinal = null, string Direct = "");
 
         IEnumerable<ProjetoViewModel> Report();
+
+        IEnumerable<DashProjetosViewModel> Dash();
     }
 }

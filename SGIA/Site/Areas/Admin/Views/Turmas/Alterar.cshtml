@@ -27,7 +27,7 @@
                             <div class="col-md-4">
                                 @Html.LabelFor(a => a.Turma.Nome)
                                 @Html.TextBoxFor(a => a.Turma.Nome, "", new { @class = "form-control", @autofocus = "autofocus" })
-                                @Html.ValidationMessageFor(a => a.Turma.Nome)
+                                @Html.ValidationMessage("Nome")
                             </div>
 
                             <div class="col-md-4">
@@ -36,16 +36,16 @@
                                 @Html.ValidationMessageFor(a => a.Turma.Descricao)
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.QtdeSemestres)
                                 @Html.TextBoxFor(a => a.Turma.QtdeSemestres, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.Turma.QtdeSemestres)
+                                @Html.ValidationMessage("QtdeSemestres")
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.Duracao)
                                 @Html.TextBoxFor(a => a.Turma.Duracao, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(a => a.Turma.Duracao)
+                                @Html.ValidationMessage("Duracao")
                             </div>
 
                             <div class="col-md-4">
@@ -54,13 +54,13 @@
                                 @Html.ValidationMessage("Coordenador")
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.StatusId)
-                                @Html.DropDownListFor(a => a.Turma.StatusId, HelperLista.Docentes(), null, new { @class = "form-control" })
+                                @Html.DropDownListFor(a => a.Turma.StatusId, HelperLista.Status(), null, new { @class = "form-control" })
                                 @Html.ValidationMessage("Status")
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 @Html.LabelFor(a => a.Turma.DataCadastro)
                                 @Html.TextBoxFor(a => a.Turma.DataCadastro, "", new { @class = "form-control", @readonly = "readonly" })
                             </div>
@@ -72,7 +72,7 @@
                                 <img id=preview width="100" height="100" src="@Model.Image">
                             </div>
 
-                            <div class="col-md-5" style="margin-left: -9%;">
+                            <div class="col-md-5">
                                 <label asp-for="File"></label>
                                 <input asp-for="File" class="form-control" />
                                 <span asp-validation-for="File" class="text-danger"></span>

@@ -126,6 +126,7 @@ namespace Repository
                         TipoId = use.TipoId,
                         TipoAcessoId = use.TipoAcessoId,
                         StatusId = use.StatusId,
+                        Nome = use.Nome,
                         CargaHoraria = use.CargaHoraria,
                         Celular = use.Celular,
                         Email = use.Email,
@@ -136,6 +137,8 @@ namespace Repository
                         TipoAcesso = ace != null ? ace.Descricao : "",
                         Titulo = tl != null ? tl.Descricao : "",
                         Status = sta.Descricao,
+                        DataCadastro = use.DataCadastro,
+                        DataPosse = use.DataPosse
                     });
         }
 
