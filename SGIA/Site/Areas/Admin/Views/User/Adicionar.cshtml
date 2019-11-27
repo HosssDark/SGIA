@@ -4,6 +4,19 @@
     ViewData["Title"] = "Usuários - Adicionar";
 }
 
+@section scripts{
+    <script>
+        $(function () {
+
+            $("#DataPosse").datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
+            });
+        });
+
+    </script>
+}
+
 <div class="tab-pane active">
     <div class="card">
         <div class="card-header">
