@@ -40,7 +40,7 @@
 
                 <div class="col-md-3">
                     @Html.LabelFor(a => a.DataCadastro)
-                    @Html.TextBoxFor(a => a.DataCadastro, "", new { @class = "form-control date", @readonly = "readonly" })
+                    @Html.TextBoxFor(a => a.DataCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control date", @readonly = "readonly" })
                 </div>
             </div>
 
